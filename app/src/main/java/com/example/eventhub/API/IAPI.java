@@ -11,9 +11,4 @@ public interface IAPI {
     Call<ApiResponse> getSK();
     @GET("/sukien/saptoi")
     Call<ApiResponse> getSKSapToi();
-    @FormUrlEncoded
-    @POST("chitiet")
-    Call<ApiResponse> chitiet(
-            @Field("maSK") String ma
-    );
 }

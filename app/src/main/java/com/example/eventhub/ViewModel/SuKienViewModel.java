@@ -15,6 +15,15 @@ public class SuKienViewModel extends ViewModel {
     private final MutableLiveData<List<SuKienSapToi>> lSuKienSapToi = new MutableLiveData<>();
     private final MutableLiveData<List<SuKienSapToi>> lSuKiendanhchobn= new MutableLiveData<>();
     private final MutableLiveData<String> err = new MutableLiveData<>();
+    private final static MutableLiveData<SuKienSapToi> sk = new MutableLiveData<>();
+
+    public static MutableLiveData<SuKienSapToi> getSk() {
+        return sk;
+    }
+
+    public static void setSk(SuKienSapToi sukien) {
+        sk.postValue(sukien);
+    }
 
     public MutableLiveData<List<SuKien>> getlSuKien() {
         return lSuKien;

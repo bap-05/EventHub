@@ -34,30 +34,22 @@ public class MainActivity extends AppCompatActivity {
 
             return insets;
         }); frsave = new HomeFragment();
-        addFragment(frsave,false,0);
+        addFragment(frsave,false);
             addFooter(new FooterFragment());
-            Header(new HeaderFragment());
     }
 
-    private void addFragment(Fragment fr, Boolean addToBackStack, int kt)
+    public void addFragment(Fragment fr, Boolean addToBackStack)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        if(kt==0)
-        {
+
             transaction.setCustomAnimations(
                     R.anim.enter_from_right,
                     R.anim.exit_to_left,
                     R.anim.enter_from_left,
                     R.anim.exit_to_right
             );
-        }
-        else
-        {
-            transaction.setCustomAnimations(
-                    R.anim.enter_from_left,
-                    R.anim.exit_to_right
-            );
-        }
+
+
         transaction.replace(R.id.container_body,fr);
         if(fr.getClass().equals(frsave.getClass())){
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
@@ -73,11 +65,6 @@ public class MainActivity extends AppCompatActivity {
         transaction.replace(R.id.container_footer,fr);
         transaction.commit();
     }
-    private void Header(Fragment fr)
-    {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_header,fr);
-        transaction.commit();
-    }
+
 
 }

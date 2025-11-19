@@ -6,6 +6,9 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
 import com.example.eventhub.Adapter.SuKienSapToiAdapter;
+import com.example.eventhub.Model.SuKienSapToi;
+import com.example.eventhub.Service.SuKienService;
+import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -65,6 +68,15 @@ public class HomeFragment extends Fragment {
             {
                 suKienSapToiAdapter = new SuKienSapToiAdapter(ls);
                 rcv_saptoi.setAdapter(suKienSapToiAdapter);
+                suKienSapToiAdapter.setListener(sk -> {
+                    for (SuKienSapToi skst : ls) {
+                        if(sk.getMaSK() == skst.getMaSK())
+                        {
+                            SuKienService.setSk(sk);
+                            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment(),true);
+                        }
+                    }
+                });
             }
         });
         skvm.load_SK_SapToi();

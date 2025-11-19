@@ -3,6 +3,7 @@ package com.example.eventhub.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -18,6 +19,14 @@ import java.util.List;
 
 public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapter.SuKienSapToiViewHolder> {
     private List<SuKienSapToi> lsk;
+    private OnItemClickListener listener;
+    public interface OnItemClickListener{
+        void  onItemClick(SuKienSapToi sk);
+}
+
+    public void setListener(OnItemClickListener listener) {
+        this.listener = listener;
+    }
 
     public SuKienSapToiAdapter(List<SuKienSapToi> lsk) {
         this.lsk = lsk;
@@ -59,6 +68,20 @@ public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapte
             txt_coso = itemView.findViewById(R.id.txt_saptoi_coso);
             img_poster = itemView.findViewById(R.id.img_saptoi_poster);
             btn_thamgia = itemView.findViewById(R.id.btn_saptoi_thamgia);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null)
+                    {
+                        int position = getBindingAdapterPosition();
+                        if(position != RecyclerView.NO_POSITION)
+                        {
+                            listener.onItemClick(lsk.get(position));
+                        }
+
+                    }
+                }
+            });
         }
     }
 }
