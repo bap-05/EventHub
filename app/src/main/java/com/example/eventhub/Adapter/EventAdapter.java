@@ -1,5 +1,6 @@
 package com.example.eventhub.Adapter;
 
+import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,11 +9,12 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
+
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.example.eventhub.Model.SuKienSapToi;
-import com.example.eventhub.R;
 import com.bumptech.glide.Glide;
+import com.example.eventhub.R;
 
 import java.util.List;
 
@@ -44,7 +46,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             holder.btnDetails.setVisibility(View.GONE);
             holder.layoutAttended.setVisibility(View.VISIBLE);
             holder.txtStatus.setText(event.getTrangThai());
-            holder.txtPointsValue.setText("+"+event.getDiemTichLuy());
+//            holder.txtPointsValue.setText("+"+event.getDiemTichLuy());
         }
         else {
             holder.layoutAttended.setVisibility(View.GONE);
