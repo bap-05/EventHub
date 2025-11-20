@@ -15,7 +15,6 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventhub.R;
 import com.example.eventhub.View.Fragment.FooterFragment;
-import com.example.eventhub.View.Fragment.HeaderFragment;
 import com.example.eventhub.View.Fragment.HomeFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -33,23 +32,15 @@ public class MainActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
 
             return insets;
-        }); frsave = new HomeFragment();
+        });
+        frsave = new HomeFragment();
         addFragment(frsave,false);
-            addFooter(new FooterFragment());
+        addFooter(new FooterFragment());
     }
 
     public void addFragment(Fragment fr, Boolean addToBackStack)
     {
         FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-            transaction.setCustomAnimations(
-                    R.anim.enter_from_right,
-                    R.anim.exit_to_left,
-                    R.anim.enter_from_left,
-                    R.anim.exit_to_right
-            );
-
-
         transaction.replace(R.id.container_body,fr);
         if(fr.getClass().equals(frsave.getClass())){
             getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);

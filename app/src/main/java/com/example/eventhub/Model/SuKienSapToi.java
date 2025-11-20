@@ -1,11 +1,11 @@
 package com.example.eventhub.Model;
 
 public class SuKienSapToi {
-    String TenSK, Poster,TrangThai,ThoiGian,Coso, DiaDiem, DiemHD,MoTa;
-    int MaSK;
+    String TenSK,TrangThai,ThoiGian,Coso, DiaDiem, DiemHD,MoTa;
+    int Poster;
 
 
-    public SuKienSapToi(String tenSK, String poster, String trangThai, String thoiGian, String coso, String diaDiem, String diemHD, String moTa, int maSK) {
+    public SuKienSapToi(String tenSK, int poster, String trangThai, String thoiGian, String coso, String diaDiem, String diemHD, String moTa) {
         TenSK = tenSK;
         Poster = poster;
         TrangThai = trangThai;
@@ -14,8 +14,8 @@ public class SuKienSapToi {
         DiaDiem = diaDiem;
         DiemHD = diemHD;
         MoTa = moTa;
-        MaSK = maSK;
     }
+
 
 
     public String getDiaDiem() {
@@ -58,11 +58,11 @@ public class SuKienSapToi {
         TenSK = tenSK;
     }
 
-    public String getPoster() {
+    public int getPoster() {
         return Poster;
     }
 
-    public void setPoster(String poster) {
+    public void setPoster(int poster) {
         Poster = poster;
     }
 
@@ -82,11 +82,5 @@ public class SuKienSapToi {
         ThoiGian = thoiGian;
     }
 
-    public int getMaSK() {
-        return MaSK;
-    }
 
-    public void setMaSK(int maSK) {
-        MaSK = maSK;
-    }
 }
