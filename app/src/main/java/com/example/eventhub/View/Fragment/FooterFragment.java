@@ -17,6 +17,7 @@ import com.example.eventhub.View.MainActivity;
 
 public class FooterFragment extends Fragment {
     private ImageButton btnNotification;
+    private ImageButton btnUser;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -30,12 +31,19 @@ public class FooterFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         btnNotification = view.findViewById(R.id.btn_notification);
-
+        btnUser = view.findViewById(R.id.btn_user);
 
         if (btnNotification != null) {
             btnNotification.setOnClickListener(v -> {
                 if (getActivity() instanceof MainActivity) {
                     ((MainActivity) getActivity()).addFragment(new ThongBaoFragment(), true);
+                }
+            });
+        }
+        if(btnUser !=null){
+            btnUser.setOnClickListener( v ->{
+                if(getActivity() instanceof  MainActivity){
+                    ((MainActivity) getActivity()).addFragment(new ProfileFragment(),true);
                 }
             });
         }
