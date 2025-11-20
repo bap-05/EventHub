@@ -1,0 +1,31 @@
+package com.example.eventhub.View.Fragment;
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+
+import com.example.eventhub.R;
+
+public class SuccessFragment extends BaseAuthFragment {
+
+    public static SuccessFragment newInstance() {
+        return new SuccessFragment();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
+                             @Nullable Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.success_update, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        view.findViewById(R.id.btnBackLogin).setOnClickListener(v -> getAuthNavigator().showLogin());
+    }
+}

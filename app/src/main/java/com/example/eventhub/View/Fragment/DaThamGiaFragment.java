@@ -27,25 +27,25 @@ public class DaThamGiaFragment extends Fragment {
         RecyclerView recyclerView=view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         List<SuKienSapToi> skdathamgia = new ArrayList<>();
-        skdathamgia.add(new SuKienSapToi(
-                "Ngày hội tân sinh viên 2025",
-                "URL_POSTER_3",
-                "Đã tích lũy",
-                "12/09 - CN - 7:00",
-                "Cơ sở 1",
-                101,
-                2
-
-        ));
-        skdathamgia.add(new SuKienSapToi(
-                "Ngày hội tân sinh viên 2025",
-                "URL_POSTER_4",
-                "Đã tích lũy",
-                "12/08 - CN - 7:00",
-                "Cơ sở 1",
-                102,
-                2
-        ));
+//        skdathamgia.add(new SuKienSapToi(
+//                "Ngày hội tân sinh viên 2025",
+//                "URL_POSTER_3",
+//                "Đã tích lũy",
+//                "12/09 - CN - 7:00",
+//                "Cơ sở 1",
+//                101,
+//                2
+//
+//        ));
+//        skdathamgia.add(new SuKienSapToi(
+//                "Ngày hội tân sinh viên 2025",
+//                "URL_POSTER_4",
+//                "Đã tích lũy",
+//                "12/08 - CN - 7:00",
+//                "Cơ sở 1",
+//                102,
+//                2
+//        ));
         EventAdapter adapter=new EventAdapter(skdathamgia);
         recyclerView.setAdapter(adapter);
         return view;
