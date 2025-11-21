@@ -18,6 +18,14 @@ import java.util.List;
 
 public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.DanhMucViewHolder> {
     private List<DanhMuc> ldm;
+    private onClickListener listener;
+    public interface onClickListener{
+        void onClickItem(DanhMuc dmuc);
+    }
+
+    public void setListener(onClickListener listener) {
+        this.listener = listener;
+    }
 
     public DanhMucAdapter(List<DanhMuc> ldm) {
         this.ldm = ldm;
@@ -53,6 +61,17 @@ public class DanhMucAdapter extends RecyclerView.Adapter<DanhMucAdapter.DanhMucV
             super(itemView);
             btn_danhmuc = itemView.findViewById(R.id.btn_home_music);
             img_danhmuc = itemView.findViewById(R.id.img_home_music);
+            btn_danhmuc.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null)
+                    {
+                        int vitri = getBindingAdapterPosition();
+                        if(vitri!=RecyclerView.NO_POSITION)
+                            listener.onClickItem(ldm.get(vitri));
+                    }
+                }
+            });
         }
     }
 }

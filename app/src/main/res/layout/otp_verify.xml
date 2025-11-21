@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
+    android:background="@color/white"
     android:layout_height="match_parent"
     android:padding="24dp">
 
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:text="Kiểm tra email"
+        android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -30,6 +32,7 @@
     <TextView
         android:id="@+id/subtitle"
         android:layout_width="0dp"
+
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:text="Chúng tôi đã gửi mã gồm 6 số cho email của bạn"
@@ -51,12 +54,78 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/subtitle">
 
-        <EditText android:id="@+id/otp1" style="@style/OtpInput" />
-        <EditText android:id="@+id/otp2" style="@style/OtpInput" />
-        <EditText android:id="@+id/otp3" style="@style/OtpInput" />
-        <EditText android:id="@+id/otp4" style="@style/OtpInput" />
-        <EditText android:id="@+id/otp5" style="@style/OtpInput" />
-        <EditText android:id="@+id/otp6" style="@style/OtpInput" />
+        <EditText
+            android:id="@+id/otp1"
+            android:layout_width ="0dp"
+            android:layout_weight="1"
+            android:textColor="@color/black"
+            android:layout_height="55dp"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:maxLength="1" />
+        <EditText
+            android:id="@+id/otp2"
+            android:layout_width ="0dp"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:textColor="@color/black"
+            android:maxLength="1" />
+        <EditText
+            android:id="@+id/otp3"
+            android:layout_width ="0dp"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:textColor="@color/black"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:maxLength="1" />
+        <EditText
+            android:id="@+id/otp4"
+            android:layout_width ="0dp"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:maxLength="1"/>
+        <EditText
+            android:id="@+id/otp5"
+            android:layout_width ="0dp"
+            android:textColor="@color/black"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:maxLength="1"/>
+        <EditText
+            android:id="@+id/otp6"
+            android:textColor="@color/black"
+            android:layout_width ="0dp"
+            android:layout_weight="1"
+            android:layout_height="55dp"
+            android:layout_margin ="6dp"
+            android:gravity = "center"
+            android:textSize="20sp"
+            android:background="@drawable/bg_otp_box"
+            android:inputType="number"
+            android:maxLength="1" />
 
     </LinearLayout>
 
@@ -64,6 +133,7 @@
         android:id="@+id/btnVerify"
         android:text="Tiếp tục"
         app:backgroundTint="@null"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/otpBox"

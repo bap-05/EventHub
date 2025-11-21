@@ -10,14 +10,14 @@
         android:id="@+id/logoImg"
         android:layout_width="120dp"
         android:layout_height="120dp"
+        android:src="@drawable/ic_logo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/logoText"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         android:layout_marginTop="180dp"/>
 
     <TextView
-        android:id="@+id/logoText"
+
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="EventHub"
@@ -30,7 +30,7 @@
         android:layout_marginTop="16dp"/>
 
     <LinearLayout
-        android:id="@+id/buttonContinue"
+        android:id="@+id/btn_wellcome_buttonContinue"
         android:layout_width="280dp"
         android:layout_height="55dp"
         android:orientation="horizontal"
@@ -51,8 +51,9 @@
 
         <ImageView
             android:id="@+id/iconContinueArrow"
-            android:layout_width="22dp"
-            android:layout_height="22dp"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:src="@drawable/arrow"
             android:layout_marginStart="10dp" />
     </LinearLayout>
 

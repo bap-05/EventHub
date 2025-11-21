@@ -12,11 +12,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.example.eventhub.Model.AuthDemoData;
+import androidx.fragment.app.Fragment;
 import com.example.eventhub.R;
+import com.example.eventhub.View.MainActivity;
 
-public class ResetPasswordFragment extends BaseAuthFragment {
+public class ResetPasswordFragment extends Fragment {
 
     private static final String ARG_EMAIL = "arg_email";
     private static final String ARG_OTP = "arg_otp";
@@ -56,10 +56,7 @@ public class ResetPasswordFragment extends BaseAuthFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(otp)) {
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
-            return;
-        }
+
 
         newPasswordInput = view.findViewById(R.id.newPass);
         confirmPasswordInput = view.findViewById(R.id.confirmPass);
@@ -78,23 +75,19 @@ public class ResetPasswordFragment extends BaseAuthFragment {
             Toast.makeText(requireContext(), "Vui long nhap du 2 truong mat khau.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (newPassword.length() < 6) {
-            Toast.makeText(requireContext(), "Mat khau can it nhat 6 ky tu.", Toast.LENGTH_SHORT).show();
-            return;
-        }
+//        if (newPassword.length() < 6) {
+//            Toast.makeText(requireContext(), "Mat khau can it nhat 6 ky tu.", Toast.LENGTH_SHORT).show();
+//            return;
+//        }
         if (!newPassword.equals(confirmPassword)) {
             Toast.makeText(requireContext(), "Mat khau khong khop.", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (!AuthDemoData.matchesEmail(email) || !AuthDemoData.OTP_CODE.equals(otp)) {
-            Toast.makeText(requireContext(), "Khong the xac thuc yeu cau dat lai.", Toast.LENGTH_SHORT).show();
-            return;
-        }
 
-        AuthDemoData.updatePassword(requireContext(), newPassword);
+
         updateRememberedPassword(newPassword);
-        getAuthNavigator().showSuccess();
+        ((MainActivity)requireActivity()).addFragment(new SuccessFragment());
     }
 
     private void updateRememberedPassword(String newPassword) {

@@ -2,21 +2,23 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="60dp"
+    android:layout_height="70dp"
     tools:context=".View.Fragment.FooterFragment">
 
     <LinearLayout
         android:background="@color/white"
         android:layout_width="match_parent"
-        android:layout_height="60dp">
+        android:paddingBottom="10dp"
+        android:layout_height="70dp">
         <ImageButton
+            android:id="@+id/btn_footer_home"
             android:background="@android:color/transparent"
             android:layout_width="0dp"
             android:layout_weight="1"
-            android:scaleType="fitCenter"
+            android:scaleType="center"
             android:layout_gravity="center_vertical"
             android:layout_height="40dp"
-            android:src="@drawable/house"/>
+            android:src="@drawable/home"/>
         <ImageButton
             android:id="@+id/btn_notification"
             android:background="@android:color/transparent"
@@ -27,6 +29,7 @@
             android:layout_height="40dp"
             android:src="@drawable/bell"/>
         <ImageButton
+            android:id="@+id/btn_footer_setting"
             android:background="@android:color/transparent"
             android:layout_width="0dp"
             android:layout_weight="1"

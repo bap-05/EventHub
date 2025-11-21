@@ -1,5 +1,6 @@
 package com.example.eventhub.View.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -10,25 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.example.eventhub.Model.AuthDemoData;
 import com.example.eventhub.R;
+import com.example.eventhub.View.MainActivity;
 
 
 import java.util.Locale;
 
-public class ForgotPasswordFragment extends BaseAuthFragment {
+public class ForgotPasswordFragment extends Fragment {
 
     private EditText emailInput;
     private Button sendOtpButton;
+    private ImageView btn_back;
 
-    public static ForgotPasswordFragment newInstance() {
-        return new ForgotPasswordFragment();
-    }
 
     @Nullable
     @Override
@@ -37,17 +38,19 @@ public class ForgotPasswordFragment extends BaseAuthFragment {
         return inflater.inflate(R.layout.forgot_password, container, false);
     }
 
+    @SuppressLint("WrongViewCast")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         emailInput = view.findViewById(R.id.emailInput);
         sendOtpButton = view.findViewById(R.id.btnSendOtp);
+        btn_back = view.findViewById(R.id.backBtn);
+        btn_back.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
+        sendOtpButton.setOnClickListener(v ->{
 
-        prefillDemoEmail();
+            ((MainActivity) requireActivity()).addFragment(new OtpVerifyFragment());
 
-        view.findViewById(R.id.backBtn)
-                .setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
-
+        });
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
             @Override public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -56,16 +59,10 @@ public class ForgotPasswordFragment extends BaseAuthFragment {
             }
         });
 
-        sendOtpButton.setOnClickListener(v -> sendOtp());
+
         toggleButtonState();
     }
 
-    private void prefillDemoEmail() {
-        if (TextUtils.isEmpty(emailInput.getText())) {
-            emailInput.setText(AuthDemoData.USER_EMAIL);
-            emailInput.setSelection(emailInput.getText().length());
-        }
-    }
 
     private void toggleButtonState() {
         String email = emailInput.getText().toString().trim();
@@ -74,31 +71,7 @@ public class ForgotPasswordFragment extends BaseAuthFragment {
         sendOtpButton.setAlpha(enabled ? 1f : 0.5f);
     }
 
-    private void sendOtp() {
-        String email = emailInput.getText().toString().trim().toLowerCase(Locale.US);
-        if (TextUtils.isEmpty(email)) {
-            Toast.makeText(requireContext(), "Vui long nhap email.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(requireContext(), "Email khong hop le.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!AuthDemoData.matchesEmail(email)) {
-            Toast.makeText(requireContext(), "Chi ho tro tai khoan demo: " + AuthDemoData.USER_EMAIL, Toast.LENGTH_SHORT).show();
-            return;
-        }
-        sendOtpButton.setEnabled(false);
-        sendOtpButton.setAlpha(0.5f);
 
-        sendOtpButton.postDelayed(() -> {
-            restoreButton();
-            Toast.makeText(requireContext(),
-                    "OTP demo (" + AuthDemoData.OTP_CODE + ") da gui toi " + email,
-                    Toast.LENGTH_SHORT).show();
-            getAuthNavigator().showOtpVerify(email);
-        }, 400);
-    }
 
     private void restoreButton() {
         sendOtpButton.setEnabled(true);

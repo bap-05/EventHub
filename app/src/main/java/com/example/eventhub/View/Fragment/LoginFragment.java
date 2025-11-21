@@ -16,15 +16,13 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-
-import com.example.eventhub.Model.AuthDemoData;
+import androidx.fragment.app.Fragment;
 import com.example.eventhub.R;
-import com.example.eventhub.SessionManager;
 import com.example.eventhub.View.MainActivity;
 
 import java.util.Locale;
 
-public class LoginFragment extends BaseAuthFragment {
+public class LoginFragment extends Fragment {
 
     static final String AUTH_PREFS = "eventhub_prefs";
     static final String KEY_REMEMBER = "remember";
@@ -37,15 +35,11 @@ public class LoginFragment extends BaseAuthFragment {
     private Switch rememberSwitch;
     private SharedPreferences preferences;
 
-    public static LoginFragment newInstance() {
-        return new LoginFragment();
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.login_activity, container, false);
+        return inflater.inflate(R.layout.fragment_login, container, false);
     }
 
     @Override
@@ -59,10 +53,23 @@ public class LoginFragment extends BaseAuthFragment {
 
         preferences = requireContext().getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
         populateSavedCredentials();
-        applyDemoDefaultsIfEmpty();
 
-        loginButton.setOnClickListener(v -> attemptLogin());
-        forgotPassword.setOnClickListener(v -> getAuthNavigator().showForgotPassword());
+
+        loginButton.setOnClickListener(v -> {
+//            if(emailInput.getText().toString().isEmpty() && passwordInput.getText().toString().isEmpty())
+//            {
+//                Toast.makeText(view.getContext(),"Vui lòng nhập đầy đủ thông tin",Toast.LENGTH_LONG).show();
+//            }
+//            else{
+                handleRememberState();
+                ((MainActivity)requireActivity()).frsave = new HomeFragment();
+                ((MainActivity)requireActivity()).addFragment(((MainActivity)requireActivity()).frsave );
+                ((MainActivity)requireActivity()).addFooter(new FooterFragment());
+//            }
+        });
+        forgotPassword.setOnClickListener(v -> {
+            ((MainActivity)requireActivity()).addFragment(new ForgotPasswordFragment());
+        });
     }
 
     private void populateSavedCredentials() {
@@ -73,42 +80,12 @@ public class LoginFragment extends BaseAuthFragment {
             passwordInput.setText(preferences.getString(KEY_PASSWORD, ""));
         }
     }
-
-    private void attemptLogin() {
-        String email = emailInput.getText().toString().trim().toLowerCase(Locale.US);
-        String password = passwordInput.getText().toString();
-
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password)) {
-            Toast.makeText(requireContext(), "Vui long nhap day du email va mat khau.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
-            Toast.makeText(requireContext(), "Email khong hop le.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!AuthDemoData.matchesCredentials(requireContext(), email, password)) {
-            Toast.makeText(requireContext(), "Sai tai khoan hoac mat khau demo.", Toast.LENGTH_SHORT).show();
-            return;
-        }
-
-        handleRememberState(email, password);
-        SessionManager.getInstance(requireContext()).saveUser(
-                AuthDemoData.USER_ID,
-                AuthDemoData.USER_EMAIL,
-                AuthDemoData.USER_NAME,
-                ""
-        );
-        Intent intent = new Intent(requireContext(), MainActivity.class);
-        startActivity(intent);
-        requireActivity().finish();
-    }
-
-    private void handleRememberState(String email, String password) {
+    private void handleRememberState() {
         SharedPreferences.Editor editor = preferences.edit();
         if (rememberSwitch.isChecked()) {
             editor.putBoolean(KEY_REMEMBER, true);
-            editor.putString(KEY_EMAIL, email);
-            editor.putString(KEY_PASSWORD, password);
+            editor.putString(KEY_EMAIL, emailInput.getText().toString().trim());
+            editor.putString(KEY_PASSWORD, passwordInput.getText().toString().trim());
         } else {
             editor.putBoolean(KEY_REMEMBER, false);
             editor.remove(KEY_EMAIL);
@@ -117,12 +94,5 @@ public class LoginFragment extends BaseAuthFragment {
         editor.apply();
     }
 
-    private void applyDemoDefaultsIfEmpty() {
-        if (TextUtils.isEmpty(emailInput.getText())) {
-            emailInput.setText(AuthDemoData.USER_EMAIL);
-        }
-        if (TextUtils.isEmpty(passwordInput.getText())) {
-            passwordInput.setText(AuthDemoData.getPassword(requireContext()));
-        }
-    }
+
 }

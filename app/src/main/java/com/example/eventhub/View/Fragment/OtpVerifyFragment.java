@@ -15,11 +15,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import com.example.eventhub.Model.AuthDemoData;
 import com.example.eventhub.R;
+import com.example.eventhub.View.MainActivity;
 
-public class OtpVerifyFragment extends BaseAuthFragment {
+public class OtpVerifyFragment extends Fragment {
 
     private static final String ARG_EMAIL = "arg_email";
     private static final int OTP_LENGTH = 6;
@@ -29,22 +30,8 @@ public class OtpVerifyFragment extends BaseAuthFragment {
     private Button verifyButton;
     private TextView resendCodeView;
 
-    public static OtpVerifyFragment newInstance(String email) {
-        OtpVerifyFragment fragment = new OtpVerifyFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_EMAIL, email);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        Bundle args = getArguments();
-        if (args != null) {
-            email = args.getString(ARG_EMAIL);
-        }
-    }
+
 
     @Nullable
     @Override
@@ -56,10 +43,7 @@ public class OtpVerifyFragment extends BaseAuthFragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        if (TextUtils.isEmpty(email)) {
-            requireActivity().getOnBackPressedDispatcher().onBackPressed();
-            return;
-        }
+
 
         view.findViewById(R.id.backBtn)
                 .setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
@@ -111,15 +95,15 @@ public class OtpVerifyFragment extends BaseAuthFragment {
 
     private void verifyOtpOnServer() {
         String code = collectOtp();
-        if (code.length() != OTP_LENGTH) {
+        if (code.length() != 6) {
             Toast.makeText(requireContext(), "Vui long nhap du " + OTP_LENGTH + " chu so.", Toast.LENGTH_SHORT).show();
             return;
         }
-        if (!AuthDemoData.OTP_CODE.equals(code)) {
+        if (!"000000".equals(code)) {
             Toast.makeText(requireContext(), "Ma OTP demo khong chinh xac.", Toast.LENGTH_SHORT).show();
             return;
         }
-        getAuthNavigator().showResetPassword(email, code);
+        ((MainActivity)requireActivity()).addFragment(new ResetPasswordFragment());
     }
 
     private void resendOtp() {
@@ -127,7 +111,7 @@ public class OtpVerifyFragment extends BaseAuthFragment {
         resendCodeView.postDelayed(() -> {
             setResendEnabled(true);
             Toast.makeText(requireContext(),
-                    "OTP demo (" + AuthDemoData.OTP_CODE + ") da gui lai toi " + email,
+                    "OTP demo (" + 000000 + ") da gui lai toi " + email,
                     Toast.LENGTH_SHORT).show();
         }, 800);
     }
