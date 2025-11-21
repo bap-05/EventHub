@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@drawable/custom_background_layer"
+    tools:context=".View.Fragment.SettingFragment">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginLeft="10dp"
+        android:orientation="horizontal">
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:src="@drawable/setting"/>
+        <TextView
+            android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cài đặt"
+            android:textSize="25dp"
+            android:layout_gravity="center_vertical"
+            android:textColor="@color/white"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:orientation="vertical"
+        android:background="@drawable/custom_layer_setting">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Cài đặt tài khoản"
+            android:layout_marginLeft="40dp"
+            android:textColor="#ADADAD"
+            android:layout_marginTop="30dp"
+            android:layout_marginBottom="30dp"
+            android:textSize="20dp"
+            />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cài đặt tài khoản"
+                android:layout_marginLeft="40dp"
+                android:textColor="#000000"
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"
+                app:trackTint="@color/switch_track_color"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackDecorationTint="@android:color/transparent"
+                />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Giao diện tối"
+                android:layout_marginLeft="40dp"
+                android:textColor="#000000"
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp"
+                />
+            <View
+                android:layout_width="0dp"
+                android:layout_height="1dp"
+                android:layout_weight="1"/>
+            <com.google.android.material.materialswitch.MaterialSwitch
+                android:layout_width="60dp"
+                android:layout_height="20dp"
+                android:layout_marginRight="20dp"
+                app:trackTint="@color/switch_track_color"
+                app:thumbTint="@color/switch_thumb_color"
+                app:trackDecorationTint="@android:color/transparent"
+                />
+        </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Thay đổi mật khẩu"
+                android:layout_marginLeft="40dp"
+                android:textColor="#000000"
+                android:layout_marginTop="10dp"
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp"
+                />
+
+        <View
+            android:layout_marginTop="50dp"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:background="#E4E4E4"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Ngoài ra"
+                android:layout_marginLeft="40dp"
+                android:textColor="#ADADAD"
+                android:layout_gravity="center_vertical"
+                android:textSize="20dp"
+                />
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Chính sách quyền riêng tư"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#000000"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Quy tắc trên nền tảng"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#000000"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dp"
+            />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Điều khoản sử dụng"
+            android:layout_marginLeft="40dp"
+            android:layout_marginTop="20dp"
+            android:textColor="#000000"
+            android:layout_gravity="center_vertical"
+            android:textSize="20dp"
+            />
+        <Button
+            android:id="@+id/btn_setting_dx"
+            android:layout_width="300dp"
+            android:layout_height="50dp"
+            android:text="Đăng xuất"
+            android:textSize="18dp"
+            android:textColor="@color/white"
+            android:layout_marginTop="100dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/bg_button_blue"
+            app:backgroundTint="@null"/>
+    </LinearLayout>
+</LinearLayout>

@@ -15,9 +15,10 @@ import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
 
 
-public class FooterFragment extends Fragment {
-    private ImageButton btnNotification;
+public class FooterFragment extends Fragment implements View.OnClickListener{
+    private ImageButton btnNotification, btn_home, btn_setting;
     private ImageButton btnUser;
+    public static int id = 0;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -32,20 +33,53 @@ public class FooterFragment extends Fragment {
 
         btnNotification = view.findViewById(R.id.btn_notification);
         btnUser = view.findViewById(R.id.btn_user);
+        btn_home = view.findViewById(R.id.btn_footer_home);
+        btn_setting = view.findViewById(R.id.btn_footer_setting);
+        btnUser.setOnClickListener(this);
+        btnNotification.setOnClickListener(this);
+        btn_home.setOnClickListener(this);
+        btn_setting.setOnClickListener(this);
+        id = R.id.btn_footer_home;
+    }
 
-        if (btnNotification != null) {
-            btnNotification.setOnClickListener(v -> {
-                if (getActivity() instanceof MainActivity) {
-                    ((MainActivity) getActivity()).addFragment(new ThongBaoFragment(), true);
-                }
-            });
+    @Override
+    public void onClick(View v) {
+        if(v.getId()==R.id.btn_notification && id!= R.id.btn_notification )
+        {
+            ((MainActivity)requireActivity()).addFragment(new ThongBaoFragment());
+            btnNotification.setImageResource(R.drawable.bell1);
+            btn_home.setImageResource(R.drawable.home1);
+            btn_setting.setImageResource(R.drawable.settings);
+            btnUser.setImageResource(R.drawable.user);
+            id =R.id.btn_notification;
         }
-        if(btnUser !=null){
-            btnUser.setOnClickListener( v ->{
-                if(getActivity() instanceof  MainActivity){
-                    ((MainActivity) getActivity()).addFragment(new ProfileFragment(),true);
-                }
-            });
+        if(v.getId()==R.id.btn_user && id != R.id.btn_user)
+        {
+            ((MainActivity)requireActivity()).addFragment(new ProfileFragment());
+            btnNotification.setImageResource(R.drawable.bell);
+            btn_home.setImageResource(R.drawable.home1);
+            btn_setting.setImageResource(R.drawable.settings);
+            btnUser.setImageResource(R.drawable.user2);
+            id =R.id.btn_user;
+        }
+        if(v.getId()==R.id.btn_footer_home && id != R.id.btn_footer_home)
+        {
+            ((MainActivity)requireActivity()).addFragment(new HomeFragment());
+            btnNotification.setImageResource(R.drawable.bell);
+            btn_home.setImageResource(R.drawable.home);
+            btn_setting.setImageResource(R.drawable.settings);
+            btnUser.setImageResource(R.drawable.user);
+            id =R.id.btn_footer_home;
+        }
+        if(v.getId()==R.id.btn_footer_setting && id != R.id.btn_footer_setting)
+        {
+            ((MainActivity)requireActivity()).addFragment(new SettingFragment());
+            btnNotification.setImageResource(R.drawable.bell);
+            btn_home.setImageResource(R.drawable.home1);
+            btn_setting.setImageResource(R.drawable.settings1);
+            btnUser.setImageResource(R.drawable.user);
+            id =R.id.btn_footer_setting;
         }
     }
+
 }

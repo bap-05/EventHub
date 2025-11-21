@@ -1,5 +1,6 @@
 package com.example.eventhub.View.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -18,6 +19,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.example.eventhub.Adapter.DanhMucAdapter;
 import com.example.eventhub.Adapter.SuKienAdapter;
@@ -37,13 +39,20 @@ public class HomeFragment extends Fragment {
     private SuKienAdapter suKienAdapter;
     private RecyclerView rcv_danhmuc,rcv_sapdienra,rcv_saptoi,rcv_danhchobn;
     private DanhMucAdapter danhMucAdapter;
+    private ImageView img_search;
     private SuKienSapToiAdapter suKienSapToiAdapter;
     private SuKienSapToiAdapter suKienDanhchobnAdapter;
+    @SuppressLint("MissingInflatedId")
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v =inflater.inflate(R.layout.fragment_home, container, false);
+        img_search = v.findViewById(R.id.img_home_search);
+        img_search.setOnClickListener(view ->{
+            ((MainActivity)requireActivity()).addFragment(new SearchFragment());
+            FooterFragment.id = 0;
+        });
         adddanhMuc(v);
         addSKsapDienRa(v);
         addSKSapToi(v);
@@ -60,7 +69,7 @@ public class HomeFragment extends Fragment {
         rcv_danhchobn.setAdapter(suKienDanhchobnAdapter);
         suKienDanhchobnAdapter.setListener(sk -> {
             skvm.setSk(sk);
-            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment(),true);
+            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
         });
 
     }
@@ -75,7 +84,7 @@ public class HomeFragment extends Fragment {
        rcv_saptoi.setAdapter(suKienSapToiAdapter);
         suKienSapToiAdapter.setListener(sk -> {
             skvm.setSk(sk);
-            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment(),true);
+            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
         });
     }
 
@@ -99,6 +108,10 @@ public class HomeFragment extends Fragment {
         LinearLayoutManager lm = new LinearLayoutManager(v.getContext(),LinearLayoutManager.HORIZONTAL,false);
         rcv_danhmuc.setLayoutManager(lm);
         rcv_danhmuc.setAdapter(danhMucAdapter);
+        danhMucAdapter.setListener(dmuc->{
+            ((MainActivity)requireActivity()).addFragment(new ChiTietDanhMucFragment());
+            FooterFragment.id =0;
+        });
     }
 
 

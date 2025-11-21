@@ -4,6 +4,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/white"
     android:padding="30dp">
 
     <ImageView
@@ -22,6 +23,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="Thành công"
+        android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
@@ -47,7 +49,7 @@
         android:layout_height="55dp"
         android:layout_marginTop="34dp"
         android:background="@drawable/bg_button_blue"
-        android:text="Tuyệt vời!"
+        android:text="Tiếp tục"
         app:backgroundTint="@null"
         android:textColor="@android:color/white"
         android:textSize="16sp"
