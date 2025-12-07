@@ -22,9 +22,7 @@ public class SuKien {
         return TenSK;
     }
 
-    public void setTenSK(String tenSK) {
-        TenSK = tenSK;
-    }
+    public void setTenSK(String tenSK) { TenSK = tenSK; }
 
     public String getPoster() {
         return Poster;

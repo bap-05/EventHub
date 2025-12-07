@@ -142,7 +142,7 @@
         app:srcCompat="@drawable/ic_cnx" />
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/txt_sport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Thể thao"
@@ -155,7 +155,7 @@
         app:layout_constraintTop_toBottomOf="@+id/sport" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/txt_music"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Âm nhạc"
@@ -168,7 +168,7 @@
         app:layout_constraintTop_toBottomOf="@+id/music" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/txt_cnx"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Chủ nhật xanh"
