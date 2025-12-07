@@ -5,8 +5,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity; // <-- Thêm import này
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 
-import com.example.eventhub.View.Fragment.DaThamGiaFragment;
-import com.example.eventhub.View.Fragment.SapThamGiaFragment;
+import com.example.eventhub.View.Fragment.KhachHang.DaThamGiaFragment;
+import com.example.eventhub.View.Fragment.KhachHang.SapThamGiaFragment;
 //alo
 public class ProfileViewPager2Adapter extends FragmentStateAdapter {
 

@@ -1,4 +1,4 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.os.Bundle;
 
@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.example.eventhub.R;
 
-import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 import com.squareup.picasso.Picasso;
 

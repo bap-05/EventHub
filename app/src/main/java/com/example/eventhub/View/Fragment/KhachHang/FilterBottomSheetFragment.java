@@ -1,4 +1,4 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.graphics.Color;
 import android.os.Bundle;

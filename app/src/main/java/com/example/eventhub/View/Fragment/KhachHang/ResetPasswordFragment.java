@@ -1,4 +1,4 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;

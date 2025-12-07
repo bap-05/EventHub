@@ -83,6 +83,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"
-        android:name="com.example.eventhub.View.Fragment.FooterFragment"/>
+        android:name="com.example.eventhub.View.Fragment.KhachHang.FooterFragment"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

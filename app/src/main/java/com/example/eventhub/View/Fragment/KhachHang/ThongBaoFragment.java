@@ -1,4 +1,4 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -9,12 +9,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 
 import com.example.eventhub.Adapter.ThongBaoAdapter;
 import com.example.eventhub.Model.ThongBao;
 import com.example.eventhub.R;
-import com.example.eventhub.View.MainActivity;
 
 import java.util.ArrayList;
 import java.util.List;

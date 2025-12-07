@@ -1,8 +1,6 @@
 package com.example.eventhub.View;
 
-import androidx.core.content.ContextCompat;
 import androidx.core.view.WindowCompat;
-import androidx.core.view.WindowInsetsControllerCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -12,17 +10,12 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Window;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.eventhub.R;
-import com.example.eventhub.View.Fragment.FooterFragment;
-import com.example.eventhub.View.Fragment.HomeFragment;
-import com.example.eventhub.View.Fragment.LoginFragment;
-import com.example.eventhub.View.Fragment.WellComeFragment;
+import com.example.eventhub.View.Fragment.KhachHang.FooterFragment;
+import com.example.eventhub.View.Fragment.KhachHang.HomeFragment;
+import com.example.eventhub.View.Fragment.KhachHang.WellComeFragment;
 
 public class
 MainActivity extends AppCompatActivity {
