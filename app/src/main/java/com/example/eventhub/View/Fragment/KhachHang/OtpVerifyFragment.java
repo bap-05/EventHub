@@ -1,8 +1,7 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.os.Bundle;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;

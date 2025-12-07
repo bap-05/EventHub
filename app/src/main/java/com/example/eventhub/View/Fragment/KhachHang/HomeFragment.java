@@ -1,4 +1,4 @@
-package com.example.eventhub.View.Fragment;
+package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.annotation.SuppressLint;
 import android.os.Bundle;
@@ -25,7 +25,6 @@ import com.example.eventhub.Adapter.DanhMucAdapter;
 import com.example.eventhub.Adapter.SuKienAdapter;
 import com.example.eventhub.Model.DanhMuc;
 import com.example.eventhub.R;
-import com.example.eventhub.ViewModel.SuKienViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +50,7 @@ public class HomeFragment extends Fragment {
         img_search = v.findViewById(R.id.img_home_search);
         img_search.setOnClickListener(view ->{
             ((MainActivity)requireActivity()).addFragment(new SearchFragment());
-            FooterFragment.id = 0;
+
         });
         adddanhMuc(v);
         addSKsapDienRa(v);
@@ -71,7 +70,6 @@ public class HomeFragment extends Fragment {
             skvm.setSk(sk);
             ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
         });
-
     }
 
     private void addSKSapToi(View v) {
@@ -110,7 +108,6 @@ public class HomeFragment extends Fragment {
         rcv_danhmuc.setAdapter(danhMucAdapter);
         danhMucAdapter.setListener(dmuc->{
             ((MainActivity)requireActivity()).addFragment(new ChiTietDanhMucFragment());
-            FooterFragment.id =0;
         });
     }
 

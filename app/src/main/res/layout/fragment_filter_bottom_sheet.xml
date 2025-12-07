@@ -24,46 +24,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-<!--    <ToggleButton-->
-<!--        android:id="@+id/sport"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-<!--        android:textOn=""-->
-<!--        android:textOff=""-->
-
-<!--        android:layout_marginTop="50dp"-->
-
-<!--        app:layout_constraintStart_toStartOf="@+id/tv_filter_title"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_filter_title" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/music"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-
-<!--        android:layout_marginLeft="40dp"-->
-
-<!--        app:layout_constraintBottom_toBottomOf="@+id/sport"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/sport"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/sport" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/cnx"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-
-<!--        android:layout_marginLeft="40dp"-->
-
-<!--        app:layout_constraintBottom_toBottomOf="@+id/music"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/music"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/music" />-->
-
     <ToggleButton
         android:id="@+id/sport"
         android:layout_width="65dp"
