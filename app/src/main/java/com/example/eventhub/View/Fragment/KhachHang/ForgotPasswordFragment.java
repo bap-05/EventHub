@@ -15,6 +15,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
@@ -42,9 +43,7 @@ public class ForgotPasswordFragment extends Fragment {
         btn_back = view.findViewById(R.id.backBtn);
         btn_back.setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
         sendOtpButton.setOnClickListener(v ->{
-
-            ((MainActivity) requireActivity()).addFragment(new OtpVerifyFragment());
-
+            Navigation.findNavController(v).navigate(R.id.otpVerifyFragment);
         });
         emailInput.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int start, int count, int after) {}

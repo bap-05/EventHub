@@ -13,6 +13,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
 
@@ -64,10 +66,10 @@ public class ResetPasswordFragment extends Fragment {
 
         view.findViewById(R.id.backBtn)
                 .setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
-        updateButton.setOnClickListener(v -> updatePassword());
+        updateButton.setOnClickListener(v -> updatePassword(v));
     }
 
-    private void updatePassword() {
+    private void updatePassword(View v) {
         String newPassword = newPasswordInput.getText().toString().trim();
         String confirmPassword = confirmPasswordInput.getText().toString().trim();
 
@@ -87,7 +89,7 @@ public class ResetPasswordFragment extends Fragment {
 
 
         updateRememberedPassword(newPassword);
-        ((MainActivity)requireActivity()).addFragment(new SuccessFragment());
+        Navigation.findNavController(v).navigate(R.id.successFragment);
     }
 
     private void updateRememberedPassword(String newPassword) {

@@ -6,20 +6,25 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.eventhub.R;
-import com.example.eventhub.View.Fragment.KhachHang.FooterFragment;
-import com.example.eventhub.View.Fragment.KhachHang.HomeFragment;
-import com.example.eventhub.View.Fragment.KhachHang.WellComeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 public class
 MainActivity extends AppCompatActivity {
     public Fragment frsave;
+    public BottomNavigationView bottomNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -31,38 +36,39 @@ MainActivity extends AppCompatActivity {
         window.setNavigationBarColor(Color.TRANSPARENT);
 
         setContentView(R.layout.activity_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
 
+// 2. Tìm BottomNavigationView
+        bottomNav = findViewById(R.id.bottom_navigation);
+        int mauCuaToi = android.graphics.Color.parseColor("#FFFFFFFF");
+        bottomNav.setItemActiveIndicatorColor(ColorStateList.valueOf(mauCuaToi));
+// 3. QUAN TRỌNG: Liên kết chúng lại với nhau
+        NavigationUI.setupWithNavController(bottomNav, navController);
         SharedPreferences preferences = getSharedPreferences("eventhub_prefs",MODE_PRIVATE);
         String email = preferences.getString("email",null);
-        if(email !=null)
-        {
-            frsave = new HomeFragment();
-            addFragment(frsave);
-            addFooter(new FooterFragment());
+        if (email != null) {
+            // NavOptions giúp xóa lịch sử để khi bấm Back không quay lại màn hình Welcome
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.wellComeFragment, true)
+                    .build();
+
+            // Lưu ý: R.id.homeFragment phải là ID của fragment Home trong nav_graph.xml
+            navController.navigate(R.id.nav_home, null, navOptions);
         }
-        else {
-            frsave = new WellComeFragment();
-            addFragment(frsave);
-        }
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.wellComeFragment
+                    || destination.getId() == R.id.loginFragment || destination.getId() == R.id.forgotPasswordFragment
+                    || destination.getId() == R.id.otpVerifyFragment || destination.getId() == R.id.resetPasswordFragment  // Thêm ID màn hình đăng nhập của bạn vào đây
+                    || destination.getId() == R.id.successFragment) {
+                bottomNav.setVisibility(View.GONE);
+            } else {
+                bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
     }
 
-    public void addFragment(Fragment fr)
-    {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_body,fr);
-        if(fr.getClass().equals(frsave.getClass())){
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-        }
-        else
-            transaction.addToBackStack(null);
-        transaction.commit();
-    }
-    public void addFooter(Fragment fr)
-    {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_footer,fr,"Footer");
-        transaction.commit();
-    }
 
 
 }

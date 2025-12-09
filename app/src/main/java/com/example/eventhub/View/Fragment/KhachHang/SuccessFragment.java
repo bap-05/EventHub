@@ -9,6 +9,7 @@ import android.widget.Button;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
@@ -28,8 +29,7 @@ public class SuccessFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         Button btn_tieptuc = view.findViewById(R.id.btnBackLogin);
         btn_tieptuc.setOnClickListener(v->{
-            ((MainActivity)requireActivity()).frsave = new WellComeFragment();
-            ((MainActivity)requireActivity()).addFragment(new LoginFragment() );
+            Navigation.findNavController(v).navigate(R.id.loginFragment);
         });
     }
 }

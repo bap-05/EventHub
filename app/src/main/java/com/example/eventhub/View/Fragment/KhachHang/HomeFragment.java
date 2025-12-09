@@ -12,6 +12,7 @@ import com.example.eventhub.Model.SuKienSapToi;
 import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -49,7 +50,7 @@ public class HomeFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_home, container, false);
         img_search = v.findViewById(R.id.img_home_search);
         img_search.setOnClickListener(view ->{
-            ((MainActivity)requireActivity()).addFragment(new SearchFragment());
+            Navigation.findNavController(v).navigate(R.id.searchFragment);
 
         });
         adddanhMuc(v);
@@ -68,7 +69,7 @@ public class HomeFragment extends Fragment {
         rcv_danhchobn.setAdapter(suKienDanhchobnAdapter);
         suKienDanhchobnAdapter.setListener(sk -> {
             skvm.setSk(sk);
-            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
+            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
         });
     }
 
@@ -82,7 +83,7 @@ public class HomeFragment extends Fragment {
        rcv_saptoi.setAdapter(suKienSapToiAdapter);
         suKienSapToiAdapter.setListener(sk -> {
             skvm.setSk(sk);
-            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
+            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
         });
     }
 
@@ -107,7 +108,7 @@ public class HomeFragment extends Fragment {
         rcv_danhmuc.setLayoutManager(lm);
         rcv_danhmuc.setAdapter(danhMucAdapter);
         danhMucAdapter.setListener(dmuc->{
-            ((MainActivity)requireActivity()).addFragment(new ChiTietDanhMucFragment());
+            Navigation.findNavController(v).navigate(R.id.chiTietDanhMucFragment2);
         });
     }
 

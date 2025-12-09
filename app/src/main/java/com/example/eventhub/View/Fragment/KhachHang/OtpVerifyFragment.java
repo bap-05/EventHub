@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
@@ -102,7 +103,7 @@ public class OtpVerifyFragment extends Fragment {
             Toast.makeText(requireContext(), "Ma OTP demo khong chinh xac.", Toast.LENGTH_SHORT).show();
             return;
         }
-        ((MainActivity)requireActivity()).addFragment(new ResetPasswordFragment());
+        Navigation.findNavController(getView()).navigate(R.id.resetPasswordFragment);
     }
 
     private void resendOtp() {
