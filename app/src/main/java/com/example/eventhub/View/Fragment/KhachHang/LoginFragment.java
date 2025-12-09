@@ -13,6 +13,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
+
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
 
@@ -56,13 +58,11 @@ public class LoginFragment extends Fragment {
 //            }
 //            else{
                 handleRememberState();
-                ((MainActivity)requireActivity()).frsave = new HomeFragment();
-                ((MainActivity)requireActivity()).addFragment(((MainActivity)requireActivity()).frsave );
-                ((MainActivity)requireActivity()).addFooter(new FooterFragment());
+                Navigation.findNavController(v).navigate(R.id.nav_home);
 //            }
         });
         forgotPassword.setOnClickListener(v -> {
-            ((MainActivity)requireActivity()).addFragment(new ForgotPasswordFragment());
+            Navigation.findNavController(v).navigate(R.id.forgotPasswordFragment);
         });
     }
 

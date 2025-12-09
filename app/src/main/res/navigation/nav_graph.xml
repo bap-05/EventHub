@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/wellComeFragment">
+
+    <fragment
+        android:id="@+id/wellComeFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.WellComeFragment"
+        android:label="WellComeFragment"
+        tools:layout="@layout/fragment_well_come"
+        />
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.LoginFragment"
+        android:label="LoginFragment"
+        tools:layout="@layout/fragment_login"
+        />
+    <fragment
+        android:id="@+id/forgotPasswordFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ForgotPasswordFragment"
+        android:label="ForgotPasswordFragment"
+        tools:layout="@layout/forgot_password"/>
+    <fragment
+        android:id="@+id/otpVerifyFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.OtpVerifyFragment"
+        android:label="OtpVerifyFragment"
+        tools:layout="@layout/otp_verify"/>
+    <fragment
+        android:id="@+id/resetPasswordFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ResetPasswordFragment"
+        android:label="ResetPasswordFragment"
+        tools:layout="@layout/reset_password"/>
+    <fragment
+        android:id="@+id/successFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.SuccessFragment"
+        android:label="SuccessFragment"
+        tools:layout="@layout/success_update"/>
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/nav_tb"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ThongBaoFragment"
+        android:label="fragment_thong_bao"
+        tools:layout="@layout/fragment_thong_bao" />
+    <fragment
+        android:id="@+id/nav_setting"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.SettingFragment"
+        android:label="fragment_setting"
+        tools:layout="@layout/fragment_setting" >
+
+    </fragment>
+    <fragment
+        android:id="@+id/nav_profile"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ProfileFragment"
+        android:label="fragment_profile"
+        tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/chiTietSuKienFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ChiTietSuKienFragment"
+        android:label="fragment_chi_tiet_su_kien"
+        tools:layout="@layout/fragment_chi_tiet_su_kien" />
+    <fragment
+        android:id="@+id/chiTietDanhMucFragment2"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.ChiTietDanhMucFragment"
+        android:label="fragment_chi_tiet_danh_muc"
+        tools:layout="@layout/fragment_chi_tiet_danh_muc" />
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.SearchFragment"
+        android:label="SearchFragment"
+        tools:layout="@layout/fragment_search"
+        />
+</navigation>

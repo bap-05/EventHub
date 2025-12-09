@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,7 @@ public class WellComeFragment extends Fragment {
         View v =inflater.inflate(R.layout.fragment_well_come, container, false);
         btn_next = v.findViewById(R.id.btn_wellcome_buttonContinue);
         btn_next.setOnClickListener(view->{
-            ((MainActivity)requireActivity()).addFragment(new LoginFragment());
+            Navigation.findNavController(v).navigate(R.id.loginFragment);
         });
         return v;
     }

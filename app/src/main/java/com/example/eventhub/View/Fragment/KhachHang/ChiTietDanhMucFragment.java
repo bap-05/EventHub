@@ -3,6 +3,7 @@ package com.example.eventhub.View.Fragment.KhachHang;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,7 +45,7 @@ public class ChiTietDanhMucFragment extends Fragment {
         img_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)requireActivity()).addFragment(new SearchFragment());
+                Navigation.findNavController(v).navigate(R.id.searchFragment);
             }
         });
         return v;
@@ -58,7 +59,7 @@ public class ChiTietDanhMucFragment extends Fragment {
         rcv_sukien.setAdapter(suKienSapToiAdapter);
         suKienSapToiAdapter.setListener(sk -> {
             suKienViewModel.setSk(sk);
-            ((MainActivity)requireActivity()).addFragment(new ChiTietSuKienFragment());
+            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
         });
     }
 

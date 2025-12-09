@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -31,15 +32,7 @@ public class SettingFragment extends Fragment {
             editor.remove("email");
             editor.remove("password");
             editor.apply();
-            FooterFragment footer = (FooterFragment) requireActivity().getSupportFragmentManager().findFragmentByTag("Footer");
-            if(footer!=null)
-            {
-                FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-                transaction.remove(footer);
-                transaction.commit();
-            }
-            ((MainActivity)requireActivity()).frsave = new WellComeFragment();
-            ((MainActivity)requireActivity()).addFragment(((MainActivity)requireActivity()).frsave);
+            Navigation.findNavController(v).navigate(R.id.loginFragment);
         });
         return v;
     }
