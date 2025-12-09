@@ -12,15 +12,15 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eventhub.Model.SuKienSapToi;
 import com.bumptech.glide.Glide;
+import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
-    private List<SuKienSapToi> eventList;
-    public EventAdapter(List<SuKienSapToi>eventList){
+    private List<SuKien> eventList;
+    public EventAdapter(List<SuKien>eventList){
         this.eventList=eventList;
     }
 
@@ -33,10 +33,10 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
 
     @Override
     public void onBindViewHolder(@NonNull EventAdapter.EventViewHolder holder, int position) {
-        SuKienSapToi event=eventList.get(position);
+        SuKien event=eventList.get(position);
         holder.txtTitle.setText(event.getTenSK());
-        holder.txtDateTime.setText(event.getThoiGian());
-        holder.txtLocation.setText(event.getCoSo());
+        holder.txtDateTime.setText(event.getThoiGianBatDau());
+        holder.txtLocation.setText(event.getCoso());
         Glide.with(holder.itemView.getContext())
                 .load(event.getPoster())
                 .placeholder(R.drawable.avatar)

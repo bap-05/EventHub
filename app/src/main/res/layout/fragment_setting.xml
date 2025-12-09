@@ -52,7 +52,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Cài đặt tài khoản"
+                android:text="Thông Báo"
                 android:layout_marginLeft="40dp"
                 android:textColor="#000000"
                 android:layout_gravity="center_vertical"

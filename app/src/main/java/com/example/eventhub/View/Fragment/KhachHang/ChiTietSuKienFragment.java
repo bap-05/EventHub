@@ -18,7 +18,7 @@ import com.squareup.picasso.Picasso;
 
 
 public class ChiTietSuKienFragment extends Fragment implements View.OnClickListener {
-    private TextView txt_noidung, txt_thoigian, txt_trangthai, txt_diem, txt_mota, txt_diadiem;
+    private TextView txt_noidung, txt_thoigian, txt_trangthai, txt_diem, txt_mota, txt_diadiem, txt_soluong;
     private ImageView img_poster;
     private ImageButton btn_ql;
 
@@ -30,11 +30,12 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
         View v = inflater.inflate(R.layout.fragment_chi_tiet_su_kien, container, false);
         addView(v);
         SuKienViewModel.getSk().observe(getViewLifecycleOwner(), suKienSapToi -> {
-            txt_thoigian.setText(suKienSapToi.getThoiGian());
+            txt_thoigian.setText(suKienSapToi.getThoiGianBatDau());
             txt_diadiem.setText(suKienSapToi.getDiaDiem());
             txt_noidung.setText(suKienSapToi.getTenSK());
             txt_mota.setText(suKienSapToi.getMoTa());
-            txt_diem.setText(suKienSapToi.getDiemHD()+" điểm hoạt động");
+            txt_diem.setText(suKienSapToi.getDiemCong()+" điểm hoạt động");
+            txt_soluong.setText("Số lương tham gia: "+suKienSapToi.getSoLuongDaDangKy()+"/"+suKienSapToi.getSoLuongGioiHan());
             txt_trangthai.setText(suKienSapToi.getTrangThai());
             Picasso.get().load(suKienSapToi.getPoster()).into(img_poster);
         });
@@ -51,6 +52,7 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
         txt_thoigian = v.findViewById(R.id.txt_ct_thoigian);
         img_poster = v.findViewById(R.id.img_ct_poster);
         btn_ql = v.findViewById(R.id.btn_ct_ql);
+        txt_soluong = v.findViewById(R.id.txt_ct_soluongthamgia);
     }
 
     @Override

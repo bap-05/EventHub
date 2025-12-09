@@ -3,27 +3,24 @@ package com.example.eventhub.Model;
 import java.util.Date;
 
 public class SuKien {
-    String TenSK, Poster,TrangThai, ThoiGian;
-    int AVT1, AVT2, AVT3, AVT4;
+    String TenSK, TrangThai, ThoiGianBatDau,ThoiGianKetThuc, CoSo, DiaDiem, DiemCong, MoTa,Poster;
+    String SoLuongGioiHan,SoLuongDaDangKy,NguoiDang,NgayTao,AVT1, AVT2, AVT3, AVT4;
+    String MaSK;
 
-    public SuKien(String tenSK, String poster, String trangThai, int AVT1, int AVT2, int AVT3, int AVT4, String thoiGian) {
+    public SuKien( String maSK, String tenSK, String trangThai, String thoiGianBatDau, String thoiGianKetThuc, String coso, String diaDiem, String diemCong, String moTa, String soLuongGioiHan, String soLuongDaDangKy, String nguoiDang, String ngayTao) {
         TenSK = tenSK;
-        Poster = poster;
         TrangThai = trangThai;
-        this.AVT1 = AVT1;
-        this.AVT2 = AVT2;
-        this.AVT3 = AVT3;
-        this.AVT4 = AVT4;
-        ThoiGian = thoiGian;
-
-    }
-
-    public String getTenSK() {
-        return TenSK;
-    }
-
-    public void setTenSK(String tenSK) {
-        TenSK = tenSK;
+        ThoiGianBatDau = thoiGianBatDau;
+        ThoiGianKetThuc = thoiGianKetThuc;
+        CoSo = coso;
+        DiaDiem = diaDiem;
+        DiemCong = diemCong;
+        MoTa = moTa;
+        SoLuongGioiHan = soLuongGioiHan;
+        SoLuongDaDangKy = soLuongDaDangKy;
+        NguoiDang = nguoiDang;
+        NgayTao = ngayTao;
+        MaSK = maSK;
     }
 
     public String getPoster() {
@@ -34,6 +31,14 @@ public class SuKien {
         Poster = poster;
     }
 
+    public String getTenSK() {
+        return TenSK;
+    }
+
+    public void setTenSK(String tenSK) {
+        TenSK = tenSK;
+    }
+
     public String getTrangThai() {
         return TrangThai;
     }
@@ -42,45 +47,123 @@ public class SuKien {
         TrangThai = trangThai;
     }
 
-    public int getAVT1() {
+    public String getThoiGianBatDau() {
+        return ThoiGianBatDau;
+    }
+
+    public void setThoiGianBatDau(String thoiGianBatDau) {
+        ThoiGianBatDau = thoiGianBatDau;
+    }
+
+    public String getThoiGianKetThuc() {
+        return ThoiGianKetThuc;
+    }
+
+    public void setThoiGianKetThuc(String thoiGianKetThuc) {
+        ThoiGianKetThuc = thoiGianKetThuc;
+    }
+
+    public String getCoso() {
+        return CoSo;
+    }
+
+    public void setCoso(String coso) {
+        CoSo = coso;
+    }
+
+    public String getDiaDiem() {
+        return DiaDiem;
+    }
+
+    public void setDiaDiem(String diaDiem) {
+        DiaDiem = diaDiem;
+    }
+
+    public String getDiemCong() {
+        return DiemCong;
+    }
+
+    public void setDiemCong(String diemCong) {
+        DiemCong = diemCong;
+    }
+
+    public String getMoTa() {
+        return MoTa;
+    }
+
+    public void setMoTa(String moTa) {
+        MoTa = moTa;
+    }
+
+    public String getSoLuongGioiHan() {
+        return SoLuongGioiHan;
+    }
+
+    public void setSoLuongGioiHan(String soLuongGioiHan) {
+        SoLuongGioiHan = soLuongGioiHan;
+    }
+
+    public String getSoLuongDaDangKy() {
+        return SoLuongDaDangKy;
+    }
+
+    public void setSoLuongDaDangKy(String soLuongDaDangKy) {
+        SoLuongDaDangKy = soLuongDaDangKy;
+    }
+
+    public String getNguoiDang() {
+        return NguoiDang;
+    }
+
+    public void setNguoiDang(String nguoiDang) {
+        NguoiDang = nguoiDang;
+    }
+
+    public String getNgayTao() {
+        return NgayTao;
+    }
+
+    public void setNgayTao(String ngayTao) {
+        NgayTao = ngayTao;
+    }
+
+    public String getAVT1() {
         return AVT1;
     }
 
-    public void setAVT1(int AVT1) {
+    public void setAVT1(String AVT1) {
         this.AVT1 = AVT1;
     }
 
-    public int getAVT2() {
+    public String getAVT2() {
         return AVT2;
     }
 
-    public void setAVT2(int AVT2) {
+    public void setAVT2(String AVT2) {
         this.AVT2 = AVT2;
     }
 
-    public int getAVT3() {
+    public String getAVT3() {
         return AVT3;
     }
 
-    public void setAVT3(int AVT3) {
+    public void setAVT3(String AVT3) {
         this.AVT3 = AVT3;
     }
 
-    public int getAVT4() {
+    public String getAVT4() {
         return AVT4;
     }
 
-    public void setAVT4(int AVT4) {
+    public void setAVT4(String AVT4) {
         this.AVT4 = AVT4;
     }
 
-    public String getThoiGian() {
-        return ThoiGian;
+    public String getMaSK() {
+        return MaSK;
     }
 
-    public void setThoiGian(String thoiGian) {
-        ThoiGian = thoiGian;
+    public void setMaSK(String maSK) {
+        MaSK = maSK;
     }
-
-
 }

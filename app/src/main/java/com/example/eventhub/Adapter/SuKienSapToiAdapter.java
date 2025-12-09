@@ -3,7 +3,6 @@ package com.example.eventhub.Adapter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,24 +10,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.eventhub.Model.SuKienSapToi;
+import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapter.SuKienSapToiViewHolder> {
-    private List<SuKienSapToi> lsk;
+    private List<SuKien> lsk;
     private OnItemClickListener listener;
     public interface OnItemClickListener{
-        void  onItemClick(SuKienSapToi sk);
+        void  onItemClick(SuKien sk);
 }
 
     public void setListener(OnItemClickListener listener) {
         this.listener = listener;
     }
 
-    public SuKienSapToiAdapter(List<SuKienSapToi> lsk) {
+    public SuKienSapToiAdapter(List<SuKien> lsk) {
         this.lsk = lsk;
     }
 
@@ -41,12 +40,12 @@ public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapte
 
     @Override
     public void onBindViewHolder(@NonNull SuKienSapToiAdapter.SuKienSapToiViewHolder holder, int position) {
-        SuKienSapToi sk = lsk.get(position);
+        SuKien sk = lsk.get(position);
         if(sk==null)
             return;
-        holder.txt_thoigian.setText(sk.getThoiGian());
+        holder.txt_thoigian.setText(sk.getThoiGianBatDau());
         holder.txt_noidung.setText(sk.getTenSK());
-        holder.txt_coso.setText(sk.getCoSo());
+        holder.txt_coso.setText(sk.getCoso());
         Picasso.get().load(sk.getPoster()).into(holder.img_poster);
     }
 
