@@ -9,14 +9,18 @@ import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 
 public class LoginFragment extends Fragment {
 
@@ -50,16 +54,30 @@ public class LoginFragment extends Fragment {
         preferences = requireContext().getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
         populateSavedCredentials();
 
+        TaiKhoanViewModel taiKhoanViewModel = new ViewModelProvider(requireActivity()).get(TaiKhoanViewModel.class);
+        taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
+            if (taiKhoan != null) {
+                // Lưu trạng thái đăng nhập (SharedPreferences...)
+                handleRememberState();
+                Navigation.findNavController(requireView()).navigate(R.id.nav_home);
+            }
+        });
+
+        taiKhoanViewModel.getErr().observe(getViewLifecycleOwner(), errMessage -> {
+            if (errMessage != null && !errMessage.isEmpty()) {
+                Toast.makeText(getContext(), errMessage, Toast.LENGTH_SHORT).show();
+            }
+        });
 
         loginButton.setOnClickListener(v -> {
-//            if(emailInput.getText().toString().isEmpty() && passwordInput.getText().toString().isEmpty())
-//            {
-//                Toast.makeText(view.getContext(),"Vui lòng nhập đầy đủ thông tin",Toast.LENGTH_LONG).show();
-//            }
-//            else{
-                handleRememberState();
-                Navigation.findNavController(v).navigate(R.id.nav_home);
-//            }
+            if(emailInput.getText().toString().isEmpty() && passwordInput.getText().toString().isEmpty())
+            {
+                Toast.makeText(view.getContext(),"Vui lòng nhập đầy đủ thông tin",Toast.LENGTH_LONG).show();
+            }
+            else {
+                TaiKhoanDN taiKhoanDN = new TaiKhoanDN(emailInput.getText().toString().trim(),passwordInput.getText().toString().trim());
+                taiKhoanViewModel.ktraLogin(taiKhoanDN);
+            }
         });
         forgotPassword.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.forgotPasswordFragment);
