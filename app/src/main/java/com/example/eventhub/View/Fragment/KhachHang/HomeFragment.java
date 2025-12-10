@@ -7,11 +7,10 @@ import androidx.fragment.app.Fragment;
 
 import com.example.eventhub.Adapter.SuKienSapToiAdapter;
 import com.example.eventhub.Model.SuKien;
-import com.example.eventhub.Model.SuKienSapToi;
 
-import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -21,6 +20,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.eventhub.Adapter.DanhMucAdapter;
 import com.example.eventhub.Adapter.SuKienAdapter;
@@ -33,9 +33,8 @@ import java.util.List;
 
 public class HomeFragment extends Fragment {
     private List<DanhMuc> lDanhMuc;
-    private  List<SuKienSapToi>suKienSapToiList = new ArrayList<>();
-    private  List<SuKienSapToi>sukiendanhchobn = new ArrayList<>();
-    private List<SuKien> suKienList =new ArrayList<>();
+
+
     private SuKienAdapter suKienAdapter;
     private RecyclerView rcv_danhmuc,rcv_sapdienra,rcv_saptoi,rcv_danhchobn;
     private DanhMucAdapter danhMucAdapter;
@@ -57,43 +56,73 @@ public class HomeFragment extends Fragment {
         addSKsapDienRa(v);
         addSKSapToi(v);
         addSKDanhchobn(v);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getErr().observe(getViewLifecycleOwner(),err->{
+            if (err != null) {
+                Toast.makeText(v.getContext(), "Lỗi tải sự kiện: " + err, Toast.LENGTH_SHORT).show();
+            }
+        });
         return v;
     }
 
     private void addSKDanhchobn(View v) {
         rcv_danhchobn = v.findViewById(R.id.rcv_home_danhchoban);
         rcv_danhchobn.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        SuKienViewModel skvm = new SuKienViewModel();
-        sukiendanhchobn =  skvm.load_SK_danhchobn();
-        suKienDanhchobnAdapter = new SuKienSapToiAdapter(sukiendanhchobn);
-        rcv_danhchobn.setAdapter(suKienDanhchobnAdapter);
-        suKienDanhchobnAdapter.setListener(sk -> {
-            skvm.setSk(sk);
-            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getListSKdienra().observe(getViewLifecycleOwner(),suKiens -> {
+            if(suKiens!=null)
+            {
+                suKienDanhchobnAdapter = new SuKienSapToiAdapter(suKiens);
+                rcv_danhchobn.setAdapter(suKienDanhchobnAdapter);
+                suKienDanhchobnAdapter.setListener(sk -> {
+                    suKienViewModel.setSk(sk);
+                    Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+                });
+            }
         });
+        suKienViewModel.load_SK_danhchobn();
+
     }
 
     private void addSKSapToi(View v) {
-        suKienSapToiList.clear();
+
         rcv_saptoi = v.findViewById(R.id.rcv_home_sukien);
         rcv_saptoi.setLayoutManager(new GridLayoutManager(v.getContext(),2,RecyclerView.HORIZONTAL,false));
-        SuKienViewModel skvm = new SuKienViewModel();
-        suKienSapToiList =  skvm.load_SK_danhchobn();
-        suKienSapToiAdapter = new SuKienSapToiAdapter(suKienSapToiList);
-       rcv_saptoi.setAdapter(suKienSapToiAdapter);
-        suKienSapToiAdapter.setListener(sk -> {
-            skvm.setSk(sk);
-            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getListSKSapToi().observe(getViewLifecycleOwner(),suKiens -> {
+            if(suKiens!=null)
+            {
+                suKienSapToiAdapter = new SuKienSapToiAdapter(suKiens);
+                rcv_saptoi.setAdapter(suKienSapToiAdapter);
+                suKienSapToiAdapter.setListener(sk -> {
+                    suKienViewModel.setSk(sk);
+                    Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+                });
+            }
         });
+        suKienViewModel.load_SK_saptoi();
+
     }
 
     private void addSKsapDienRa(View v) {
         rcv_sapdienra = v.findViewById(R.id.rcv_home_sapdienra);
         rcv_sapdienra.setLayoutManager(new LinearLayoutManager(v.getContext(),LinearLayoutManager.HORIZONTAL,false));
-        SuKienViewModel sk = new SuKienViewModel();
-        suKienList = sk.loadSuKien();
-        suKienAdapter = new SuKienAdapter(suKienList);
-        rcv_sapdienra.setAdapter(suKienAdapter);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getListSK().observe(getViewLifecycleOwner(),suKiens -> {
+            if(suKiens!=null)
+            {
+                suKienAdapter = new SuKienAdapter(suKiens);
+                rcv_sapdienra.setAdapter(suKienAdapter);
+                suKienAdapter.setListener(sk -> {
+                    suKienViewModel.setSk(sk);
+                    Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+                });
+            }
+
+        });
+        suKienViewModel.loadSuKien();
+
+
     }
 
     private void adddanhMuc(View v) {

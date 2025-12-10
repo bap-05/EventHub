@@ -19,6 +19,14 @@ import java.util.List;
 
 public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienViewHolder> {
     private List<SuKien> lSuKien;
+    private OnclickItemListener listener;
+    public interface OnclickItemListener{
+        void onClickItem(SuKien sk);
+    }
+
+    public void setListener(OnclickItemListener listener) {
+        this.listener = listener;
+    }
 
     public SuKienAdapter(List<SuKien> lSuKien) {
         this.lSuKien = lSuKien;
@@ -38,7 +46,7 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
         if(sk==null)
             return;
         holder.txt_noidung.setText(sk.getTenSK());
-        holder.txt_thoigian.setText(sk.getThoiGian());
+        holder.txt_thoigian.setText(sk.getThoiGianBatDau());
         Picasso.get().load(sk.getPoster()).into(holder.img_poster);
         Picasso.get().load(sk.getAVT1()).into(holder.img_avt1);
         Picasso.get().load(sk.getAVT2()).into(holder.img_avt2);
@@ -67,6 +75,17 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
             img_avt2 = itemView.findViewById(R.id.img_home_avt2);
             img_avt3 = itemView.findViewById(R.id.img_home_avt3);
             img_avt4 = itemView.findViewById(R.id.img_home_avt4);
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if(listener!=null)
+                    {
+                        int vitri = getBindingAdapterPosition();
+                        if(vitri != RecyclerView.NO_POSITION)
+                            listener.onClickItem(lSuKien.get(vitri));
+                    }
+                }
+            });
         }
     }
 }

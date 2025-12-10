@@ -3,6 +3,7 @@ package com.example.eventhub.View.Fragment.KhachHang;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -16,9 +17,7 @@ import android.widget.TextView;
 import com.example.eventhub.Adapter.DanhMucAdapter;
 import com.example.eventhub.Adapter.SuKienSapToiAdapter;
 import com.example.eventhub.Model.DanhMuc;
-import com.example.eventhub.Model.SuKienSapToi;
 import com.example.eventhub.R;
-import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 
 import java.util.ArrayList;
@@ -30,7 +29,7 @@ public class ChiTietDanhMucFragment extends Fragment {
     private TextView txt_danhmuc;
     private List<DanhMuc> lDanhMuc;
     private ImageView img_search;
-    private List<SuKienSapToi> suKienSapToiList = new ArrayList<>();
+
     private SuKienSapToiAdapter suKienSapToiAdapter;
     private  DanhMucAdapter danhMucAdapter;
 
@@ -53,14 +52,17 @@ public class ChiTietDanhMucFragment extends Fragment {
 
     private void addSK(View v) {
         rcv_sukien.setLayoutManager(new LinearLayoutManager(v.getContext()));
-        SuKienViewModel suKienViewModel = new SuKienViewModel();
-        suKienSapToiList =suKienViewModel.load_SK_danhchobn();
-        suKienSapToiAdapter = new SuKienSapToiAdapter(suKienSapToiList);
-        rcv_sukien.setAdapter(suKienSapToiAdapter);
-        suKienSapToiAdapter.setListener(sk -> {
-            suKienViewModel.setSk(sk);
-            Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getListSKSapToi().observe(getViewLifecycleOwner(),suKiens -> {
+            suKienSapToiAdapter = new SuKienSapToiAdapter(suKiens);
+            rcv_sukien.setAdapter(suKienSapToiAdapter);
+            suKienSapToiAdapter.setListener(sk -> {
+                suKienViewModel.setSk(sk);
+                Navigation.findNavController(v).navigate(R.id.chiTietSuKienFragment);
+            });
         });
+        suKienViewModel.load_SK_danhchobn();
+
     }
 
     private void addDanhmuc(View v) {

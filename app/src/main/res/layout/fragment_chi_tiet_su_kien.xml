@@ -143,6 +143,15 @@
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
     <TextView
+        android:id="@+id/txt_ct_soluongthamgia"
+        android:layout_marginTop="5dp"
+        android:layout_marginLeft="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="#474747"
+        android:textSize="18dp"
+        android:text="Số lượng tham gia: 20/60"/>
+    <TextView
         android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
