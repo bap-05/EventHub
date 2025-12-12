@@ -1,9 +1,11 @@
 package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DaThamGiaFragment extends Fragment {
     private RecyclerView recyclerView;
@@ -58,11 +62,38 @@ public class DaThamGiaFragment extends Fragment {
 
     private void loadEvents() {
         IAPI iapi = ApiClient.getClient().create(IAPI.class);
-//        Call<List<SuKien>> call = iapi.getSuKienDaThamGia(currentUserId);
+        Call<List<SuKien>> call = iapi.getSuKienDaThamGia(currentUserId);
+        call.enqueue(new Callback<List<SuKien>>() {
+            @Override
+            public void onResponse(Call<List<SuKien>> call, Response<List<SuKien>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    eventList.clear();
+                    eventList.addAll(response.body());
+                    adapter.notifyDataSetChanged();
+                }else
+                {
+                    if(getContext()!=null){
+                        Toast.makeText(getContext(), "Không thể lấy dữ liệu sự kiện. Mã lỗi: " + response.code(), Toast.LENGTH_SHORT).show();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SuKien>> call, Throwable t) {
+                Log.e("ApiError", "Lỗi kết nối: " + t.getMessage());
+                if(getContext()!=null){
+                    Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+                }
+
+            }
+        });
 
     }
 
     private void setupRecyclerView() {
-        
+        eventList = new ArrayList<>();
+        adapter = new EventAdapter(eventList);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setAdapter(adapter);
     }
 }
