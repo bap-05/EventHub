@@ -51,4 +51,42 @@ public class SuKienRepository {
             }
         });
     }
+    public  void getSuKienSapThamGia(int userId, MutableLiveData<List<SuKien>>liveData, MutableLiveData<String>err){
+        Call<List<SuKien>> call = iapi.getSuKienSapThamGia(userId);
+        call.enqueue(new Callback<List<SuKien>>() {
+            @Override
+            public void onResponse(Call<List<SuKien>> call, Response<List<SuKien>> response) {
+                if(response.isSuccessful() && response.body()!=null){
+                    liveData.postValue(response.body());
+                }else {
+                    err.postValue("Không tải được dữ liệu. Mã lỗi: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SuKien>> call, Throwable t) {
+                Log.e("API", "Lỗi getSuKienSapThamGia: " + t.getMessage(), t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+    public  void getSuKienDaThamGia(int userId, MutableLiveData<List<SuKien>>liveData, MutableLiveData<String>err){
+        Call<List<SuKien>> call = iapi.getSuKienDaThamGia(userId);
+        call.enqueue(new Callback<List<SuKien>>() {
+            @Override
+            public void onResponse(Call<List<SuKien>> call, Response<List<SuKien>> response) {
+                if (response.isSuccessful()&&response.body()!=null){
+                    liveData.postValue(response.body());
+                }else {
+                    err.postValue("Không tải được dữ liệu. Mã lỗi: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<SuKien>> call, Throwable t) {
+                Log.e("API", "Lỗi getSuKienDaThamGia: " + t.getMessage(), t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
 }
