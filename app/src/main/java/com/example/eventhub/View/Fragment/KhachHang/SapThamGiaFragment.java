@@ -9,14 +9,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider; // Import ViewModel
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Adapter.EventAdapter;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
-import com.example.eventhub.ViewModel.SuKienViewModel; // Import ViewModel của bạn
+import com.example.eventhub.ViewModel.SuKienViewModel;
 
 import java.util.ArrayList;
 import java.util.List;

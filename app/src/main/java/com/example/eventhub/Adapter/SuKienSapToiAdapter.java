@@ -45,7 +45,7 @@ public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapte
             return;
         holder.txt_thoigian.setText(sk.getThoiGianBatDau());
         holder.txt_noidung.setText(sk.getTenSK());
-        holder.txt_coso.setText(sk.getCoso());
+        holder.txt_coso.setText(sk.getCoSo());
         Picasso.get().load(sk.getPoster()).into(holder.img_poster);
     }
 
