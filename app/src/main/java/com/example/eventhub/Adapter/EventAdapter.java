@@ -36,7 +36,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
         SuKien event=eventList.get(position);
         holder.txtTitle.setText(event.getTenSK());
         holder.txtDateTime.setText(event.getThoiGianBatDau());
-        holder.txtLocation.setText(event.getCoso());
+        holder.txtLocation.setText(event.getCoSo());
         Glide.with(holder.itemView.getContext())
                 .load(event.getPoster())
                 .placeholder(R.drawable.avatar)
@@ -46,7 +46,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             holder.btnDetails.setVisibility(View.GONE);
             holder.layoutAttended.setVisibility(View.VISIBLE);
             holder.txtStatus.setText(event.getTrangThai());
-//            holder.txtPointsValue.setText("+"+event.getDiemTichLuy());
+            holder.txtPointsValue.setText("+" + event.getDiemCong());
         }
         else {
             holder.layoutAttended.setVisibility(View.GONE);
