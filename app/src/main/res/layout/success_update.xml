@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="30dp">
+
+    <ImageView
+        android:id="@+id/iconSuccess"
+        android:layout_width="120dp"
+        android:layout_height="120dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/ic_success"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/titleSuccess"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="Thành công"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iconSuccess" />
+
+    <TextView
+        android:id="@+id/subSuccess"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:text="Cập nhật mật khẩu thành công! Nhấn nút bên dưới để quay về đăng nhập."
+        android:textAlignment="center"
+        android:textColor="#777777"
+        android:textSize="15sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/titleSuccess" />
+
+    <Button
+        android:id="@+id/btnBackLogin"
+        android:layout_width="0dp"
+        android:layout_height="55dp"
+        android:layout_marginTop="34dp"
+        android:background="@drawable/bg_button_blue"
+        android:text="Tiếp tục"
+        app:backgroundTint="@null"
+        android:textColor="@android:color/white"
+        android:textSize="16sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/subSuccess" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

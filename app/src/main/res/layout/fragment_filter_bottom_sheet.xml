@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@drawable/bottom_sheet_background"
-    android:paddingStart="24dp"
+
     android:paddingEnd="0dp"
     android:paddingTop="24dp"
     android:paddingBottom="24dp">
@@ -16,53 +16,13 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bộ lọc"
-
+        android:layout_marginLeft="24dp"
 
         android:textColor="@android:color/black"
         android:textSize="25sp"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-<!--    <ToggleButton-->
-<!--        android:id="@+id/sport"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-<!--        android:textOn=""-->
-<!--        android:textOff=""-->
-
-<!--        android:layout_marginTop="50dp"-->
-
-<!--        app:layout_constraintStart_toStartOf="@+id/tv_filter_title"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/tv_filter_title" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/music"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-
-<!--        android:layout_marginLeft="40dp"-->
-
-<!--        app:layout_constraintBottom_toBottomOf="@+id/sport"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/sport"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/sport" />-->
-
-<!--    <Button-->
-<!--        android:id="@+id/cnx"-->
-<!--        android:layout_width="65dp"-->
-<!--        android:layout_height="65dp"-->
-<!--        android:background="@drawable/btn_filter_tag"-->
-<!--        app:backgroundTint="@null"-->
-
-<!--        android:layout_marginLeft="40dp"-->
-
-<!--        app:layout_constraintBottom_toBottomOf="@+id/music"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/music"-->
-<!--        app:layout_constraintTop_toTopOf="@+id/music" />-->
 
     <ToggleButton
         android:id="@+id/sport"
@@ -257,8 +217,8 @@
         android:id="@+id/radio_group_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginTop="15dp"
+        android:orientation="horizontal"
         app:layout_constraintStart_toStartOf="@+id/time"
         app:layout_constraintTop_toBottomOf="@+id/time">
 
@@ -267,10 +227,10 @@
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:background="@drawable/selector_time_background"
-            android:textColor="@drawable/selector_time_text"
             android:button="@null"
             android:gravity="center"
             android:text="Hôm nay"
+            android:textColor="@drawable/selector_time_text"
             android:textSize="15sp"
             app:backgroundTint="@null" />
 
@@ -280,10 +240,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@drawable/selector_time_background"
-            android:textColor="@drawable/selector_time_text"
             android:button="@null"
             android:gravity="center"
             android:text="Ngày mai"
+            android:textColor="@drawable/selector_time_text"
             android:textSize="15sp"
             app:backgroundTint="@null" />
 
@@ -293,10 +253,10 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
             android:background="@drawable/selector_time_background"
-            android:textColor="@drawable/selector_time_text"
             android:button="@null"
             android:gravity="center"
             android:text="Tuần này"
+            android:textColor="@drawable/selector_time_text"
             android:textSize="15sp"
             app:backgroundTint="@null" />
     </RadioGroup>
@@ -305,31 +265,28 @@
         android:id="@+id/reset"
         android:layout_width="160dp"
         android:layout_height="50dp"
-        android:text="ĐẶT LẠI"
+        android:layout_marginTop="149dp"
         android:background="@drawable/btn_filter_time"
-        app:backgroundTint="@null"
+        android:text="ĐẶT LẠI"
+        android:layout_marginLeft="10sp"
         android:textColor="@color/black"
-
-        android:layout_marginTop="150dp"
-
-        app:layout_constraintStart_toStartOf="@+id/tv_filter_title"
-        app:layout_constraintTop_toBottomOf="@+id/radio_group_time"
-        />
+        app:backgroundTint="@null"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/radio_group_time" />
 
     <Button
         android:id="@+id/oke"
-        android:layout_width="190dp"
+        android:layout_width="160dp"
         android:layout_height="50dp"
         android:background="@drawable/btn_filter_oke"
         android:text="XÁC NHẬN"
 
-
-        android:layout_marginLeft="17dp"
-
+        android:layout_marginRight="10sp"
         android:textColor="@color/white"
         app:backgroundTint="@null"
         app:layout_constraintBottom_toBottomOf="@+id/reset"
-        app:layout_constraintStart_toEndOf="@+id/reset"
+
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@+id/reset" />
 
 

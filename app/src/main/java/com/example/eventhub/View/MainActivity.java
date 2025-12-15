@@ -1,61 +1,74 @@
 package com.example.eventhub.View;
 
-import androidx.core.content.ContextCompat;
+import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
+
+import android.content.SharedPreferences;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.view.View;
 import android.view.Window;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.navigation.NavController;
+import androidx.navigation.NavOptions;
+import androidx.navigation.fragment.NavHostFragment;
+import androidx.navigation.ui.NavigationUI;
 
 import com.example.eventhub.R;
-import com.example.eventhub.View.Fragment.FooterFragment;
-import com.example.eventhub.View.Fragment.HomeFragment;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-public class MainActivity extends AppCompatActivity {
+public class
+MainActivity extends AppCompatActivity {
     public Fragment frsave;
+    public BottomNavigationView bottomNav;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_main);
+
         Window window = getWindow();
-        window.setStatusBarColor(ContextCompat.getColor(this, android.R.color.white));
-        window.setNavigationBarColor(ContextCompat.getColor(this, android.R.color.white));
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
-            Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
+        WindowCompat.setDecorFitsSystemWindows(window, false);
 
-            return insets;
-        });
-        frsave = new HomeFragment();
-        addFragment(frsave,false);
-        addFooter(new FooterFragment());
-    }
+        window.setStatusBarColor(Color.TRANSPARENT);
+        window.setNavigationBarColor(Color.TRANSPARENT);
 
-    public void addFragment(Fragment fr, Boolean addToBackStack)
-    {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_body,fr);
-        if(fr.getClass().equals(frsave.getClass())){
-            getSupportFragmentManager().popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
-            addToBackStack = false;
+        setContentView(R.layout.activity_main);
+        NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.nav_host_fragment);
+        NavController navController = navHostFragment.getNavController();
+
+// 2. Tìm BottomNavigationView
+        bottomNav = findViewById(R.id.bottom_navigation);
+        int mauCuaToi = android.graphics.Color.parseColor("#FFFFFFFF");
+        bottomNav.setItemActiveIndicatorColor(ColorStateList.valueOf(mauCuaToi));
+// 3. QUAN TRỌNG: Liên kết chúng lại với nhau
+        NavigationUI.setupWithNavController(bottomNav, navController);
+        SharedPreferences preferences = getSharedPreferences("eventhub_prefs",MODE_PRIVATE);
+        String email = preferences.getString("email",null);
+        if (email != null) {
+            // NavOptions giúp xóa lịch sử để khi bấm Back không quay lại màn hình Welcome
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.wellComeFragment, true)
+                    .build();
+
+            // Lưu ý: R.id.homeFragment phải là ID của fragment Home trong nav_graph.xml
+            navController.navigate(R.id.nav_home, null, navOptions);
         }
-        if(addToBackStack)
-            transaction.addToBackStack(null);
-        transaction.commitAllowingStateLoss();
+        navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
+            if (destination.getId() == R.id.wellComeFragment
+                    || destination.getId() == R.id.loginFragment || destination.getId() == R.id.forgotPasswordFragment
+                    || destination.getId() == R.id.otpVerifyFragment || destination.getId() == R.id.resetPasswordFragment  // Thêm ID màn hình đăng nhập của bạn vào đây
+                    || destination.getId() == R.id.successFragment) {
+                bottomNav.setVisibility(View.GONE);
+            } else {
+                bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
     }
-    private void addFooter(Fragment fr)
-    {
-        FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-        transaction.replace(R.id.container_footer,fr);
-        transaction.commit();
-    }
+
 
 
 }

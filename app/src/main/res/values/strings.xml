@@ -1,5 +1,11 @@
 <resources>
     <string name="app_name">EventHub</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
+    <string name="otp_subtitle">Chung toi da gui ma gom 6 so cho %1$s</string>
+    <string name="main_welcome">Xin chao, %1$s!</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
 </resources>

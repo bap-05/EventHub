@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginTop="8dp"
+
+    android:layout_marginBottom="8dp"
+    app:cardCornerRadius="20dp"
+    app:strokeColor="#2196F3"
+    app:strokeWidth="1dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="16dp">
+
+        <ImageView
+            android:id="@+id/icon_bell_2"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/ic_bell_2"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Cập nhật lịch sự kiện “Tân sinh viên”"
+            android:textColor="@android:color/black"
+            android:textStyle="bold"
+            android:layout_marginStart="12dp"
+            app:layout_constraintStart_toEndOf="@id/icon_bell_2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/icon_bell_2" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="0dp"
+            android:textColor="@color/black"
+            android:layout_height="wrap_content"
+            android:text="Sự kiện sẽ được dời lịch sang 15/10/2025"
+            android:layout_marginTop="4dp"
+            app:layout_constraintStart_toStartOf="@id/tv_title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+
+        <TextView
+            android:id="@+id/tv_timestamp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="5 giờ trước"
+            android:textColor="@color/black"
+            android:textSize="12sp"
+            android:drawablePadding="4dp"
+            android:layout_marginTop="12dp"
+            app:drawableStartCompat="@drawable/ic_clock"
+            app:layout_constraintStart_toStartOf="@id/tv_content"
+            app:layout_constraintTop_toBottomOf="@id/tv_content" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>
