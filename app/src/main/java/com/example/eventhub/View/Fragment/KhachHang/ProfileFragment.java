@@ -1,8 +1,16 @@
 package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.Manifest;
+import android.content.ContentValues;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
+import android.location.Location;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +28,17 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.example.eventhub.Adapter.ProfileViewPager2Adapter;
 import com.example.eventhub.R;
 import com.example.eventhub.View.CaptureActivityPortrait;
+import com.example.eventhub.View.PreviewPhotoActivity;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
+
+import java.io.IOException;
+import java.util.List;
+import java.util.Locale;
 
 public class ProfileFragment extends Fragment {
 
@@ -34,6 +49,11 @@ public class ProfileFragment extends Fragment {
     private ProfileViewPager2Adapter viewPager2Adapter;
     private ImageButton imgbtnQr;
     private PendingAction pendingAction = PendingAction.NONE;
+    private FusedLocationProviderClient fusedLocationClient;
+    private Uri currentPhotoUri;
+    private Double lastLat;
+    private Double lastLon;
+    private String lastAddress = "";
 
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
@@ -49,6 +69,18 @@ public class ProfileFragment extends Fragment {
                 pendingAction = PendingAction.NONE;
             });
 
+    private final ActivityResultLauncher<String[]> requestLocationPermissionsLauncher =
+            registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
+                Boolean fine = permissions.getOrDefault(Manifest.permission.ACCESS_FINE_LOCATION, false);
+                Boolean coarse = permissions.getOrDefault(Manifest.permission.ACCESS_COARSE_LOCATION, false);
+                if (Boolean.TRUE.equals(fine) || Boolean.TRUE.equals(coarse)) {
+                    fetchLocationThenCamera();
+                } else {
+                    Toast.makeText(getContext(), "Cần quyền vị trí để gắn lên ảnh", Toast.LENGTH_SHORT).show();
+                    openCameraInternal(); // vẫn mở camera nếu từ chối, nhưng không có vị trí
+                }
+            });
+
     private final ActivityResultLauncher<ScanOptions> qrCodeLauncher =
             registerForActivityResult(new ScanContract(), result -> {
                 if (result.getContents() == null) {
@@ -56,20 +88,30 @@ public class ProfileFragment extends Fragment {
                 } else {
                     if ("1".equals(result.getContents())) {
                         Toast.makeText(getContext(), "Đã xác nhận bạn tham gia sự kiện id: 1", Toast.LENGTH_LONG).show();
-                        launchCamera();
+                        ensureLocationAndCamera();
                     } else {
                         Toast.makeText(getContext(), "Mã QR không hợp lệ", Toast.LENGTH_SHORT).show();
                     }
                 }
             });
 
-    private final ActivityResultLauncher<Void> takePicturePreviewLauncher =
-            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
-                if (bitmap != null) {
-                    Toast.makeText(getContext(), "Đã mở camera và chụp ảnh xem trước.", Toast.LENGTH_SHORT).show();
+    private final ActivityResultLauncher<Uri> takePictureLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
+                if (success && currentPhotoUri != null) {
+                    Intent preview = new Intent(getContext(), PreviewPhotoActivity.class);
+                    preview.putExtra(PreviewPhotoActivity.EXTRA_PHOTO_URI, currentPhotoUri);
+                    if (lastLat != null && lastLon != null) {
+                        preview.putExtra(PreviewPhotoActivity.EXTRA_LAT, lastLat);
+                        preview.putExtra(PreviewPhotoActivity.EXTRA_LON, lastLon);
+                    }
+                    if (lastAddress != null && !lastAddress.isEmpty()) {
+                        preview.putExtra(PreviewPhotoActivity.EXTRA_ADDRESS, lastAddress);
+                    }
+                    startActivity(preview);
                 } else {
                     Toast.makeText(getContext(), "Đã thoát camera hoặc không chụp ảnh.", Toast.LENGTH_SHORT).show();
                 }
+                currentPhotoUri = null;
             });
 
     @Override
@@ -80,6 +122,7 @@ public class ProfileFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedIntancesState) {
         super.onViewCreated(view, savedIntancesState);
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         initViews(view);
         setUpEventTabLayout();
         setupQrButton();
@@ -116,17 +159,88 @@ public class ProfileFragment extends Fragment {
         qrCodeLauncher.launch(options);
     }
 
-    private void launchCamera() {
-        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
-            openCameraInternal();
+    private void ensureLocationAndCamera() {
+        if (hasLocationPermission()) {
+            fetchLocationThenCamera();
         } else {
-            pendingAction = PendingAction.CAMERA;
-            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            requestLocationPermissionsLauncher.launch(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            });
         }
     }
 
+    private boolean hasLocationPermission() {
+        return ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
+                || ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void fetchLocationThenCamera() {
+        try {
+            fusedLocationClient.getLastLocation()
+                    .addOnSuccessListener(requireActivity(), location -> {
+                        if (location != null) {
+                            lastLat = location.getLatitude();
+                            lastLon = location.getLongitude();
+                            lastAddress = reverseGeocode(location);
+                        } else {
+                            lastLat = null;
+                            lastLon = null;
+                            lastAddress = "";
+                            Toast.makeText(getContext(), "Không lấy được vị trí, vẫn mở camera", Toast.LENGTH_SHORT).show();
+                        }
+                        openCameraInternal();
+                    })
+                    .addOnFailureListener(requireActivity(), e -> {
+                        lastLat = null;
+                        lastLon = null;
+                        lastAddress = "";
+                        Toast.makeText(getContext(), "Lỗi lấy vị trí, vẫn mở camera", Toast.LENGTH_SHORT).show();
+                        openCameraInternal();
+                    });
+        } catch (SecurityException ex) {
+            Toast.makeText(getContext(), "Thiếu quyền vị trí", Toast.LENGTH_SHORT).show();
+            openCameraInternal();
+        }
+    }
+
+    private String reverseGeocode(Location location) {
+        Geocoder geocoder = new Geocoder(requireContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(location.getLatitude(), location.getLongitude(), 1);
+            if (addresses != null && !addresses.isEmpty()) {
+                Address addr = addresses.get(0);
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i <= addr.getMaxAddressLineIndex(); i++) {
+                    if (i > 0) sb.append(", ");
+                    sb.append(addr.getAddressLine(i));
+                }
+                return sb.toString();
+            }
+        } catch (IOException e) {
+            // ignore
+        }
+        return "";
+    }
+
     private void openCameraInternal() {
-        takePicturePreviewLauncher.launch(null);
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+            pendingAction = PendingAction.CAMERA;
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+            return;
+        }
+        ContentValues values = new ContentValues();
+        values.put(MediaStore.Images.Media.TITLE, "EventHub_Photo_" + System.currentTimeMillis());
+        values.put(MediaStore.Images.Media.DESCRIPTION, "Photo captured by EventHub");
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            values.put(MediaStore.Images.Media.RELATIVE_PATH, android.os.Environment.DIRECTORY_PICTURES + "/EventHub");
+        }
+        currentPhotoUri = requireContext().getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        if (currentPhotoUri != null) {
+            takePictureLauncher.launch(currentPhotoUri);
+        } else {
+            Toast.makeText(getContext(), "Không tạo được file ảnh", Toast.LENGTH_SHORT).show();
+        }
     }
 
     private void setUpEventTabLayout() {
