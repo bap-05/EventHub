@@ -27,18 +27,26 @@ import com.journeyapps.barcodescanner.ScanOptions;
 
 public class ProfileFragment extends Fragment {
 
+    private enum PendingAction { NONE, SCAN, CAMERA }
+
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ProfileViewPager2Adapter viewPager2Adapter;
     private ImageButton imgbtnQr;
+    private PendingAction pendingAction = PendingAction.NONE;
 
     private final ActivityResultLauncher<String> requestCameraPermissionLauncher =
             registerForActivityResult(new ActivityResultContracts.RequestPermission(), isGranted -> {
                 if (isGranted) {
-                    startScanner();
+                    if (pendingAction == PendingAction.CAMERA) {
+                        openCameraInternal();
+                    } else {
+                        startScanner();
+                    }
                 } else {
-                    Toast.makeText(getContext(), "Cần quyền camera để quét mã QR", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Cần quyền camera để tiếp tục", Toast.LENGTH_SHORT).show();
                 }
+                pendingAction = PendingAction.NONE;
             });
 
     private final ActivityResultLauncher<ScanOptions> qrCodeLauncher =
@@ -46,7 +54,21 @@ public class ProfileFragment extends Fragment {
                 if (result.getContents() == null) {
                     Toast.makeText(getContext(), "Đã hủy quét", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), "Nội dung QR: " + result.getContents(), Toast.LENGTH_LONG).show();
+                    if ("1".equals(result.getContents())) {
+                        Toast.makeText(getContext(), "Đã xác nhận bạn tham gia sự kiện id: 1", Toast.LENGTH_LONG).show();
+                        launchCamera();
+                    } else {
+                        Toast.makeText(getContext(), "Mã QR không hợp lệ", Toast.LENGTH_SHORT).show();
+                    }
+                }
+            });
+
+    private final ActivityResultLauncher<Void> takePicturePreviewLauncher =
+            registerForActivityResult(new ActivityResultContracts.TakePicturePreview(), bitmap -> {
+                if (bitmap != null) {
+                    Toast.makeText(getContext(), "Đã mở camera và chụp ảnh xem trước.", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Đã thoát camera hoặc không chụp ảnh.", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -80,6 +102,7 @@ public class ProfileFragment extends Fragment {
         if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
             startScanner();
         } else {
+            pendingAction = PendingAction.SCAN;
             requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
         }
     }
@@ -91,6 +114,19 @@ public class ProfileFragment extends Fragment {
         options.setOrientationLocked(true);
         options.setCaptureActivity(CaptureActivityPortrait.class);
         qrCodeLauncher.launch(options);
+    }
+
+    private void launchCamera() {
+        if (ContextCompat.checkSelfPermission(requireContext(), Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED) {
+            openCameraInternal();
+        } else {
+            pendingAction = PendingAction.CAMERA;
+            requestCameraPermissionLauncher.launch(Manifest.permission.CAMERA);
+        }
+    }
+
+    private void openCameraInternal() {
+        takePicturePreviewLauncher.launch(null);
     }
 
     private void setUpEventTabLayout() {
