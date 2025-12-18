@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
 import java.util.List;
 
 public class ApiResponse {
-    @SerializedName("getSK")
+    @SerializedName(value = "getSK", alternate = {"suKien"})
     private List<SuKien> suKienList;
     @SerializedName("taikhoan")
     private TaiKhoan taiKhoan;
