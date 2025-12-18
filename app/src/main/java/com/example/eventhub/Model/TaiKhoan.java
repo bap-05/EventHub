@@ -1,14 +1,14 @@
 package com.example.eventhub.Model;
 
 public class TaiKhoan {
-    private String MaTk, MaSV, HoTen, Khoa, Lop, AVT, Email, Pass, VaiTro, DiemTichLuy;
-
-    public String getMaTk() {
-        return MaTk;
+    private String MaSV, HoTen, Khoa, Lop, AVT, Email, Pass, VaiTro;
+    private int MaTK,DiemTichLuy;
+    public int getMaTk() {
+        return MaTK;
     }
 
-    public void setMaTk(String maTk) {
-        MaTk = maTk;
+    public void setMaTk(int maTk) {
+        MaTK = maTk;
     }
 
     public String getMaSV() {
@@ -75,11 +75,11 @@ public class TaiKhoan {
         VaiTro = vaiTro;
     }
 
-    public String getDiemTichLuy() {
+    public int getDiemTichLuy() {
         return DiemTichLuy;
     }
 
-    public void setDiemTichLuy(String diemTichLuy) {
+    public void setDiemTichLuy(int diemTichLuy) {
         DiemTichLuy = diemTichLuy;
     }
 }

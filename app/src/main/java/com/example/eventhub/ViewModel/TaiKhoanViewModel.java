@@ -9,10 +9,14 @@ import com.example.eventhub.Repository.TaiKhoanRespository;
 
 public class TaiKhoanViewModel extends ViewModel {
     private TaiKhoanRespository taiKhoanRespository = new TaiKhoanRespository();
-    private MutableLiveData<TaiKhoan> taikhoan = new MutableLiveData<>();
+    private static MutableLiveData<TaiKhoan> taikhoan = new MutableLiveData<>();
     private MutableLiveData<String> err = new MutableLiveData<>();
 
-    public MutableLiveData<TaiKhoan> getTaikhoan() {
+    public static void setTaikhoan(TaiKhoan tk) {
+        taikhoan.postValue(tk);
+    }
+
+    public static MutableLiveData<TaiKhoan> getTaikhoan() {
         return taikhoan;
     }
 
@@ -22,4 +26,5 @@ public class TaiKhoanViewModel extends ViewModel {
     public void ktraLogin(TaiKhoanDN taiKhoanDN){
         taiKhoanRespository.KtraLogin(taikhoan,err,taiKhoanDN);
     }
+
 }

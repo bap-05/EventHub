@@ -4,6 +4,7 @@ import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
 import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.Repository.SuKienRepository;
 
@@ -14,6 +15,7 @@ import java.util.List;
 public class SuKienViewModel extends ViewModel {
 
     private SuKienRepository suKienRepository = new SuKienRepository();
+    private static MutableLiveData<String>dkSuKien = new MutableLiveData<>();
     private static MutableLiveData<SuKien> sk = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>> listSK = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>> listSKSapToi = new MutableLiveData<>();
@@ -22,6 +24,9 @@ public class SuKienViewModel extends ViewModel {
     private MutableLiveData<List<SuKien>> listSKSapThamGia = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>> listSKDaThamGia = new MutableLiveData<>();
 
+    public static MutableLiveData<String> getDkSuKien() {
+        return dkSuKien;
+    }
 
     public MutableLiveData<List<SuKien>> getListSKdienra() {
         return listSKdienra;
@@ -74,5 +79,9 @@ public class SuKienViewModel extends ViewModel {
     }
     public void loadSuKienDaThamGia(int userId){
         suKienRepository.getSuKienDaThamGia(userId,listSKDaThamGia,err);
+    }
+    public void dangKySuKien (ThamGiaSuKien thamGiaSuKien)
+    {
+        suKienRepository.dangKySuKien(dkSuKien,thamGiaSuKien);
     }
 }
