@@ -6,6 +6,8 @@ import com.example.eventhub.API.ApiClient;
 import com.example.eventhub.API.ApiResponse;
 import com.example.eventhub.API.IAPI;
 import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.ThamGiaSuKien;
+
 import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -89,6 +91,29 @@ public class SuKienRepository {
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
                 Log.e("API", "Lỗi getSuKienDaThamGia: " + t.getMessage(), t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+    public void dangKySuKien(MutableLiveData<String>err, ThamGiaSuKien thamGiaSuKien){
+        Call<Void> call = iapi.DkSuKien(thamGiaSuKien);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                {
+                    Log.d("DKSuKien", "Đăng ký thành công");
+                    err.postValue("Đăng ký thành công");
+                }
+                else{
+                    Log.d("DKSuKien", "Đăng ký tất bại");
+                    err.postValue("Đăng ký tất bại");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                Log.e("API",t.getMessage(),t);
                 err.postValue(t.getMessage());
             }
         });

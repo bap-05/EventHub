@@ -15,9 +15,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.eventhub.Model.SessionManager;
+import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.R;
@@ -55,22 +57,11 @@ public class LoginFragment extends Fragment {
         TextView forgotPassword = view.findViewById(R.id.forgotPass);
 
         preferences = requireContext().getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
-        populateSavedCredentials();
 
         TaiKhoanViewModel taiKhoanViewModel = new ViewModelProvider(requireActivity()).get(TaiKhoanViewModel.class);
-        taiKhoanViewModel.getTaikhoan().setValue(null);
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
-                if (sessionManager == null) {
-                    sessionManager = SessionManager.getInstance(requireContext());
-                }
-                sessionManager.saveUser(
-                        String.valueOf(taiKhoan.getMaTk()),
-                        taiKhoan.getEmail(),
-                        taiKhoan.getHoTen(),
-                        taiKhoan.getAVT()
-                );
                 handleRememberState(taiKhoan);
                 Navigation.findNavController(requireView()).navigate(R.id.nav_home);
             }
@@ -96,24 +87,16 @@ public class LoginFragment extends Fragment {
             Navigation.findNavController(v).navigate(R.id.forgotPasswordFragment);
         });
     }
-
-    private void populateSavedCredentials() {
-        boolean remember = preferences.getBoolean(KEY_REMEMBER, false);
-        rememberSwitch.setChecked(remember);
-        if (remember) {
-            emailInput.setText(preferences.getString(KEY_EMAIL, ""));
-            passwordInput.setText(preferences.getString(KEY_PASSWORD, ""));
-        }
-    }
     private void handleRememberState(TaiKhoan taiKhoan) {
         SharedPreferences.Editor editor = preferences.edit();
         if (rememberSwitch.isChecked()) {
             Gson gson = new Gson();
             String tk = gson.toJson(taiKhoan);
             editor.putString("TaiKhoan", tk);
+            editor.putBoolean(KEY_REMEMBER,true);
         } else {
             editor.putBoolean(KEY_REMEMBER, false);
-            editor.remove("TaiKhoan");
+            editor.clear();
         }
         editor.apply();
     }

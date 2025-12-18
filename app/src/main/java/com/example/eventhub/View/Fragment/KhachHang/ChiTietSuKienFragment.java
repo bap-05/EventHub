@@ -3,17 +3,25 @@ package com.example.eventhub.View.Fragment.KhachHang;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.eventhub.Model.TaiKhoan;
+import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
 
 import com.example.eventhub.ViewModel.SuKienViewModel;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.squareup.picasso.Picasso;
 
 
@@ -21,7 +29,8 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
     private TextView txt_noidung, txt_thoigian, txt_trangthai, txt_diem, txt_mota, txt_diadiem, txt_soluong;
     private ImageView img_poster;
     private ImageButton btn_ql;
-
+    private int maSK;
+    private Button btn_dk;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,6 +38,7 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chi_tiet_su_kien, container, false);
         addView(v);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
         SuKienViewModel.getSk().observe(getViewLifecycleOwner(), suKienSapToi -> {
             txt_thoigian.setText(suKienSapToi.getThoiGianBatDau());
             txt_diadiem.setText(suKienSapToi.getDiaDiem());
@@ -37,7 +47,27 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
             txt_diem.setText(suKienSapToi.getDiemCong()+" điểm hoạt động");
             txt_soluong.setText("Số lương tham gia: "+suKienSapToi.getSoLuongDaDangKy()+"/"+suKienSapToi.getSoLuongGioiHan());
             txt_trangthai.setText(suKienSapToi.getTrangThai());
+            maSK = suKienSapToi.getMaSK();
             Picasso.get().load(suKienSapToi.getPoster()).into(img_poster);
+        });
+        btn_dk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                TaiKhoan taiKhoan = TaiKhoanViewModel.getTaikhoan().getValue();
+                if(taiKhoan!=null)
+                {
+                    Log.d("DKSuKien",""+taiKhoan.getMaTk());
+                    ThamGiaSuKien thamGiaSuKien = new ThamGiaSuKien(taiKhoan.getMaTk(),maSK);
+                    SuKienViewModel.getDkSuKien().observe(getViewLifecycleOwner(),dksukien->{
+                        if (dksukien!=null)
+                        {
+                            Toast.makeText(v.getContext(),dksukien,Toast.LENGTH_LONG).show();
+                            Navigation.findNavController(v).navigate(R.id.nav_home);
+                        }
+                    });
+                    suKienViewModel.dangKySuKien(thamGiaSuKien);
+                }
+            }
         });
         btn_ql.setOnClickListener(this);
         return v;
@@ -53,6 +83,7 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
         img_poster = v.findViewById(R.id.img_ct_poster);
         btn_ql = v.findViewById(R.id.btn_ct_ql);
         txt_soluong = v.findViewById(R.id.txt_ct_soluongthamgia);
+        btn_dk = v.findViewById(R.id.btn_ct_dk);
     }
 
     @Override

@@ -9,6 +9,7 @@ import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 
@@ -18,8 +19,11 @@ import androidx.navigation.NavOptions;
 import androidx.navigation.fragment.NavHostFragment;
 import androidx.navigation.ui.NavigationUI;
 
+import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.gson.Gson;
 
 public class
 MainActivity extends AppCompatActivity {
@@ -46,7 +50,24 @@ MainActivity extends AppCompatActivity {
         bottomNav.setItemActiveIndicatorColor(ColorStateList.valueOf(mauCuaToi));
 // 3. QUAN TRỌNG: Liên kết chúng lại với nhau
         NavigationUI.setupWithNavController(bottomNav, navController);
+        Gson gson = new Gson();
+        SharedPreferences preferences = getSharedPreferences("eventhub_prefs",MODE_PRIVATE);
+        String tk = preferences.getString("TaiKhoan", "");
 
+// Lúc này tk không bao giờ bị null nữa, code chạy an toàn
+        if(!tk.isEmpty())
+        {
+            try {
+                TaiKhoanViewModel.setTaikhoan(gson.fromJson(tk, TaiKhoan.class));
+                NavOptions navOptions = new NavOptions.Builder()
+                        .setPopUpTo(R.id.wellComeFragment, true)
+                        .build();
+                navController.navigate(R.id.nav_home, null, navOptions);
+            } catch (Exception e) {
+                // Phòng trường hợp chuỗi JSON bị lỗi format
+                e.printStackTrace();
+            }
+        }
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.wellComeFragment
                     || destination.getId() == R.id.loginFragment || destination.getId() == R.id.forgotPasswordFragment

@@ -4,6 +4,9 @@ import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.Repository.ProfileResponse;
+import com.example.eventhub.Model.ThamGiaSuKien;
+
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.http.Body;
@@ -28,4 +31,9 @@ public interface IAPI {
 
     @GET("profile/profile/{userId}")
     Call<ProfileResponse> getUserProfile(@Path("userId") int userId);
+    @POST("sukien/")
+    Call<Void> DkSuKien(@Body ThamGiaSuKien thamGiaSuKien);
+    // 4. Update avatar (Nếu sau này bạn mở lại tính năng này)
+    // @PUT("profile/update-avatar")
+    // Call<TaiKhoan> updateAvatar(@Body UpdateAvatarRequest request);
 }

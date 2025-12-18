@@ -7,12 +7,8 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import java.util.concurrent.TimeUnit;
 
 public class ApiClient {
-//    private static final String url = "http://192.168.1.241:3000/";
-    private static final String url = "http://192.168.1.15:3000/";
-
+    private static final String url = "http://192.168.20.180:3000/";
 //private static final String url = "http://10.0.2.2:3000/";
-    // Đảm bảo IP này chính xác
-    private static final String url = "http://192.168.1.233:3000/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
