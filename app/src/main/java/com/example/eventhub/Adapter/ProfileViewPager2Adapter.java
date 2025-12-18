@@ -7,12 +7,12 @@ import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 import com.example.eventhub.View.Fragment.KhachHang.DaThamGiaFragment;
 import com.example.eventhub.View.Fragment.KhachHang.SapThamGiaFragment;
-//alo
 public class ProfileViewPager2Adapter extends FragmentStateAdapter {
+    private int userId;
 
-    // SỬA CONSTRUCTOR Ở ĐÂY
     public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
+        this.userId = userId;
     }
 
     @NonNull
