@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.example.eventhub.Model.SessionManager;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
@@ -58,6 +59,13 @@ public class LoginFragment extends Fragment {
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
+                SessionManager sessionManager = SessionManager.getInstance(requireContext());
+                SessionManager.saveUser(
+                        String.valueOf(taiKhoan.getMaTK()),
+                        taiKhoan.getEmail(),
+                        taiKhoan.getHoTen(),
+                        taiKhoan.getAVT()
+                );
                 handleRememberState();
                 Navigation.findNavController(requireView()).navigate(R.id.nav_home);
             }

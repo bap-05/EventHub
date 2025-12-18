@@ -35,6 +35,7 @@ public final class SessionManager {
                 .apply();
     }
 
+
     public boolean isLoggedIn() {
         return !TextUtils.isEmpty(preferences.getString(KEY_ID, ""));
     }
