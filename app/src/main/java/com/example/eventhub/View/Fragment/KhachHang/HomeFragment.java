@@ -26,6 +26,7 @@ import com.example.eventhub.Adapter.DanhMucAdapter;
 import com.example.eventhub.Adapter.SuKienAdapter;
 import com.example.eventhub.Model.DanhMuc;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,6 +63,11 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(v.getContext(), "Lỗi tải sự kiện: " + err, Toast.LENGTH_SHORT).show();
             }
         });
+       TaiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(),taiKhoan -> {
+           if(taiKhoan!=null){
+               suKienViewModel.loadSuKienSapThamGia(taiKhoan.getMaTk());
+           }
+       });
         return v;
     }
 

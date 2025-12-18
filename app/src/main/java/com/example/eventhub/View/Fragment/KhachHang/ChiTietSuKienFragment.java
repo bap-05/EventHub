@@ -1,5 +1,6 @@
 package com.example.eventhub.View.Fragment.KhachHang;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -16,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
@@ -69,6 +71,19 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
                 }
             }
         });
+        suKienViewModel.getListSKSapThamGia().observe(getViewLifecycleOwner(),suKiens -> {
+            for(SuKien sk : suKiens)
+            {
+                if(sk.getMaSK() == SuKienViewModel.getSk().getValue().getMaSK())
+                {
+                    btn_dk.setText("Đã đăng ký");
+                    btn_dk.setBackgroundResource(R.drawable.custom_btn_dksk);
+                    btn_dk.setEnabled(false);
+                }
+
+            }
+        });
+
         btn_ql.setOnClickListener(this);
         return v;
     }
