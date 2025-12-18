@@ -1,4 +1,4 @@
-package com.example.eventhub;
+package com.example.eventhub.Model;
 
 import android.content.Context;
 import android.content.SharedPreferences;

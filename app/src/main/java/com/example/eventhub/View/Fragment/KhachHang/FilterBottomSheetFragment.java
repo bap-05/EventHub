@@ -54,7 +54,7 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         // 1. Nhóm Thể thao
         ToggleButton sportToggle = view.findViewById(R.id.sport);
         ImageView sportIcon = view.findViewById(R.id.ic_sport);
-        TextView sportText = view.findViewById(R.id.textView3);
+        TextView sportText = view.findViewById(R.id.txt_sport);
 
         sportToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -74,7 +74,7 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         // 2. Nhóm Âm nhạc
         ToggleButton musicToggle = view.findViewById(R.id.music);
         ImageView musicIcon = view.findViewById(R.id.ic_music);
-        TextView musicText = view.findViewById(R.id.textView4);
+        TextView musicText = view.findViewById(R.id.txt_music);
 
         musicToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -93,7 +93,7 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         ToggleButton cnxToggle = view.findViewById(R.id.cnx);
         ImageView cnxIcon = view.findViewById(R.id.ic_cnx);
         // ID "textView5" là ID của chữ "Chủ nhật xanh" trong XML của bạn
-        TextView cnxText = view.findViewById(R.id.textView5);
+        TextView cnxText = view.findViewById(R.id.txt_cnx);
 
         cnxToggle.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override

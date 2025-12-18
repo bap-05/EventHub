@@ -19,6 +19,9 @@ public class SuKienViewModel extends ViewModel {
     private MutableLiveData<List<SuKien>> listSKSapToi = new MutableLiveData<>();
     private MutableLiveData<String> err = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>>listSKdienra = new MutableLiveData<>();
+    private MutableLiveData<List<SuKien>> listSKSapThamGia = new MutableLiveData<>();
+    private MutableLiveData<List<SuKien>> listSKDaThamGia = new MutableLiveData<>();
+
 
     public MutableLiveData<List<SuKien>> getListSKdienra() {
         return listSKdienra;
@@ -45,6 +48,13 @@ public class SuKienViewModel extends ViewModel {
     public void setSk(SuKien sk) {
         this.sk.postValue(sk);
     }
+    public MutableLiveData<List<SuKien>> getListSKSapThamGia() {
+        return listSKSapThamGia;
+    }
+
+    public MutableLiveData<List<SuKien>> getListSKDaThamGia() {
+        return listSKDaThamGia;
+    }
 
     public void loadSuKien()
     {
@@ -58,5 +68,11 @@ public class SuKienViewModel extends ViewModel {
     public void load_SK_saptoi()
     {
         suKienRepository.SuKienSapToi(listSKSapToi,err);
+    }
+    public void loadSuKienSapThamGia(int userId){
+        suKienRepository.getSuKienSapThamGia(userId,listSKSapThamGia,err);
+    }
+    public void loadSuKienDaThamGia(int userId){
+        suKienRepository.getSuKienDaThamGia(userId,listSKDaThamGia,err);
     }
 }
