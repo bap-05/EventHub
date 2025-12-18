@@ -63,4 +63,5 @@ dependencies {
     implementation("com.google.zxing:core:3.5.1")
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+    implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
 }

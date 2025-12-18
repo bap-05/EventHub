@@ -46,17 +46,7 @@ MainActivity extends AppCompatActivity {
         bottomNav.setItemActiveIndicatorColor(ColorStateList.valueOf(mauCuaToi));
 // 3. QUAN TRỌNG: Liên kết chúng lại với nhau
         NavigationUI.setupWithNavController(bottomNav, navController);
-        SharedPreferences preferences = getSharedPreferences("eventhub_prefs",MODE_PRIVATE);
-        String email = preferences.getString("email",null);
-        if (email != null) {
-            // NavOptions giúp xóa lịch sử để khi bấm Back không quay lại màn hình Welcome
-            NavOptions navOptions = new NavOptions.Builder()
-                    .setPopUpTo(R.id.wellComeFragment, true)
-                    .build();
 
-            // Lưu ý: R.id.homeFragment phải là ID của fragment Home trong nav_graph.xml
-            navController.navigate(R.id.nav_home, null, navOptions);
-        }
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.wellComeFragment
                     || destination.getId() == R.id.loginFragment || destination.getId() == R.id.forgotPasswordFragment

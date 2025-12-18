@@ -11,10 +11,13 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,12 +26,17 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.Adapter.ProfileViewPager2Adapter;
+import com.example.eventhub.Model.SessionManager;
 import com.example.eventhub.R;
 import com.example.eventhub.View.CaptureActivityPortrait;
 import com.example.eventhub.View.PreviewPhotoActivity;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.material.tabs.TabLayout;
@@ -40,10 +48,17 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
+import de.hdodenhof.circleimageview.CircleImageView;
+
 public class ProfileFragment extends Fragment {
 
     private enum PendingAction { NONE, SCAN, CAMERA }
-
+    private CircleImageView avatarProfile;
+    private TextView txtTenTK,txtMaSV,txtKhoa;
+    private ProgressBar pgbDiem;
+    private TaiKhoanViewModel taiKhoanViewModel;
+    private SessionManager sessionManager;
+    private int currentUserId;
     private TabLayout tabLayout;
     private ViewPager2 viewPager2;
     private ProfileViewPager2Adapter viewPager2Adapter;
@@ -115,8 +130,14 @@ public class ProfileFragment extends Fragment {
             });
 
     @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        taiKhoanViewModel = new ViewModelProvider(this).get(TaiKhoanViewModel.class);
+    }
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedIntanceState) {
         return inflater.inflate(R.layout.fragment_profile, container, false);
+
     }
 
     @Override
@@ -124,14 +145,37 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedIntancesState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         initViews(view);
+        sessionManager = SessionManager.getInstance(requireContext());
+        if (!sessionManager.isLoggedIn()) {
+            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
+            Navigation.findNavController(view).navigate(R.id.loginFragment);
+            return;
+        }try {
+            String idStr = sessionManager.getUserId();
+            currentUserId = Integer.parseInt(idStr);
+        } catch (NumberFormatException e) {
+            Log.e("ProfileFragment", "Lỗi convert ID: " + e.getMessage());
+            sessionManager.clear();
+            Navigation.findNavController(view).navigate(R.id.loginFragment);
+            return;
+        }
         setUpEventTabLayout();
+        observeViewModel();
+        taiKhoanViewModel.loadUserProfile(currentUserId);
         setupQrButton();
     }
+
+
 
     private void initViews(View view) {
         tabLayout = view.findViewById(R.id.tabLayout);
         viewPager2 = view.findViewById(R.id.viewPager);
         imgbtnQr = view.findViewById(R.id.imgbtn_Qr);
+        avatarProfile = view.findViewById(R.id.avatar_profile);
+        txtTenTK = view.findViewById(R.id.textView);
+        txtMaSV = view.findViewById(R.id.txtMaSV);
+        txtKhoa = view.findViewById(R.id.txtKhoa);
+        pgbDiem = view.findViewById(R.id.pgb_Diem);
     }
 
     private void setupQrButton() {
@@ -244,7 +288,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setUpEventTabLayout() {
-        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity());
+        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity(), currentUserId);
         viewPager2.setAdapter(viewPager2Adapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             if (position == 0) {
@@ -254,5 +298,27 @@ public class ProfileFragment extends Fragment {
             }
         }).attach();
 
+    }
+    private void observeViewModel() {
+        taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
+            if(taiKhoan != null){
+                txtTenTK.setText(taiKhoan.getHoTen());
+                txtMaSV.setText(taiKhoan.getMaSV());
+                txtKhoa.setText(taiKhoan.getKhoa());
+                pgbDiem.setProgress(taiKhoan.getDiemTichLuy());
+                if(getContext() != null){
+                    Glide.with(getContext())
+                            .load(taiKhoan.getAVT())
+                            .placeholder(R.drawable.avatar)
+                            .error(R.drawable.avatar)
+                            .into(avatarProfile);
+                }
+            }
+    });
+        taiKhoanViewModel.getErr().observe(getViewLifecycleOwner(), errorMsg -> {
+            if (errorMsg != null && !errorMsg.isEmpty() && getContext() != null) {
+                Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

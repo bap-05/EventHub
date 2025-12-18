@@ -1,13 +1,49 @@
 package com.example.eventhub.Model;
 
-public class TaiKhoan {
-    private String MaTk, MaSV, HoTen, Khoa, Lop, AVT, Email, Pass, VaiTro, DiemTichLuy;
+import com.google.gson.annotations.SerializedName;
+import java.io.Serializable;
 
-    public String getMaTk() {
+public class TaiKhoan implements Serializable {
+
+    @SerializedName("MaTK")
+    private int MaTk;
+
+    @SerializedName("MaSV")
+    private String MaSV;
+
+    @SerializedName("TenTK")
+    private String HoTen;
+
+    @SerializedName("Khoa")
+    private String Khoa;
+
+    @SerializedName("Lop")
+    private String Lop;
+
+    @SerializedName("AVT")
+    private String AVT;
+
+    @SerializedName("Email")
+    private String Email;
+
+    @SerializedName("Pass")
+    private String Pass;
+
+    @SerializedName("VaiTro")
+    private String VaiTro;
+
+    @SerializedName("DiemTichLuy")
+    private int DiemTichLuy;
+
+    public TaiKhoan() {
+    }
+
+
+    public int getMaTk() {
         return MaTk;
     }
 
-    public void setMaTk(String maTk) {
+    public void setMaTk(int maTk) {
         MaTk = maTk;
     }
 
@@ -75,11 +111,11 @@ public class TaiKhoan {
         VaiTro = vaiTro;
     }
 
-    public String getDiemTichLuy() {
+    public int getDiemTichLuy() {
         return DiemTichLuy;
     }
 
-    public void setDiemTichLuy(String diemTichLuy) {
+    public void setDiemTichLuy(int diemTichLuy) {
         DiemTichLuy = diemTichLuy;
     }
 }
