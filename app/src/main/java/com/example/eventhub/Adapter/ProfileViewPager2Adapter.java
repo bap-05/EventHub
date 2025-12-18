@@ -17,7 +17,7 @@ public class ProfileViewPager2Adapter extends FragmentStateAdapter {
     private int userId;
 
 
-    public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity) {
+    public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity, int userId) {
         super(fragmentActivity);
         this.userId = userId;
     }

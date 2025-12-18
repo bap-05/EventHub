@@ -289,7 +289,8 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setUpEventTabLayout() {
-        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity(), currentUserId);        viewPager2.setAdapter(viewPager2Adapter);
+        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity(), currentUserId);
+        viewPager2.setAdapter(viewPager2Adapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             if (position == 0) {
                 tab.setText("Sắp tham gia");
@@ -300,12 +301,12 @@ public class ProfileFragment extends Fragment {
 
     }
     private void observeViewModel() {
-        TaiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
+        taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if(taiKhoan != null){
                 txtTenTK.setText(taiKhoan.getHoTen());
                 txtMaSV.setText(taiKhoan.getMaSV());
                 txtKhoa.setText(taiKhoan.getKhoa());
-                pgbDiem.setProgress(Integer.parseInt(taiKhoan.getDiemTichLuy()));
+                pgbDiem.setProgress(taiKhoan.getDiemTichLuy());
                 if(getContext() != null){
                     Glide.with(getContext())
                             .load(taiKhoan.getAVT())
