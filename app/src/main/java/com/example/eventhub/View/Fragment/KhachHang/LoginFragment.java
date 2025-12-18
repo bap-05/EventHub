@@ -29,7 +29,7 @@ public class LoginFragment extends Fragment {
     static final String KEY_REMEMBER = "remember";
     static final String KEY_EMAIL = "email";
     static final String KEY_PASSWORD = "password";
-
+    private SessionManager sessionManager;
     private EditText emailInput;
     private EditText passwordInput;
     private View loginButton;
@@ -59,9 +59,11 @@ public class LoginFragment extends Fragment {
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
-                SessionManager sessionManager = SessionManager.getInstance(requireContext());
-                SessionManager.saveUser(
-                        String.valueOf(taiKhoan.getMaTK()),
+                if (sessionManager == null) {
+                    sessionManager = SessionManager.getInstance(requireContext());
+                }
+                sessionManager.saveUser(
+                        String.valueOf(taiKhoan.getMaTk()),
                         taiKhoan.getEmail(),
                         taiKhoan.getHoTen(),
                         taiKhoan.getAVT()
