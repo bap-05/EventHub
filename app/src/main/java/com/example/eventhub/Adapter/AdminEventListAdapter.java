@@ -1,5 +1,7 @@
 package com.example.eventhub.Adapter;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,10 +10,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Model.AdminEventItem;
 import com.example.eventhub.R;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.List;
 
@@ -50,11 +54,14 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
 
         if (item.isShowQr()) {
             holder.qrIcon.setVisibility(View.VISIBLE);
+            holder.bindQrClick(holder.itemView.getContext());
         } else if (item.isShowDone()) {
             holder.qrIcon.setVisibility(View.VISIBLE);
             holder.qrIcon.setImageResource(item.getDoneIconRes());
+            holder.qrIcon.setOnClickListener(null);
         } else {
             holder.qrIcon.setVisibility(View.GONE);
+            holder.qrIcon.setOnClickListener(null);
         }
     }
 
@@ -84,6 +91,26 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             avatar2 = itemView.findViewById(R.id.avatar2);
             avatar3 = itemView.findViewById(R.id.avatar3);
             progressBar = itemView.findViewById(R.id.progress_line);
+        }
+
+        void bindQrClick(Context context) {
+            qrIcon.setOnClickListener(v -> {
+                try {
+                    BarcodeEncoder encoder = new BarcodeEncoder();
+                    Bitmap bitmap = encoder.encodeBitmap("1", com.google.zxing.BarcodeFormat.QR_CODE, 500, 500);
+                    ImageView qrView = new ImageView(context);
+                    qrView.setImageBitmap(bitmap);
+                    int padding = (int) (16 * context.getResources().getDisplayMetrics().density);
+                    qrView.setPadding(padding, padding, padding, padding);
+                    new AlertDialog.Builder(context)
+                            .setTitle("QR sự kiện")
+                            .setView(qrView)
+                            .setPositiveButton("Đóng", null)
+                            .show();
+                } catch (Exception e) {
+                    // ignore silently for test
+                }
+            });
         }
     }
 }
