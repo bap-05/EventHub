@@ -27,9 +27,9 @@ public class SearchFragment extends Fragment {
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilterBottomSheetFragment filterSheet = new FilterBottomSheetFragment();
+//                FilterBottomSheetFragment filterSheet = new FilterBottomSheetFragment();
 
-                filterSheet.show(getParentFragmentManager(), "FilterBottomSheet");
+//                filterSheet.show(getParentFragmentManager(), "FilterBottomSheet");
             }
         });
 

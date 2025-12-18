@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Adapter.EventAdapter;
-import com.example.eventhub.Model.SuKien;
+//import com.example.eventhub.Model.SuKienSapToi;
 import com.example.eventhub.R;
 
 import java.util.ArrayList;
@@ -26,7 +26,7 @@ public class DaThamGiaFragment extends Fragment {
         View view=inflater.inflate(R.layout.fragment_event_list,container,false);
         RecyclerView recyclerView=view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        List<SuKien> skdathamgia = new ArrayList<>();
+//        List<SuKienSapToi> skdathamgia = new ArrayList<>();
 //        skdathamgia.add(new SuKienSapToi(
 //                "Ngày hội tân sinh viên 2025",
 //                "URL_POSTER_3",
@@ -46,8 +46,8 @@ public class DaThamGiaFragment extends Fragment {
 //                102,
 //                2
 //        ));
-        EventAdapter adapter=new EventAdapter(skdathamgia);
-        recyclerView.setAdapter(adapter);
+//        EventAdapter adapter=new EventAdapter(skdathamgia);
+//        recyclerView.setAdapter(adapter);
         return view;
     }
 }
