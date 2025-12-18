@@ -49,22 +49,26 @@ public class TaiKhoanRespository {
 
         });
     }
-    public void getUserProfile(int userId,MutableLiveData<TaiKhoan>liveData,MutableLiveData<String>err){
-        Call<TaiKhoan> call = iapi.getUserProfile(userId);
-        call.enqueue(new Callback<TaiKhoan>() {
+    public void getUserProfile(int userId, MutableLiveData<TaiKhoan> liveData, MutableLiveData<String> err) {
+        // Đổi Call<TaiKhoan> thành Call<ProfileResponse>
+        Call<ProfileResponse> call = iapi.getUserProfile(userId);
+
+        call.enqueue(new Callback<ProfileResponse>() { // Sửa Generic type ở đây
             @Override
-            public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
-                if(response.isSuccessful() && response.body() != null){
-                    liveData.postValue(response.body());
-                } else{
-                    err.postValue("Không tìm thấy thông tin. Mã lỗi: " + response.code());                }
+            public void onResponse(Call<ProfileResponse> call, Response<ProfileResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    // Quan trọng: Lấy TaiKhoan từ bên trong ProfileResponse
+                    liveData.postValue(response.body().getProfile());
+                } else {
+                    err.postValue("Không tìm thấy thông tin. Mã lỗi: " + response.code());
+                }
             }
 
             @Override
-            public void onFailure(Call<TaiKhoan> call, Throwable t) {
+            public void onFailure(Call<ProfileResponse> call, Throwable t) {
                 Log.e("API_ERROR", "Lỗi lấy profile: " + t.getMessage());
                 err.postValue("Lỗi kết nối: " + t.getMessage());
             }
         });
-    };
+    }
 }

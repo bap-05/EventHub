@@ -27,6 +27,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.bumptech.glide.Glide;
@@ -147,8 +148,7 @@ public class ProfileFragment extends Fragment {
         sessionManager = SessionManager.getInstance(requireContext());
         if (!sessionManager.isLoggedIn()) {
             Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
-            startActivity(new Intent(getContext(), LoginFragment.class));
-            requireActivity().finish();
+            Navigation.findNavController(view).navigate(R.id.loginFragment);
             return;
         }try {
             String idStr = sessionManager.getUserId();
@@ -156,8 +156,7 @@ public class ProfileFragment extends Fragment {
         } catch (NumberFormatException e) {
             Log.e("ProfileFragment", "Lỗi convert ID: " + e.getMessage());
             sessionManager.clear();
-            startActivity(new Intent(getContext(), LoginFragment.class));
-            requireActivity().finish();
+            Navigation.findNavController(view).navigate(R.id.loginFragment);
             return;
         }
         setUpEventTabLayout();

@@ -18,10 +18,12 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
 import com.example.eventhub.Model.SessionManager;
+import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
+import com.google.gson.Gson;
 
 public class LoginFragment extends Fragment {
 
@@ -56,6 +58,7 @@ public class LoginFragment extends Fragment {
         populateSavedCredentials();
 
         TaiKhoanViewModel taiKhoanViewModel = new ViewModelProvider(requireActivity()).get(TaiKhoanViewModel.class);
+        taiKhoanViewModel.getTaikhoan().setValue(null);
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
@@ -68,7 +71,7 @@ public class LoginFragment extends Fragment {
                         taiKhoan.getHoTen(),
                         taiKhoan.getAVT()
                 );
-                handleRememberState();
+                handleRememberState(taiKhoan);
                 Navigation.findNavController(requireView()).navigate(R.id.nav_home);
             }
         });
@@ -102,16 +105,15 @@ public class LoginFragment extends Fragment {
             passwordInput.setText(preferences.getString(KEY_PASSWORD, ""));
         }
     }
-    private void handleRememberState() {
+    private void handleRememberState(TaiKhoan taiKhoan) {
         SharedPreferences.Editor editor = preferences.edit();
         if (rememberSwitch.isChecked()) {
-            editor.putBoolean(KEY_REMEMBER, true);
-            editor.putString(KEY_EMAIL, emailInput.getText().toString().trim());
-            editor.putString(KEY_PASSWORD, passwordInput.getText().toString().trim());
+            Gson gson = new Gson();
+            String tk = gson.toJson(taiKhoan);
+            editor.putString("TaiKhoan", tk);
         } else {
             editor.putBoolean(KEY_REMEMBER, false);
-            editor.remove(KEY_EMAIL);
-            editor.remove(KEY_PASSWORD);
+            editor.remove("TaiKhoan");
         }
         editor.apply();
     }

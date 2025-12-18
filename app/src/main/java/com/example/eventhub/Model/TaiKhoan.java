@@ -11,7 +11,7 @@ public class TaiKhoan implements Serializable {
     @SerializedName("MaSV")
     private String MaSV;
 
-    @SerializedName("HoTen")
+    @SerializedName("TenTK")
     private String HoTen;
 
     @SerializedName("Khoa")

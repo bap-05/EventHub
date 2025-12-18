@@ -1,5 +1,6 @@
 package com.example.eventhub.Adapter;
 
+import android.os.Bundle;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
@@ -25,14 +26,20 @@ public class ProfileViewPager2Adapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        switch (position) {
-            case 0:
-                return new SapThamGiaFragment();
-            case 1:
-                return new DaThamGiaFragment();
-            default:
-                return new SapThamGiaFragment();
+        // Tạo Bundle để đóng gói userId gửi đi
+        Bundle args = new Bundle();
+        args.putInt("USER_ID", userId); // Key "USER_ID" này phải khớp với Fragment con
+
+        Fragment fragment;
+        if (position == 0) {
+            fragment = new SapThamGiaFragment();
+        } else {
+            fragment = new DaThamGiaFragment();
         }
+
+        // Gắn Bundle vào Fragment
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
