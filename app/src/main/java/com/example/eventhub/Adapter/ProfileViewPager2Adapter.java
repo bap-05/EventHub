@@ -17,29 +17,18 @@ import de.hdodenhof.circleimageview.CircleImageView;
 public class ProfileViewPager2Adapter extends FragmentStateAdapter {
     private int userId;
 
-
     public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity, int userId) {
         super(fragmentActivity);
         this.userId = userId;
     }
-
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        // Tạo Bundle để đóng gói userId gửi đi
-        Bundle args = new Bundle();
-        args.putInt("USER_ID", userId); // Key "USER_ID" này phải khớp với Fragment con
-
-        Fragment fragment;
         if (position == 0) {
-            fragment = new SapThamGiaFragment();
+            return SapThamGiaFragment.newInstance(userId);
         } else {
-            fragment = new DaThamGiaFragment();
+            return DaThamGiaFragment.newInstance(userId);
         }
-
-        // Gắn Bundle vào Fragment
-        fragment.setArguments(args);
-        return fragment;
     }
 
     @Override

@@ -54,14 +54,12 @@ public class SuKienRepository {
         });
     }
 
-    // Đã sửa: Đổi Call<List> thành Call<ApiResponse>
     public void getSuKienSapThamGia(int userId, MutableLiveData<List<SuKien>> liveData, MutableLiveData<String> err){
         Call<ApiResponse> call = iapi.getSuKienSapThamGia(userId);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if(response.isSuccessful() && response.body() != null){
-                    // Quan trọng: Lấy list từ bên trong ApiResponse ra
                     liveData.postValue(response.body().getSuKienList());
                 } else {
                     err.postValue("Lỗi tải dữ liệu: " + response.code());
@@ -76,14 +74,12 @@ public class SuKienRepository {
         });
     }
 
-    // Đã sửa: Đổi Call<List> thành Call<ApiResponse>
     public void getSuKienDaThamGia(int userId, MutableLiveData<List<SuKien>> liveData, MutableLiveData<String> err){
         Call<ApiResponse> call = iapi.getSuKienDaThamGia(userId);
         call.enqueue(new Callback<ApiResponse>() {
             @Override
             public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
                 if (response.isSuccessful() && response.body() != null){
-                    // Quan trọng: Lấy list từ bên trong ApiResponse ra
                     liveData.postValue(response.body().getSuKienList());
                 } else {
                     err.postValue("Lỗi tải dữ liệu: " + response.code());
