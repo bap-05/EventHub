@@ -49,4 +49,22 @@ public class TaiKhoanRespository {
 
         });
     }
+    public void getUserProfile(int userId,MutableLiveData<TaiKhoan>liveData,MutableLiveData<String>err){
+        Call<TaiKhoan> call = iapi.getUserProfile(userId);
+        call.enqueue(new Callback<TaiKhoan>() {
+            @Override
+            public void onResponse(Call<TaiKhoan> call, Response<TaiKhoan> response) {
+                if(response.isSuccessful() && response.body() != null){
+                    liveData.postValue(response.body());
+                } else{
+                    err.postValue("Không tìm thấy thông tin. Mã lỗi: " + response.code());                }
+            }
+
+            @Override
+            public void onFailure(Call<TaiKhoan> call, Throwable t) {
+                Log.e("API_ERROR", "Lỗi lấy profile: " + t.getMessage());
+                err.postValue("Lỗi kết nối: " + t.getMessage());
+            }
+        });
+    };
 }
