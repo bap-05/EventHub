@@ -29,13 +29,10 @@ public class TaiKhoanRespository {
                     TaiKhoan resultAccount = response.body().getTaiKhoan();
                     if (resultAccount != null) {
                         liveData.postValue(resultAccount);
-                        err.postValue("");
-                    } else {
-                        err.postValue("Tài khoản hoặc mật khẩu không đúng!");
-                        liveData.postValue(null);
+                        err.postValue(null);
                     }
                 } else {
-                    err.postValue("Lỗi Server: " + response.code());
+                    err.postValue("Tài khoản hoặc mật khẩu không đúng!");
                     liveData.postValue(null);
                 }
             }

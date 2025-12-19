@@ -63,7 +63,10 @@ public class LoginFragment extends Fragment {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
                 handleRememberState(taiKhoan);
-                Navigation.findNavController(requireView()).navigate(R.id.nav_home);
+                if(taiKhoan.getVaiTro().equals("SinhVien"))
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_home);
+                else
+                    Navigation.findNavController(requireView()).navigate(R.id.nav_home_admin);
             }
         });
 

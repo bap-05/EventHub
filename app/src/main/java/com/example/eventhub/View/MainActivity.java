@@ -43,7 +43,6 @@ MainActivity extends AppCompatActivity {
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         NavController navController = navHostFragment.getNavController();
-
 // 2. Tìm BottomNavigationView
         bottomNav = findViewById(R.id.bottom_navigation);
         int mauCuaToi = android.graphics.Color.parseColor("#FFFFFFFF");
@@ -53,21 +52,48 @@ MainActivity extends AppCompatActivity {
         Gson gson = new Gson();
         SharedPreferences preferences = getSharedPreferences("eventhub_prefs",MODE_PRIVATE);
         String tk = preferences.getString("TaiKhoan", "");
-
 // Lúc này tk không bao giờ bị null nữa, code chạy an toàn
+        TaiKhoanViewModel.getTaikhoan().observe(this,taiKhoan -> {
+            if(taiKhoan!=null){
+                if(taiKhoan.getVaiTro().equals("SinhVien"))
+                {
+                    bottomNav.getMenu().clear();
+                    bottomNav.inflateMenu(R.menu.bottom_nav_menu);
+                }
+                else
+                {
+                    bottomNav.getMenu().clear();
+                    bottomNav.inflateMenu(R.menu.bottom_nav_menu_admin);
+                }
+            }
+        });
         if(!tk.isEmpty())
         {
             try {
-                TaiKhoanViewModel.setTaikhoan(gson.fromJson(tk, TaiKhoan.class));
+                TaiKhoan taiKhoandn = gson.fromJson(tk, TaiKhoan.class);
+                TaiKhoanViewModel.setTaikhoan(taiKhoandn);
                 NavOptions navOptions = new NavOptions.Builder()
                         .setPopUpTo(R.id.wellComeFragment, true)
                         .build();
-                navController.navigate(R.id.nav_home, null, navOptions);
+                if (taiKhoandn.getVaiTro().equals("SinhVien"))
+                {
+
+                    navController.navigate(R.id.nav_home, null, navOptions);
+
+                }
+
+                else{
+
+                    navController.navigate(R.id.nav_home_admin, null, navOptions);
+                }
+
             } catch (Exception e) {
                 // Phòng trường hợp chuỗi JSON bị lỗi format
                 e.printStackTrace();
             }
         }
+
+
         navController.addOnDestinationChangedListener((controller, destination, arguments) -> {
             if (destination.getId() == R.id.wellComeFragment
                     || destination.getId() == R.id.loginFragment || destination.getId() == R.id.forgotPasswordFragment
