@@ -145,23 +145,23 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedIntancesState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         initViews(view);
-        sessionManager = SessionManager.getInstance(requireContext());
-        if (!sessionManager.isLoggedIn()) {
-            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
-            Navigation.findNavController(view).navigate(R.id.loginFragment);
-            return;
-        }try {
-            String idStr = sessionManager.getUserId();
-            currentUserId = Integer.parseInt(idStr);
-        } catch (NumberFormatException e) {
-            Log.e("ProfileFragment", "Lỗi convert ID: " + e.getMessage());
-            sessionManager.clear();
-            Navigation.findNavController(view).navigate(R.id.loginFragment);
-            return;
-        }
+//        sessionManager = SessionManager.getInstance(requireContext());
+//        if (!sessionManager.isLoggedIn()) {
+//            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
+//            Navigation.findNavController(view).navigate(R.id.loginFragment);
+//            return;
+//        }try {
+//            String idStr = sessionManager.getUserId();
+//            currentUserId = Integer.parseInt(idStr);
+//        } catch (NumberFormatException e) {
+//            Log.e("ProfileFragment", "Lỗi convert ID: " + e.getMessage());
+//            sessionManager.clear();
+//            Navigation.findNavController(view).navigate(R.id.loginFragment);
+//            return;
+//        }
+
         setUpEventTabLayout();
         observeViewModel();
-        taiKhoanViewModel.loadUserProfile(currentUserId);
         setupQrButton();
     }
 
@@ -288,7 +288,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setUpEventTabLayout() {
-        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity(), currentUserId);
+        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity());
         viewPager2.setAdapter(viewPager2Adapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             if (position == 0) {
@@ -302,7 +302,9 @@ public class ProfileFragment extends Fragment {
     private void observeViewModel() {
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if(taiKhoan != null){
+
                 txtTenTK.setText(taiKhoan.getHoTen());
+
                 txtMaSV.setText(taiKhoan.getMaSV());
                 txtKhoa.setText(taiKhoan.getKhoa());
                 pgbDiem.setProgress(taiKhoan.getDiemTichLuy());

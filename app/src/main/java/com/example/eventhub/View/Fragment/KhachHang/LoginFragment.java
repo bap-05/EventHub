@@ -15,12 +15,15 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
 
 import com.example.eventhub.Model.SessionManager;
 import com.example.eventhub.Model.TaiKhoan;
+import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.R;
+import com.example.eventhub.View.MainActivity;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.gson.Gson;
 
@@ -54,19 +57,11 @@ public class LoginFragment extends Fragment {
         TextView forgotPassword = view.findViewById(R.id.forgotPass);
 
         preferences = requireContext().getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
-        sessionManager = SessionManager.getInstance(requireContext());
 
         TaiKhoanViewModel taiKhoanViewModel = new ViewModelProvider(requireActivity()).get(TaiKhoanViewModel.class);
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
-                // Lưu session người dùng
-                sessionManager.saveUser(
-                        String.valueOf(taiKhoan.getMaTk()),
-                        taiKhoan.getEmail(),
-                        taiKhoan.getHoTen(),
-                        taiKhoan.getAVT()
-                );
-                // Lưu trạng thái nhớ đăng nhập
+                // Lưu trạng thái đăng nhập (SharedPreferences...)
                 handleRememberState(taiKhoan);
                 if ("SinhVien".equalsIgnoreCase(taiKhoan.getVaiTro())) {
                     Navigation.findNavController(requireView()).navigate(R.id.nav_home);
@@ -83,26 +78,25 @@ public class LoginFragment extends Fragment {
         });
 
         loginButton.setOnClickListener(v -> {
-            if (emailInput.getText().toString().isEmpty() && passwordInput.getText().toString().isEmpty()) {
-                Toast.makeText(view.getContext(), "Vui lòng nhập đầy đủ thông tin", Toast.LENGTH_LONG).show();
-            } else {
-                TaiKhoanDN taiKhoanDN = new TaiKhoanDN(emailInput.getText().toString().trim(), passwordInput.getText().toString().trim());
+            if(emailInput.getText().toString().isEmpty() && passwordInput.getText().toString().isEmpty())
+            {
+                Toast.makeText(view.getContext(),"Vui lòng nhập đầy đủ thông tin",Toast.LENGTH_LONG).show();
+            }
+            else {
+                TaiKhoanDN taiKhoanDN = new TaiKhoanDN(emailInput.getText().toString().trim(),passwordInput.getText().toString().trim());
                 taiKhoanViewModel.ktraLogin(taiKhoanDN);
             }
         });
-        forgotPassword.setOnClickListener(v -> Navigation.findNavController(v).navigate(R.id.forgotPasswordFragment));
+        forgotPassword.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.forgotPasswordFragment);
+        });
     }
-
     private void handleRememberState(TaiKhoan taiKhoan) {
         SharedPreferences.Editor editor = preferences.edit();
         if (rememberSwitch.isChecked()) {
             Gson gson = new Gson();
             String tk = gson.toJson(taiKhoan);
             editor.putString("TaiKhoan", tk);
-            editor.putBoolean(KEY_REMEMBER, true);
-        } else {
-            editor.putBoolean(KEY_REMEMBER, false);
-            editor.clear();
         }
         editor.apply();
     }

@@ -15,19 +15,19 @@ import com.example.eventhub.View.Fragment.KhachHang.SapThamGiaFragment;
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class ProfileViewPager2Adapter extends FragmentStateAdapter {
-    private int userId;
 
-    public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity, int userId) {
+
+    public ProfileViewPager2Adapter(@NonNull FragmentActivity fragmentActivity) {
         super(fragmentActivity);
-        this.userId = userId;
+
     }
     @NonNull
     @Override
     public Fragment createFragment(int position) {
         if (position == 0) {
-            return SapThamGiaFragment.newInstance(userId);
+            return SapThamGiaFragment.newInstance();
         } else {
-            return DaThamGiaFragment.newInstance(userId);
+            return DaThamGiaFragment.newInstance();
         }
     }
 
