@@ -34,7 +34,6 @@ public class TaiKhoan implements Serializable {
 
     @SerializedName("DiemTichLuy")
     private int DiemTichLuy;
-
     public TaiKhoan() {
     }
 
