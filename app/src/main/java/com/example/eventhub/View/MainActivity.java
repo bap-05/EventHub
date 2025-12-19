@@ -54,8 +54,10 @@ MainActivity extends AppCompatActivity {
         String tk = preferences.getString("TaiKhoan", "");
 // Lúc này tk không bao giờ bị null nữa, code chạy an toàn
         TaiKhoanViewModel.getTaikhoan().observe(this,taiKhoan -> {
+
             if(taiKhoan!=null){
-                if(taiKhoan.getVaiTro().equals("SinhVien"))
+
+                if("SinhVien".equals(taiKhoan.getVaiTro()))
                 {
                     bottomNav.getMenu().clear();
                     bottomNav.inflateMenu(R.menu.bottom_nav_menu);

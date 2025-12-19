@@ -3,6 +3,7 @@ package com.example.eventhub.View.Fragment.KhachHang;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -63,6 +64,7 @@ public class LoginFragment extends Fragment {
             if (taiKhoan != null) {
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
                 handleRememberState(taiKhoan);
+                Log.d("avt1",""+taiKhoan.getHoTen());
                 if(taiKhoan.getVaiTro().equals("SinhVien"))
                     Navigation.findNavController(requireView()).navigate(R.id.nav_home);
                 else
@@ -96,10 +98,6 @@ public class LoginFragment extends Fragment {
             Gson gson = new Gson();
             String tk = gson.toJson(taiKhoan);
             editor.putString("TaiKhoan", tk);
-            editor.putBoolean(KEY_REMEMBER,true);
-        } else {
-            editor.putBoolean(KEY_REMEMBER, false);
-            editor.clear();
         }
         editor.apply();
     }

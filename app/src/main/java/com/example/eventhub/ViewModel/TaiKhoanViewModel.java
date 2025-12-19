@@ -26,7 +26,7 @@ public class TaiKhoanViewModel extends ViewModel {
     public void ktraLogin(TaiKhoanDN taiKhoanDN){
         taiKhoanRespository.KtraLogin(taikhoan,err,taiKhoanDN);
     }
-    public void loadUserProfile(int userId){
-        taiKhoanRespository.getUserProfile(userId,taikhoan,err);
-    }
+//    public void loadUserProfile(int userId){
+//        taiKhoanRespository.getUserProfile(userId,taikhoan,err);
+//    }
 }
