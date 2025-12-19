@@ -288,7 +288,7 @@ public class ProfileFragment extends Fragment {
     }
 
     private void setUpEventTabLayout() {
-        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity(), currentUserId);
+        viewPager2Adapter = new ProfileViewPager2Adapter(requireActivity());
         viewPager2.setAdapter(viewPager2Adapter);
         new TabLayoutMediator(tabLayout, viewPager2, (tab, position) -> {
             if (position == 0) {
@@ -304,7 +304,7 @@ public class ProfileFragment extends Fragment {
             if(taiKhoan != null){
 
                 txtTenTK.setText(taiKhoan.getHoTen());
-                Log.d("avt",""+taiKhoan.getHoTen());
+
                 txtMaSV.setText(taiKhoan.getMaSV());
                 txtKhoa.setText(taiKhoan.getKhoa());
                 pgbDiem.setProgress(taiKhoan.getDiemTichLuy());

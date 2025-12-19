@@ -17,6 +17,7 @@ import com.example.eventhub.Adapter.EventAdapter;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.ViewModel.SuKienViewModel;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,20 +32,15 @@ public class SapThamGiaFragment extends Fragment {
 
     private SuKienViewModel suKienViewModel;
 
-    public static SapThamGiaFragment newInstance(int userId) {
+    public static SapThamGiaFragment newInstance() {
         SapThamGiaFragment fragment = new SapThamGiaFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_USER_ID, userId);
-        fragment.setArguments(args);
+
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentUserId = getArguments().getInt(ARG_USER_ID);
-        }
         suKienViewModel = new ViewModelProvider(this).get(SuKienViewModel.class);
     }
 
@@ -63,7 +59,7 @@ public class SapThamGiaFragment extends Fragment {
 
         observeViewModel();
 
-        suKienViewModel.loadSuKienSapThamGia(currentUserId);
+        suKienViewModel.loadSuKienSapThamGia(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk());
     }
 
     private void observeViewModel() {
