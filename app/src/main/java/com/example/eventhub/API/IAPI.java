@@ -1,8 +1,11 @@
 package com.example.eventhub.API;
 
+import com.example.eventhub.Model.ForgotPasswordRequest;
+import com.example.eventhub.Model.ResetPasswordRequest;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
+import com.example.eventhub.Model.VerifyOtpRequest;
 
 import java.util.List;
 
@@ -22,6 +25,15 @@ public interface IAPI {
 
     @POST("taikhoan/")
     Call<ApiResponse> taikhoan(@Body TaiKhoanDN taiKhoanDN);
+
+    @POST("taikhoan/forgot-password")
+    Call<ApiMessageResponse> sendOtp(@Body ForgotPasswordRequest request);
+
+    @POST("taikhoan/verify-otp")
+    Call<ApiMessageResponse> verifyOtp(@Body VerifyOtpRequest request);
+
+    @POST("taikhoan/reset-password")
+    Call<ApiMessageResponse> resetPassword(@Body ResetPasswordRequest request);
 
     @GET("profile/{userId}/sapthamgia")
     Call<List<SuKien>> getSuKienSapThamGia(@Path("userId") int userId);

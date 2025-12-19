@@ -15,8 +15,15 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
+import com.example.eventhub.API.ApiClient;
+import com.example.eventhub.API.ApiMessageResponse;
+import com.example.eventhub.API.IAPI;
+import com.example.eventhub.Model.ResetPasswordRequest;
 import com.example.eventhub.R;
-import com.example.eventhub.View.MainActivity;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ResetPasswordFragment extends Fragment {
 
@@ -28,6 +35,7 @@ public class ResetPasswordFragment extends Fragment {
     private Button updateButton;
     private String email;
     private String otp;
+    private IAPI iapi;
 
     public static ResetPasswordFragment newInstance(String email, String otp) {
         ResetPasswordFragment fragment = new ResetPasswordFragment();
@@ -63,6 +71,7 @@ public class ResetPasswordFragment extends Fragment {
         newPasswordInput = view.findViewById(R.id.newPass);
         confirmPasswordInput = view.findViewById(R.id.confirmPass);
         updateButton = view.findViewById(R.id.btnUpdate);
+        iapi = ApiClient.getClient().create(IAPI.class);
 
         view.findViewById(R.id.backBtn)
                 .setOnClickListener(v -> requireActivity().getOnBackPressedDispatcher().onBackPressed());
@@ -88,15 +97,42 @@ public class ResetPasswordFragment extends Fragment {
 
 
 
-        updateRememberedPassword(newPassword);
-        Navigation.findNavController(v).navigate(R.id.successFragment);
+        if (TextUtils.isEmpty(email)) {
+            Toast.makeText(requireContext(), "Khong tim thay email.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        updateButton.setEnabled(false);
+        updateButton.setAlpha(0.5f);
+        Call<ApiMessageResponse> call = iapi.resetPassword(new ResetPasswordRequest(email, newPassword));
+        call.enqueue(new Callback<ApiMessageResponse>() {
+            @Override
+            public void onResponse(Call<ApiMessageResponse> call, Response<ApiMessageResponse> response) {
+                updateButton.setEnabled(true);
+                updateButton.setAlpha(1f);
+                if (response.isSuccessful() && response.body() != null && response.body().isSuccess()) {
+                    updateRememberedPassword(newPassword);
+                    Navigation.findNavController(v).navigate(R.id.successFragment);
+                    return;
+                }
+                String message = response.body() != null ? response.body().getMessage() : "Khong doi duoc mat khau.";
+                Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(Call<ApiMessageResponse> call, Throwable t) {
+                updateButton.setEnabled(true);
+                updateButton.setAlpha(1f);
+                Toast.makeText(requireContext(), "Loi ket noi: " + t.getMessage(), Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void updateRememberedPassword(String newPassword) {
         SharedPreferences prefs = requireContext().getSharedPreferences(LoginFragment.AUTH_PREFS, requireContext().MODE_PRIVATE);
         boolean remember = prefs.getBoolean(LoginFragment.KEY_REMEMBER, false);
         String storedEmail = prefs.getString(LoginFragment.KEY_EMAIL, "");
-        if (remember && email.equalsIgnoreCase(storedEmail)) {
+        if (remember && email != null && email.equalsIgnoreCase(storedEmail)) {
             prefs.edit().putString(LoginFragment.KEY_PASSWORD, newPassword).apply();
         }
     }
