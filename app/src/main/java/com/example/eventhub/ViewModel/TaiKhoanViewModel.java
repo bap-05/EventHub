@@ -31,4 +31,5 @@ public class TaiKhoanViewModel extends ViewModel {
     public void uploadAvatar(int userId, MultipartBody.Part body) {
         taiKhoanRespository.updateAvatar(userId, body, taikhoan, err);
     }
+
 }
