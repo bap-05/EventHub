@@ -3,6 +3,7 @@ package com.example.eventhub.ViewModel;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
@@ -23,7 +24,9 @@ public class SuKienViewModel extends ViewModel {
     private MutableLiveData<List<SuKien>>listSKdienra = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>> listSKSapThamGia = new MutableLiveData<>();
     private MutableLiveData<List<SuKien>> listSKDaThamGia = new MutableLiveData<>();
-
+    private MutableLiveData<SuKien> sukiencantim = new MutableLiveData<>();
+    private MutableLiveData<String> thongBaoTimSK = new MutableLiveData<>();
+    private MutableLiveData<String> thongBaoUpload = new MutableLiveData<>();
     public static MutableLiveData<String> getDkSuKien() {
         return dkSuKien;
     }
@@ -33,6 +36,18 @@ public class SuKienViewModel extends ViewModel {
     }
 
     private List<SuKien> suKienList = new ArrayList<>();
+
+    public MutableLiveData<String> getThongBaoUpload() {
+        return thongBaoUpload;
+    }
+
+    public MutableLiveData<String> getThongBaoTimSK() {
+        return thongBaoTimSK;
+    }
+
+    public MutableLiveData<SuKien> getSukiencantim() {
+        return sukiencantim;
+    }
 
     public MutableLiveData<List<SuKien>> getListSKSapToi() {
         return listSKSapToi;
@@ -66,6 +81,14 @@ public class SuKienViewModel extends ViewModel {
         suKienRepository.SukienSapDienRa(listSK,err);
     }
 
+    public void setThongBaoUpload(String thongBao) {
+        this.thongBaoUpload.postValue(thongBao);
+    }
+
+    public void setSukiencantim(SuKien sukien) {
+        this.sukiencantim.postValue(sukien);
+    }
+
     public void load_SK_danhchobn()
     {
         suKienRepository.SuKienSapToi(listSKdienra,err);
@@ -83,5 +106,12 @@ public class SuKienViewModel extends ViewModel {
     public void dangKySuKien (ThamGiaSuKien thamGiaSuKien)
     {
         suKienRepository.dangKySuKien(dkSuKien,thamGiaSuKien);
+    }
+    public void timSuKien (ThamGiaSuKien thamGiaSuKien){
+        suKienRepository.timSuKien(sukiencantim,thongBaoTimSK,thamGiaSuKien);
+    }
+    public void uploadMinhChung(int id, MinhChung minhChung)
+    {
+        suKienRepository.uploadMinhChung(thongBaoUpload,id,minhChung);
     }
 }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData;
 import com.example.eventhub.API.ApiClient;
 import com.example.eventhub.API.ApiResponse;
 import com.example.eventhub.API.IAPI;
+import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.ThamGiaSuKien;
 
@@ -115,6 +116,45 @@ public class SuKienRepository {
             public void onFailure(Call<Void> call, Throwable t) {
                 Log.e("API",t.getMessage(),t);
                 err.postValue(t.getMessage());
+            }
+        });
+    }
+    public void timSuKien (MutableLiveData<SuKien> liveData, MutableLiveData<String> err, ThamGiaSuKien thamGiaSuKien){
+        Call<ApiResponse> call = iapi.timSuKien(thamGiaSuKien);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if(response.isSuccessful() && response.body()!=null)
+                {
+                    liveData.postValue(response.body().getSuKien());
+                    err.postValue(null);
+                }
+                else{
+                    err.postValue("Bạn chưa đăng ký tham gia sự kiện này!");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("API",t.getMessage(),t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+    public void uploadMinhChung(MutableLiveData<String>tb, int id, MinhChung minhChung){
+        Call<Void> call = iapi.uploadMinhChung(id,minhChung);
+        call.enqueue(new Callback<Void>() {
+            @Override
+            public void onResponse(Call<Void> call, Response<Void> response) {
+                if(response.isSuccessful())
+                    tb.postValue("Đã gửi thành công");
+                else
+                    tb.postValue("Đã xảy ra lỗi");
+            }
+
+            @Override
+            public void onFailure(Call<Void> call, Throwable t) {
+                tb.postValue(t.getMessage());
             }
         });
     }

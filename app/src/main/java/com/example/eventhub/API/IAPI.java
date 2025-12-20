@@ -1,5 +1,6 @@
 package com.example.eventhub.API;
 
+import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
@@ -40,4 +41,8 @@ public interface IAPI {
     @Multipart
     @PUT("profile/update-avatar/{userId}")
     Call<ApiResponse> updateAvatar(@Path("userId") int userId,@Part MultipartBody.Part avatar);
+    @POST("sukien/timsukien")
+    Call<ApiResponse> timSuKien(@Body ThamGiaSuKien suKien);
+    @PUT("sukien/uploadminhchung/{id}")
+    Call<Void> uploadMinhChung(@Path("id")int id, @Body MinhChung minhChung);
 }

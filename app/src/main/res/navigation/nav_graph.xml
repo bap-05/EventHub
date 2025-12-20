@@ -86,5 +86,15 @@
         android:label="AdminHomeFragment"
         tools:layout="@layout/fragment_admin_home" />
     <fragment android:id="@+id/nav_profile_admin" android:name="com.example.eventhub.View.Fragment.KhachHang.ProfileFragment" android:label="ProfileAdmin" tools:layout="@layout/fragment_profile" />
+    <fragment
+        android:id="@+id/previewPhotoFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.PreviewPhotoFragment"
+        android:label="PreviewPhotoFragment"
+        tools:layout="@layout/fragment_preview_photo"/>
+    <fragment
+        android:id="@+id/upLoadMinhChungFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.UpLoadMinhChungFragment"
+        android:label="UpLoadMinhChungFragment"
+        tools:layout="@layout/fragment_up_load_minh_chung"/>
 </navigation>
 

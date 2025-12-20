@@ -65,5 +65,13 @@ dependencies {
     implementation("com.google.zxing:core:3.5.1")
     implementation("com.google.android.gms:play-services-location:21.2.0")
     implementation("androidx.exifinterface:exifinterface:1.3.7")
+    implementation("com.cloudinary:cloudinary-android:2.5.0")
     implementation("com.squareup.okhttp3:logging-interceptor:4.9.3")
+
+    // --- THÊM 3 DÒNG NÀY ĐỂ SỬA LỖI 16KB ---
+    // Ép buộc Cloudinary dùng Fresco bản mới nhất hỗ trợ Android 15+
+    implementation("com.facebook.fresco:fresco:3.2.0")
+    implementation("com.facebook.fresco:animated-gif:3.2.0")
+    implementation("com.facebook.fresco:animated-webp:3.2.0")
+    implementation("com.facebook.fresco:webpsupport:3.2.0")
 }
