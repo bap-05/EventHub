@@ -8,10 +8,14 @@ import com.example.eventhub.Model.ThamGiaSuKien;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface IAPI {
@@ -33,7 +37,7 @@ public interface IAPI {
     Call<ProfileResponse> getUserProfile(@Path("userId") int userId);
     @POST("sukien/")
     Call<Void> DkSuKien(@Body ThamGiaSuKien thamGiaSuKien);
-    // 4. Update avatar (Nếu sau này bạn mở lại tính năng này)
-    // @PUT("profile/update-avatar")
-    // Call<TaiKhoan> updateAvatar(@Body UpdateAvatarRequest request);
+    @Multipart
+    @PUT("profile/update-avatar/{userId}")
+    Call<ApiResponse> updateAvatar(@Path("userId") int userId,@Part MultipartBody.Part avatar);
 }
