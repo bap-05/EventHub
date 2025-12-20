@@ -10,9 +10,11 @@ import com.example.eventhub.API.IAPI;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.http.Multipart;
 
 public class TaiKhoanRespository {
     private final IAPI iapi;
@@ -46,6 +48,25 @@ public class TaiKhoanRespository {
             }
 
         });
+    }
+    public  void updateAvatar(int userId, MultipartBody .Part body, MutableLiveData<TaiKhoan>liveData,MutableLiveData<String> err) {
+        Call<ApiResponse> call = iapi.updateAvatar(userId, body);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if(response.isSuccessful()&&response.body()!=null){
+                    liveData.postValue(response.body().getTaiKhoan());
+                }else{
+                    err.postValue("Lỗi upload: " + response.code());                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                err.postValue("Lỗi kết nối: " + t.getMessage());
+
+            }
+        });
+
     }
 //    public void getUserProfile(int userId, MutableLiveData<TaiKhoan> liveData, MutableLiveData<String> err) {
 //        // Đổi Call<TaiKhoan> thành Call<ProfileResponse>

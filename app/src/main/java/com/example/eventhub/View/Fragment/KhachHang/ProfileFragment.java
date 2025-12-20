@@ -33,8 +33,10 @@ import androidx.viewpager2.widget.ViewPager2;
 import com.bumptech.glide.Glide;
 import com.example.eventhub.Adapter.ProfileViewPager2Adapter;
 import com.example.eventhub.Model.SessionManager;
+import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.R;
 import com.example.eventhub.View.CaptureActivityPortrait;
+import com.example.eventhub.View.FileUtils;
 import com.example.eventhub.View.PreviewPhotoActivity;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -44,11 +46,16 @@ import com.google.android.material.tabs.TabLayoutMediator;
 import com.journeyapps.barcodescanner.ScanContract;
 import com.journeyapps.barcodescanner.ScanOptions;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.List;
 import java.util.Locale;
 
 import de.hdodenhof.circleimageview.CircleImageView;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.Multipart;
 
 public class ProfileFragment extends Fragment {
 
@@ -159,6 +166,19 @@ public class ProfileFragment extends Fragment {
 //            Navigation.findNavController(view).navigate(R.id.loginFragment);
 //            return;
 //        }
+        TaiKhoan currentAccount = TaiKhoanViewModel.getTaikhoan().getValue();
+        if (currentAccount != null) {
+            currentUserId = currentAccount.getMaTk();
+            // (Tuỳ chọn) Gọi API load lại profile để chắc chắn dữ liệu mới nhất
+            // taiKhoanViewModel.loadUserProfile(currentUserId);
+        } else {
+            // Trường hợp ViewModel bị null (rất hiếm nếu App chưa bị kill)
+            Toast.makeText(getContext(), "Chưa có thông tin đăng nhập!", Toast.LENGTH_SHORT).show();
+        }
+        if (avatarProfile != null) {
+            avatarProfile.setOnClickListener(v -> pickImageLauncher.launch("image/*"));
+        }
+
 
         setUpEventTabLayout();
         observeViewModel();
@@ -302,6 +322,7 @@ public class ProfileFragment extends Fragment {
     private void observeViewModel() {
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if(taiKhoan != null){
+                currentUserId = taiKhoan.getMaTk();
 
                 txtTenTK.setText(taiKhoan.getHoTen());
 
@@ -322,5 +343,33 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
             }
         });
+    }
+    private final ActivityResultLauncher<String> pickImageLauncher = registerForActivityResult(
+            new ActivityResultContracts.GetContent(),
+            uri ->{
+                if(uri !=null){
+                    uploadImageToSever(uri);
+                }
+            }
+    );
+
+    private void uploadImageToSever(Uri uri) {
+        if(getContext() == null) return;
+        TaiKhoan currentAccount = TaiKhoanViewModel.getTaikhoan().getValue();
+        if(currentAccount == null) {
+            Toast.makeText(getContext(), "Lỗi: Không tìm thấy thông tin tài khoản!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        int idToUpload = currentAccount.getMaTk();
+        String strRealPath = FileUtils.getRealPath(getContext(), uri);
+        if(strRealPath == null) {
+            Toast.makeText(getContext(), "Lỗi: Không tìm thấy đường dẫn ảnh!", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        File file = new File(strRealPath);
+        RequestBody requestBody = RequestBody.create(MediaType.parse("image/*"), file);
+        MultipartBody.Part part = MultipartBody.Part.createFormData("avatar", file.getName(), requestBody);
+        taiKhoanViewModel.uploadAvatar(idToUpload,part);
+        Toast.makeText(getContext(), "Đang cập nhật ảnh...", Toast.LENGTH_SHORT).show();
     }
 }

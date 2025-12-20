@@ -7,6 +7,8 @@ import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
 import com.example.eventhub.Repository.TaiKhoanRespository;
 
+import okhttp3.MultipartBody;
+
 public class TaiKhoanViewModel extends ViewModel {
     private TaiKhoanRespository taiKhoanRespository = new TaiKhoanRespository();
     private static MutableLiveData<TaiKhoan> taikhoan = new MutableLiveData<>();
@@ -26,7 +28,8 @@ public class TaiKhoanViewModel extends ViewModel {
     public void ktraLogin(TaiKhoanDN taiKhoanDN){
         taiKhoanRespository.KtraLogin(taikhoan,err,taiKhoanDN);
     }
-//    public void loadUserProfile(int userId){
-//        taiKhoanRespository.getUserProfile(userId,taikhoan,err);
-//    }
+    public void uploadAvatar(int userId, MultipartBody.Part body) {
+        taiKhoanRespository.updateAvatar(userId, body, taikhoan, err);
+    }
+
 }
