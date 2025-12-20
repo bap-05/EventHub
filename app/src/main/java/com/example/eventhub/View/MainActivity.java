@@ -106,7 +106,4 @@ MainActivity extends AppCompatActivity {
             }
         });
     }
-
-
-
 }

@@ -2,7 +2,6 @@ package com.example.eventhub.View.Fragment.KhachHang;
 
 import android.Manifest;
 import android.content.ContentValues;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -34,10 +33,11 @@ import com.bumptech.glide.Glide;
 import com.example.eventhub.Adapter.ProfileViewPager2Adapter;
 import com.example.eventhub.Model.SessionManager;
 import com.example.eventhub.Model.TaiKhoan;
+import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.View.CaptureActivityPortrait;
 import com.example.eventhub.View.FileUtils;
-import com.example.eventhub.View.PreviewPhotoActivity;
+import com.example.eventhub.ViewModel.SuKienViewModel;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -55,7 +55,6 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
-import retrofit2.http.Multipart;
 
 public class ProfileFragment extends Fragment {
 
@@ -108,30 +107,37 @@ public class ProfileFragment extends Fragment {
                 if (result.getContents() == null) {
                     Toast.makeText(getContext(), "Đã hủy quét", Toast.LENGTH_SHORT).show();
                 } else {
-                    if ("1".equals(result.getContents())) {
-                        Toast.makeText(getContext(), "Đã xác nhận bạn tham gia sự kiện id: 1", Toast.LENGTH_LONG).show();
-                        ensureLocationAndCamera();
-                    } else {
-                        Toast.makeText(getContext(), "Mã QR không hợp lệ", Toast.LENGTH_SHORT).show();
-                    }
+//                    if ("1".equals(result.getContents())) {
+//                        Toast.makeText(getContext(), "Đã xác nhận bạn tham gia sự kiện id: 1", Toast.LENGTH_LONG).show();
+//                        ensureLocationAndCamera();
+//                    } else {
+//                        Toast.makeText(getContext(), "Mã QR không hợp lệ", Toast.LENGTH_SHORT).show();
+//                    }
+                    int qrValue = Integer.parseInt(result.getContents());
+                    Log.d("sukien",""+qrValue);
+                    ThamGiaSuKien thamGiaSuKien = new ThamGiaSuKien(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk(),qrValue);
+                    SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+                    suKienViewModel.timSuKien(thamGiaSuKien);
                 }
             });
 
     private final ActivityResultLauncher<Uri> takePictureLauncher =
             registerForActivityResult(new ActivityResultContracts.TakePicture(), success -> {
                 if (success && currentPhotoUri != null) {
-                    Intent preview = new Intent(getContext(), PreviewPhotoActivity.class);
-                    preview.putExtra(PreviewPhotoActivity.EXTRA_PHOTO_URI, currentPhotoUri);
-                    if (lastLat != null && lastLon != null) {
-                        preview.putExtra(PreviewPhotoActivity.EXTRA_LAT, lastLat);
-                        preview.putExtra(PreviewPhotoActivity.EXTRA_LON, lastLon);
-                    }
+                    Bundle bundle = new Bundle();
+                    bundle.putParcelable("EXTRA_PHOTO_URI", currentPhotoUri);
                     if (lastAddress != null && !lastAddress.isEmpty()) {
-                        preview.putExtra(PreviewPhotoActivity.EXTRA_ADDRESS, lastAddress);
+                        bundle.putString("EXTRA_ADDRESS", lastAddress);
                     }
-                    startActivity(preview);
+                    try {
+                        Navigation.findNavController(requireView())
+                                .navigate(R.id.previewPhotoFragment, bundle);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(getContext(), "Lỗi chuyển màn hình", Toast.LENGTH_SHORT).show();
+                    }
                 } else {
-                    Toast.makeText(getContext(), "Đã thoát camera hoặc không chụp ảnh.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "Đã hủy chụp ảnh", Toast.LENGTH_SHORT).show();
                 }
                 currentPhotoUri = null;
             });
@@ -152,6 +158,20 @@ public class ProfileFragment extends Fragment {
         super.onViewCreated(view, savedIntancesState);
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(requireActivity());
         initViews(view);
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        suKienViewModel.getSukiencantim().observe(getViewLifecycleOwner(),suKien -> {
+            if(suKien!= null)
+            {
+                ensureLocationAndCamera();
+
+            }
+        });
+        suKienViewModel.getThongBaoTimSK().observe(getViewLifecycleOwner(),thongbao ->{
+            if(thongbao!=null)
+            {
+                Toast.makeText(getContext(),thongbao,Toast.LENGTH_LONG).show();
+            }
+        });
 //        sessionManager = SessionManager.getInstance(requireContext());
 //        if (!sessionManager.isLoggedIn()) {
 //            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();

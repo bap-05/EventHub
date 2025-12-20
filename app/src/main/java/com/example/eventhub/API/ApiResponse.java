@@ -11,6 +11,12 @@ public class ApiResponse {
     private List<SuKien> suKienList;
     @SerializedName("taikhoan")
     private TaiKhoan taiKhoan;
+    @SerializedName("sukiencantim")
+    private SuKien suKien;
+
+    public SuKien getSuKien() {
+        return suKien;
+    }
 
     public TaiKhoan getTaiKhoan() {
         return taiKhoan;
