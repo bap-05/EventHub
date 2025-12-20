@@ -29,7 +29,6 @@ public class
 MainActivity extends AppCompatActivity {
     public Fragment frsave;
     public BottomNavigationView bottomNav;
-    private String currentMenuRole = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,21 +55,15 @@ MainActivity extends AppCompatActivity {
 // Lúc này tk không bao giờ bị null nữa, code chạy an toàn
         TaiKhoanViewModel.getTaikhoan().observe(this,taiKhoan -> {
             if(taiKhoan!=null){
-                String role = taiKhoan.getVaiTro();
-                if (role == null || role.trim().isEmpty()) {
-                    return; // không đổi menu nếu vai trò rỗng
-                }
-                role = role.trim();
-                boolean isStudent = "SinhVien".equalsIgnoreCase(role);
-                String desiredRole = isStudent ? "student" : "admin";
-                if (desiredRole.equals(currentMenuRole)) {
-                    return;
-                }
-                currentMenuRole = desiredRole;
-                bottomNav.getMenu().clear();
-                if (isStudent) {
+
+                if("SinhVien".equals(taiKhoan.getVaiTro()))
+                {
+                    bottomNav.getMenu().clear();
                     bottomNav.inflateMenu(R.menu.bottom_nav_menu);
-                } else {
+                }
+                else
+                {
+                    bottomNav.getMenu().clear();
                     bottomNav.inflateMenu(R.menu.bottom_nav_menu_admin);
                 }
             }
@@ -96,6 +89,7 @@ MainActivity extends AppCompatActivity {
                 }
 
             } catch (Exception e) {
+                // Phòng trường hợp chuỗi JSON bị lỗi format
                 e.printStackTrace();
             }
         }
