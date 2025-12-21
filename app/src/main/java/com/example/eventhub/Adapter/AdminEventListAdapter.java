@@ -21,10 +21,21 @@ import java.util.List;
 
 public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAdapter.EventViewHolder> {
 
-    private final List<AdminEventItem> data;
+    private List<AdminEventItem> data;
+    public interface OnEventClick {
+        void onItemClick(AdminEventItem item);
+        void onAvatarClick(AdminEventItem item);
+    }
+    private final OnEventClick listener;
 
-    public AdminEventListAdapter(List<AdminEventItem> data) {
+    public AdminEventListAdapter(List<AdminEventItem> data, OnEventClick listener) {
         this.data = data;
+        this.listener = listener;
+    }
+
+    public void updateData(List<AdminEventItem> newData) {
+        this.data = newData;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -51,18 +62,47 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
         holder.avatar1.setImageResource(item.getAvatarRes());
         holder.avatar2.setImageResource(item.getAvatarRes());
         holder.avatar3.setImageResource(item.getAvatarRes());
+        holder.tvCount.setText(item.getSoLuongDaDangKy() + "/" + item.getSoLuongGioiHan());
+
+        // Load avatar URL nếu có
+        loadAvatar(holder.avatar1, item.getAvt1());
+        loadAvatar(holder.avatar2, item.getAvt2());
+        loadAvatar(holder.avatar3, item.getAvt3());
 
         if (item.isShowQr()) {
             holder.qrIcon.setVisibility(View.VISIBLE);
             holder.bindQrClick(holder.itemView.getContext());
+            holder.tvEventId.setVisibility(View.VISIBLE);
+            holder.tvEventId.setText("Mã sự kiện: " + item.getEventId());
         } else if (item.isShowDone()) {
             holder.qrIcon.setVisibility(View.VISIBLE);
             holder.qrIcon.setImageResource(item.getDoneIconRes());
             holder.qrIcon.setOnClickListener(null);
+            holder.tvEventId.setVisibility(View.GONE);
         } else {
             holder.qrIcon.setVisibility(View.GONE);
             holder.qrIcon.setOnClickListener(null);
+            holder.tvEventId.setVisibility(View.GONE);
         }
+
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(item);
+        });
+        holder.avatarContainer.setOnClickListener(v -> {
+            if (listener != null) listener.onAvatarClick(item);
+        });
+        holder.tvCount.setOnClickListener(v -> {
+            if (listener != null) listener.onAvatarClick(item);
+        });
+    }
+
+    private void loadAvatar(ImageView view, String url) {
+        if (url == null || url.isEmpty()) return;
+        com.bumptech.glide.Glide.with(view.getContext())
+                .load(url)
+                .placeholder(R.drawable.avatar)
+                .error(R.drawable.avatar)
+                .into(view);
     }
 
     @Override
@@ -71,9 +111,10 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
     }
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
-        TextView tvTitle, tvStatus, tvPriority, tvStart, tvEnd;
+        TextView tvTitle, tvStatus, tvPriority, tvStart, tvEnd, tvEventId, tvCount;
         ImageView statusIcon, priorityIcon, startIcon, endIcon, avatar1, avatar2, avatar3, qrIcon;
         View progressBar;
+        View avatarContainer;
 
         EventViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -82,6 +123,8 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             tvPriority = itemView.findViewById(R.id.tv_event_priority);
             tvStart = itemView.findViewById(R.id.tv_event_start);
             tvEnd = itemView.findViewById(R.id.tv_event_end);
+            tvEventId = itemView.findViewById(R.id.tv_event_id);
+            tvCount = itemView.findViewById(R.id.tv_event_count);
             statusIcon = itemView.findViewById(R.id.icon_status);
             priorityIcon = itemView.findViewById(R.id.icon_priority);
             startIcon = itemView.findViewById(R.id.icon_start);
@@ -91,6 +134,7 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             avatar2 = itemView.findViewById(R.id.avatar2);
             avatar3 = itemView.findViewById(R.id.avatar3);
             progressBar = itemView.findViewById(R.id.progress_line);
+            avatarContainer = itemView.findViewById(R.id.avatar_container);
         }
 
         void bindQrClick(Context context) {

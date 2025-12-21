@@ -1,66 +1,96 @@
 package com.example.eventhub.View.Fragment.Admin;
 
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.eventhub.Adapter.AdminParticipantAdapter;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.AdminParticipantViewModel;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link AdminStudentListFragment#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class AdminStudentListFragment extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_MA_SK = "ARG_MA_SK";
+    private static final String ARG_EVENT_TITLE = "ARG_EVENT_TITLE";
+    private static final String ARG_EVENT_STATUS = "ARG_EVENT_STATUS";
+    private static final String ARG_COUNT = "ARG_COUNT";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-
-    public AdminStudentListFragment() {
-        // Required empty public constructor
+    public static AdminStudentListFragment newInstance(int maSK, String title, String status, String countText) {
+        AdminStudentListFragment f = new AdminStudentListFragment();
+        Bundle b = new Bundle();
+        b.putInt(ARG_MA_SK, maSK);
+        b.putString(ARG_EVENT_TITLE, title);
+        b.putString(ARG_EVENT_STATUS, status);
+        b.putString(ARG_COUNT, countText);
+        f.setArguments(b);
+        return f;
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment AdminStudentListFragment.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static AdminStudentListFragment newInstance(String param1, String param2) {
-        AdminStudentListFragment fragment = new AdminStudentListFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private int maSK;
+    private String eventTitle = "";
+    private String eventStatus = "";
+    private String countText = "";
 
+    @Nullable
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_admin_student_list, container, false);
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            maSK = getArguments().getInt(ARG_MA_SK, 0);
+            if (maSK == 0) {
+                maSK = getArguments().getInt("maSK", 0);
+            }
+            eventTitle = getArguments().getString(ARG_EVENT_TITLE, "");
+            if (eventTitle.isEmpty()) {
+                eventTitle = getArguments().getString("eventTitle", "");
+            }
+            eventStatus = getArguments().getString(ARG_EVENT_STATUS, "");
+            if (eventStatus.isEmpty()) {
+                eventStatus = getArguments().getString("eventStatus", "");
+            }
+            countText = getArguments().getString(ARG_COUNT, "");
+            if (countText.isEmpty()) {
+                countText = getArguments().getString("countText", "");
+            }
+        }
+        TextView tvTitle = view.findViewById(R.id.tv_event_title);
+        TextView tvInfo = view.findViewById(R.id.tv_event_info);
+        tvTitle.setText("Danh sach: " + eventTitle);
+        tvInfo.setText(countText);
+
+        RecyclerView rv = view.findViewById(R.id.rv_participants);
+        rv.setLayoutManager(new LinearLayoutManager(getContext()));
+        AdminParticipantAdapter adapter = new AdminParticipantAdapter();
+        rv.setAdapter(adapter);
+
+        boolean allowApprove = "done".equalsIgnoreCase(eventStatus)
+                || "Da dien ra".equalsIgnoreCase(eventStatus);
+
+        AdminParticipantViewModel vm = new ViewModelProvider(this).get(AdminParticipantViewModel.class);
+        vm.getErr().observe(getViewLifecycleOwner(), err -> {
+            if (err != null && !err.isEmpty()) {
+                Toast.makeText(getContext(), "Loi tai danh sach: " + err, Toast.LENGTH_SHORT).show();
+            }
+        });
+        vm.getParticipants().observe(getViewLifecycleOwner(), list -> adapter.setData(list, allowApprove));
+
+        if (maSK != 0) {
+            vm.load(maSK);
+        }
     }
 }

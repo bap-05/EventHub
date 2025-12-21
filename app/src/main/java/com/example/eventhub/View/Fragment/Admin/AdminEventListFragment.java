@@ -12,11 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Adapter.AdminEventListAdapter;
-import com.example.eventhub.Model.AdminEventItem;
+import com.example.eventhub.ViewModel.AdminEventViewModel;
 import com.example.eventhub.R;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class AdminEventListFragment extends Fragment {
 
@@ -54,42 +51,49 @@ public class AdminEventListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_admin_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        recyclerView.setAdapter(new AdminEventListAdapter(getMockData(type)));
-    }
+        AdminEventViewModel vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
+        AdminEventListAdapter adapter = new AdminEventListAdapter(new java.util.ArrayList<>(), new AdminEventListAdapter.OnEventClick() {
+            @Override
+            public void onItemClick(com.example.eventhub.Model.AdminEventItem item) {
+                Bundle args = new Bundle();
+                if (item.getSource() != null) {
+                    args.putSerializable("event", item.getSource());
+                }
+                androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_admin_event_detail, args);
+            }
 
-    private List<AdminEventItem> getMockData(Type type) {
-        List<AdminEventItem> all = new ArrayList<>();
-        all.add(new AdminEventItem("Sự kiện mua đồ", AdminEventItem.Status.ONGOING, true, "25/12", "27/12"));
-        all.add(new AdminEventItem("Sự kiện chủ nhật xanh", AdminEventItem.Status.ONGOING, true, "26/12", "27/12"));
-        all.add(new AdminEventItem("Workshop UI", AdminEventItem.Status.UPCOMING, false, "28/12", "29/12"));
-        all.add(new AdminEventItem("Music Fest", AdminEventItem.Status.DONE, true, "20/12", "21/12"));
-        all.add(new AdminEventItem("Hội thao", AdminEventItem.Status.UPCOMING, false, "30/12", "31/12"));
-        all.add(new AdminEventItem("Đêm nhạc", AdminEventItem.Status.DONE, false, "15/12", "16/12"));
-        all.add(new AdminEventItem("Triển lãm ảnh", AdminEventItem.Status.UPCOMING, true, "05/01", "06/01"));
-        all.add(new AdminEventItem("Cuộc thi coding", AdminEventItem.Status.ONGOING, false, "24/12", "26/12"));
-        all.add(new AdminEventItem("Chạy bộ gây quỹ", AdminEventItem.Status.DONE, false, "10/12", "10/12"));
-        all.add(new AdminEventItem("Hội thảo AI", AdminEventItem.Status.UPCOMING, true, "07/01", "07/01"));
+            @Override
+            public void onAvatarClick(com.example.eventhub.Model.AdminEventItem item) {
+                Bundle args = new Bundle();
+                args.putInt("ARG_MA_SK", item.getEventId());
+                args.putString("ARG_EVENT_TITLE", item.getTitle());
+                args.putString("ARG_EVENT_STATUS", item.getStatusText());
+                args.putString("ARG_COUNT", item.getSoLuongDaDangKy() + "/" + item.getSoLuongGioiHan());
+                androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_student_list, args);
+            }
+        });
+        recyclerView.setAdapter(adapter);
+
+        vm.getErr().observe(getViewLifecycleOwner(), err -> {
+            if (err != null && !err.isEmpty()) {
+                android.widget.Toast.makeText(getContext(), "Lỗi tải sự kiện admin: " + err, android.widget.Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        androidx.lifecycle.Observer<java.util.List<com.example.eventhub.Model.AdminEventItem>> observer = items -> {
+            if (items != null) {
+                adapter.updateData(items);
+            }
+        };
 
         if (type == Type.ALL) {
-            return all.subList(0, Math.min(5, all.size()));
+            vm.getAll().observe(getViewLifecycleOwner(), observer);
+        } else if (type == Type.ONGOING) {
+            vm.getOngoing().observe(getViewLifecycleOwner(), observer);
+        } else {
+            vm.getDone().observe(getViewLifecycleOwner(), observer);
         }
-
-        List<AdminEventItem> filtered = new ArrayList<>();
-        for (AdminEventItem item : all) {
-            if (type == Type.ONGOING && item.isShowQr()) {
-                filtered.add(item);
-            } else if (type == Type.DONE && item.isShowDone()) {
-                filtered.add(item);
-            }
-        }
-
-        // Bảo đảm mỗi tab đủ 5 item: nhân bản trong cùng nhóm, không lẫn loại khác
-        if (!filtered.isEmpty()) {
-            int baseCount = filtered.size();
-            while (filtered.size() < 5) {
-                filtered.add(filtered.get(filtered.size() % baseCount));
-            }
-        }
-        return filtered;
     }
 }

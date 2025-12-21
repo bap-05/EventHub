@@ -45,4 +45,8 @@ public interface IAPI {
     Call<ApiResponse> timSuKien(@Body ThamGiaSuKien suKien);
     @PUT("sukien/uploadminhchung/{id}")
     Call<Void> uploadMinhChung(@Path("id")int id, @Body MinhChung minhChung);
+    @GET("sukien/admin")
+    Call<AdminEventResponse> getAdminEvents();
+    @GET("sukien/thamgia/{maSK}")
+    Call<AdminParticipantResponse> getParticipants(@Path("maSK") int maSK);
 }
