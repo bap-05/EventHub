@@ -17,6 +17,7 @@ import com.example.eventhub.Adapter.EventAdapter;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.ViewModel.SuKienViewModel;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +27,18 @@ public class DaThamGiaFragment extends Fragment {
     private RecyclerView recyclerView;
     private EventAdapter adapter;
     private List<SuKien> eventList;
-    private int currentUserId;
     private static final String ARG_USER_ID = "USER_ID";
 
     private SuKienViewModel suKienViewModel;
 
-    public static DaThamGiaFragment newInstance(int userId) {
+    public static DaThamGiaFragment newInstance() {
         DaThamGiaFragment fragment = new DaThamGiaFragment();
-        Bundle args = new Bundle();
-        args.putInt(ARG_USER_ID, userId);
-        fragment.setArguments(args);
         return fragment;
     }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            currentUserId = getArguments().getInt(ARG_USER_ID);
-        }
         suKienViewModel = new ViewModelProvider(this).get(SuKienViewModel.class);
     }
 
@@ -63,7 +57,7 @@ public class DaThamGiaFragment extends Fragment {
 
         observeViewModel();
 
-        suKienViewModel.loadSuKienDaThamGia(currentUserId);
+        suKienViewModel.loadSuKienDaThamGia(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk());
     }
 
     private void observeViewModel() {

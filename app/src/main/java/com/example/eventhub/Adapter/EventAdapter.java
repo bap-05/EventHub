@@ -10,11 +10,13 @@ import android.widget.TextView;
 
 
 import androidx.annotation.NonNull;
+import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.SuKienViewModel;
 
 import java.util.List;
 
@@ -52,6 +54,7 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             holder.layoutAttended.setVisibility(View.GONE);
             holder.btnDetails.setVisibility(View.VISIBLE);
         }
+
     }
 
     @Override

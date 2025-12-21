@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import com.example.eventhub.R;
+import com.example.eventhub.View.Fragment.KhachHang.FilterBottomSheetFragment;
 
 public class SearchFragment extends Fragment {
     public SearchFragment() {
@@ -26,9 +27,9 @@ public class SearchFragment extends Fragment {
         filterButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FilterBottomSheetFragment filterSheet = new FilterBottomSheetFragment();
+//                FilterBottomSheetFragment filterSheet = new FilterBottomSheetFragment();
 
-                filterSheet.show(getParentFragmentManager(), "FilterBottomSheet");
+//                filterSheet.show(getParentFragmentManager(), "FilterBottomSheet");
             }
         });
 
