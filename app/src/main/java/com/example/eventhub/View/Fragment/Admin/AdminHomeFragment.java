@@ -4,10 +4,12 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.eventhub.Adapter.AdminEventPagerAdapter;
@@ -37,5 +39,11 @@ public class AdminHomeFragment extends Fragment {
             else if (position == 1) tab.setText("Đang diễn ra");
             else tab.setText("Đã diễn ra");
         }).attach();
+
+        super.onViewCreated(view, savedInstanceState);
+        Button btnCreateTask = view.findViewById(R.id.btn_create_task);
+        btnCreateTask.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.adminCreateTaskFragment);
+        });
     }
 }
