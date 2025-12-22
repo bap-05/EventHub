@@ -89,4 +89,23 @@ public class SuKienRepository {
             }
         });
     }
+    public void searchSuKien(String keyword, String tags, String time, MutableLiveData<List<SuKien>> liveData, MutableLiveData<String> err){
+        Call<ApiResponse> call = iapi.searchSuKien(keyword, tags, time);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    liveData.postValue(response.body().getSuKienList());
+                } else {
+                    err.postValue("Khong lay duoc du lieu. Ma loi: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("API", "Loi searchSuKien: " + t.getMessage(), t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
 }

@@ -14,6 +14,7 @@ import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface IAPI {
 
@@ -22,6 +23,9 @@ public interface IAPI {
 
     @GET("sukien/saptoi")
     Call<ApiResponse> SuKienSapToi();
+
+    @GET("sukien/search")
+    Call<ApiResponse> searchSuKien(@Query("q") String keyword, @Query("tags") String tags, @Query("time") String time);
 
     @POST("taikhoan/")
     Call<ApiResponse> taikhoan(@Body TaiKhoanDN taiKhoanDN);
