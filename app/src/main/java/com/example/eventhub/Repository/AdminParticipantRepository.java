@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import com.example.eventhub.API.AdminParticipantResponse;
 import com.example.eventhub.API.ApiClient;
+import com.example.eventhub.API.ApproveRequest;
 import com.example.eventhub.API.IAPI;
 import com.example.eventhub.Model.AdminParticipant;
 
@@ -29,7 +30,7 @@ public class AdminParticipantRepository {
                 if (response.isSuccessful() && response.body() != null) {
                     data.postValue(response.body().getParticipants());
                 } else {
-                    err.postValue("Lỗi server: " + response.code());
+                    err.postValue("Loi server: " + response.code());
                 }
             }
 
@@ -39,5 +40,26 @@ public class AdminParticipantRepository {
                 err.postValue(t.getMessage());
             }
         });
+    }
+
+    public void updateStatus(int maSK, int maTK, int trangThai, String lyDo,
+                             Runnable onSuccess, MutableLiveData<String> err) {
+        iapi.updateParticipantStatus(maSK, maTK, new ApproveRequest(trangThai, lyDo))
+                .enqueue(new Callback<Void>() {
+                    @Override
+                    public void onResponse(Call<Void> call, Response<Void> response) {
+                        if (response.isSuccessful()) {
+                            if (onSuccess != null) onSuccess.run();
+                        } else {
+                            err.postValue("Loi server: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Void> call, Throwable t) {
+                        Log.e("API", "updateStatus error", t);
+                        err.postValue(t.getMessage());
+                    }
+                });
     }
 }

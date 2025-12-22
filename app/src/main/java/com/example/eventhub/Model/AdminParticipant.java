@@ -11,6 +11,8 @@ public class AdminParticipant {
     private String AnhMinhChung;
     private String ThoiGianCheckIn;
     private String DiaDiemMinhChung;
+    private String LyDoTuChoi;
+    private String DiaDiemSK;
 
     public int getMaTK() { return MaTK; }
     public String getMaSV() { return MaSV; }
@@ -22,4 +24,6 @@ public class AdminParticipant {
     public String getAnhMinhChung() { return AnhMinhChung; }
     public String getThoiGianCheckIn() { return ThoiGianCheckIn; }
     public String getDiaDiemMinhChung() { return DiaDiemMinhChung; }
+    public String getLyDoTuChoi() { return LyDoTuChoi; }
+    public String getDiaDiemSK() { return DiaDiemSK; }
 }

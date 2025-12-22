@@ -19,4 +19,8 @@ public class AdminParticipantViewModel extends ViewModel {
     public void load(int maSK) {
         repo.loadParticipants(maSK, participants, err);
     }
+
+    public void updateStatus(int maSK, int maTK, int trangThai, String lyDo) {
+        repo.updateStatus(maSK, maTK, trangThai, lyDo, () -> repo.loadParticipants(maSK, participants, err), err);
+    }
 }

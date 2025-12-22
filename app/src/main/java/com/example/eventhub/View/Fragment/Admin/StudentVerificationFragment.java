@@ -15,16 +15,16 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.AdminParticipantViewModel;
 
 import de.hdodenhof.circleimageview.CircleImageView;
 
 public class StudentVerificationFragment extends Fragment {
-
-    private static final String ARG_NAME = "arg_student_name";
-    private static final String ARG_ID = "arg_student_id";
-    private static final String ARG_FACULTY = "arg_faculty";
 
     private ImageView imgHeader;
     private CircleImageView imgAvatar;
@@ -38,31 +38,39 @@ public class StudentVerificationFragment extends Fragment {
     private Button btnReject;
     private ImageButton btnSendComment;
 
-    private String studentName = "Đinh Thu Hương";
-    private String studentId = "2311505312213";
-    private String faculty = "Công Nghệ Thông Tin";
+    private String studentName = "";
+    private String studentId = "";
+    private String faculty = "";
+    private String avatarUrl = "";
+    private String proofUrl = "";
+    private String proofAddress = "";
+    private String eventAddress = "";
+    private int trangThai = 0;
+    private int maSK = 0;
+    private int maTK = 0;
+    private Boolean defaultApprove = null;
 
-    public StudentVerificationFragment() {
-        // Required empty public constructor
-    }
+    private AdminParticipantViewModel vm;
 
-    public static StudentVerificationFragment newInstance(String name, String id, String faculty) {
-        StudentVerificationFragment fragment = new StudentVerificationFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_NAME, name);
-        args.putString(ARG_ID, id);
-        args.putString(ARG_FACULTY, faculty);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    public StudentVerificationFragment() {}
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            studentName = getArguments().getString(ARG_NAME, studentName);
-            studentId = getArguments().getString(ARG_ID, studentId);
-            faculty = getArguments().getString(ARG_FACULTY, faculty);
+            studentName = getArguments().getString("arg_student_name", studentName);
+            studentId = getArguments().getString("arg_student_id", studentId);
+            faculty = getArguments().getString("arg_faculty", faculty);
+            avatarUrl = getArguments().getString("arg_avatar", "");
+            proofUrl = getArguments().getString("arg_proof", "");
+            proofAddress = getArguments().getString("arg_proof_address", "");
+            eventAddress = getArguments().getString("arg_event_address", "");
+            trangThai = getArguments().getInt("arg_trang_thai", 0);
+            maSK = getArguments().getInt("arg_ma_sk", 0);
+            maTK = getArguments().getInt("arg_ma_tk", 0);
+            if (getArguments().containsKey("arg_default_approve")) {
+                defaultApprove = getArguments().getBoolean("arg_default_approve");
+            }
         }
     }
 
@@ -75,6 +83,7 @@ public class StudentVerificationFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        vm = new ViewModelProvider(this).get(AdminParticipantViewModel.class);
         bindViews(view);
         bindDataToViews();
         setupListeners();
@@ -96,38 +105,59 @@ public class StudentVerificationFragment extends Fragment {
 
     private void bindDataToViews() {
         txtStudentName.setText(studentName);
-        txtStudentId.setText("Mã Sinh Viên: " + studentId);
+        txtStudentId.setText("Ma Sinh Vien: " + studentId);
         txtFaculty.setText("Khoa: " + faculty);
 
+        Glide.with(this).load(avatarUrl).placeholder(R.drawable.avatar).error(R.drawable.avatar).into(imgAvatar);
+        Glide.with(this).load(proofUrl).placeholder(R.drawable.upload).error(R.drawable.upload).into(imgProof);
         imgHeader.setImageResource(R.drawable.backgroud);
-        imgAvatar.setImageResource(R.drawable.avatar);
-        imgProof.setImageResource(R.drawable.upload);
+
+        if (defaultApprove != null) {
+            updateButtonStyles(defaultApprove);
+        } else {
+            updateButtonStyles(trangThai == 2);
+        }
+        txtDecisionStatus.setText(statusLabel(trangThai));
     }
 
     private void setupListeners() {
-        btnSendComment.setOnClickListener(v -> sendComment());
+        btnSendComment.setOnClickListener(v -> sendCommentOnly());
         btnApprove.setOnClickListener(v -> handleDecision(true));
         btnReject.setOnClickListener(v -> handleDecision(false));
         imgProof.setOnClickListener(v -> Toast.makeText(requireContext(), "Phóng to ảnh minh chứng sau", Toast.LENGTH_SHORT).show());
     }
 
-    private void sendComment() {
+    private void sendCommentOnly() {
         String comment = edtComment.getText().toString().trim();
         if (comment.isEmpty()) {
-            Toast.makeText(requireContext(), "Vui lòng nhập bình luận", Toast.LENGTH_SHORT).show();
+            Toast.makeText(requireContext(), "Vui long nhap binh luan", Toast.LENGTH_SHORT).show();
             return;
         }
-        Toast.makeText(requireContext(), "Đã gửi bình luận", Toast.LENGTH_SHORT).show();
-        edtComment.setText("");
+        Toast.makeText(requireContext(), "Da gui binh luan", Toast.LENGTH_SHORT).show();
     }
 
     private void handleDecision(boolean approved) {
-        String stateText = approved ? "Chấp nhận" : "Từ chối";
-        txtDecisionStatus.setText("Trạng thái: " + stateText);
+        if (maSK == 0 || maTK == 0) {
+            Toast.makeText(requireContext(), "Thieu ma su kien/ma tai khoan", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String comment = edtComment.getText().toString().trim();
+        int trangThaiMoi = approved ? 2 : 3;
+        if (!approved && comment.isEmpty()) {
+            Toast.makeText(requireContext(), "Nhap ly do tu choi", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        vm.updateStatus(maSK, maTK, trangThaiMoi, comment);
+        txtDecisionStatus.setText(statusLabel(trangThaiMoi));
         updateButtonStyles(approved);
-        Toast.makeText(requireContext(),
-                approved ? "Đã chấp nhận minh chứng" : "Đã từ chối minh chứng",
-                Toast.LENGTH_SHORT).show();
+        if (!approved) {
+            edtComment.setText(comment);
+        }
+        Toast.makeText(requireContext(), approved ? "Da phe duyet" : "Da tu choi", Toast.LENGTH_SHORT).show();
+        requireActivity().runOnUiThread(() -> {
+            getParentFragmentManager().setFragmentResult("participant_updated", new Bundle());
+            Navigation.findNavController(requireActivity(), R.id.nav_host_fragment).popBackStack();
+        });
     }
 
     private void updateButtonStyles(boolean approved) {
@@ -136,11 +166,22 @@ public class StudentVerificationFragment extends Fragment {
             btnApprove.setTextColor(Color.WHITE);
             btnReject.setBackgroundResource(R.drawable.bg_outline_red);
             btnReject.setTextColor(Color.parseColor("#EA5455"));
+            txtDecisionStatus.setText("Trang thai: Chap nhan");
         } else {
             btnReject.setBackgroundResource(R.drawable.bg_status_red);
             btnReject.setTextColor(Color.WHITE);
             btnApprove.setBackgroundResource(R.drawable.bg_outline_green);
             btnApprove.setTextColor(Color.parseColor("#28C76F"));
+            txtDecisionStatus.setText("Trang thai: Tu choi");
+        }
+    }
+
+    private String statusLabel(int st) {
+        switch (st) {
+            case 2: return "Trang thai: Da duyet";
+            case 3: return "Trang thai: Tu choi";
+            case 1: return "Trang thai: Cho duyet";
+            default: return "Trang thai: Chua check-in";
         }
     }
 }

@@ -49,4 +49,6 @@ public interface IAPI {
     Call<AdminEventResponse> getAdminEvents();
     @GET("sukien/thamgia/{maSK}")
     Call<AdminParticipantResponse> getParticipants(@Path("maSK") int maSK);
+    @PUT("sukien/thamgia/{maSK}/{maTK}")
+    Call<Void> updateParticipantStatus(@Path("maSK") int maSK, @Path("maTK") int maTK, @Body ApproveRequest req);
 }
