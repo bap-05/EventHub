@@ -105,7 +105,7 @@
                     android:text="Tiêu đề sự kiện" />
 
                 <EditText
-                    android:id="@+id/txt_event_title"
+                    android:id="@+id/edt_ten_su_kien"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp"
@@ -124,7 +124,7 @@
                     android:text="Mô tả sự kiện" />
 
                 <EditText
-                    android:id="@+id/txt_event_desc"
+                    android:id="@+id/edt_mo_ta"
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="4dp"
@@ -142,7 +142,7 @@
                     android:text="Loại sự kiện" />
 
                 <EditText
-                    android:id="@+id/txt_event_type"
+                    android:id="@+id/edt_loai_sk"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp"
@@ -164,7 +164,7 @@
                     android:text="Số lượng" />
 
                 <EditText
-                    android:id="@+id/txt_quantity"
+                    android:id="@+id/edt_so_luong"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp"
@@ -186,7 +186,7 @@
                     android:text="Điểm cộng" />
 
                 <EditText
-                    android:id="@+id/txt_points"
+                    android:id="@+id/edt_diem_cong"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp"
@@ -208,7 +208,7 @@
                     android:text="Cơ sở" />
 
                 <EditText
-                    android:id="@+id/txt_campus"
+                    android:id="@+id/edt_co_so"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
                     android:layout_marginTop="4dp"
@@ -223,44 +223,89 @@
                     android:paddingEnd="16dp" />
 
                 <TextView
-                    android:id="@+id/tv_lbl_location"
+                    android:id="@+id/txt_dia_diem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Địa điểm" />
 
                 <EditText
-                    android:id="@+id/txt_location"
+                    android:id="@+id/edt_dia_diem"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="Địa điểm"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@android:drawable/arrow_down_float"
+                    android:drawableStart="@drawable/ic_diem_cong"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+
+
+                <TextView
+                    android:id="@+id/tv_lbl_location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Địa chỉ" />
+
+                <EditText
+                    android:id="@+id/edt_dia_chi"
                     android:layout_width="match_parent"
                     android:layout_height="80dp"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
-                    android:hint="Địa điểm"
+                    android:hint="Địa chỉ"
                     android:gravity="top|start"
                     android:padding="12dp"
                     android:inputType="textMultiLine" />
 
                 <TextView
-                    android:id="@+id/tv_lbl_start_time"
+                    android:id="@+id/txt_lbl_start_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Thời gian bắt đầu" />
 
-                <EditText
-                    android:id="@+id/txt_start_time"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_field"
-                    android:hint="Thời gian bắt đầu"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                    android:drawableStart="@drawable/ic_diem_cong"
-                    android:drawablePadding="10dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/tv_ngay_bat_dau"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.3"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="Ngày bắt đầu"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                        android:drawableStart="@drawable/ic_diem_cong"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+
+                    <EditText
+                        android:id="@+id/tv_gio_bat_dau"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0.8"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="Giờ"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@android:drawable/ic_menu_recent_history"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </LinearLayout>
+
 
                 <TextView
                     android:id="@+id/tv_lbl_end_time"
@@ -269,20 +314,41 @@
                     android:layout_marginTop="16dp"
                     android:text="Thời gian kết thúc" />
 
-                <EditText
-                    android:id="@+id/txt_end_time"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="50dp"
+                    android:layout_height="wrap_content"
                     android:layout_marginTop="4dp"
-                    android:background="@drawable/bg_input_field"
-                    android:hint="Thời gian kết thúc"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                    android:drawableStart="@drawable/ic_diem_cong"
-                    android:drawablePadding="10dp"
-                    android:paddingStart="16dp"
-                    android:paddingEnd="16dp" />
+                    android:orientation="horizontal">
+
+                    <EditText
+                        android:id="@+id/tv_ngay_ket_thuc"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="1.3"
+                        android:layout_marginEnd="8dp"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="Ngày kết thúc"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@android:drawable/ic_menu_my_calendar"
+                        android:drawableStart="@drawable/ic_diem_cong"
+                        android:drawablePadding="10dp"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+
+                    <EditText
+                        android:id="@+id/tv_gio_ket_thuc"
+                        android:layout_width="0dp"
+                        android:layout_height="50dp"
+                        android:layout_weight="0.8"
+                        android:background="@drawable/bg_input_field"
+                        android:hint="Giờ"
+                        android:focusable="false"
+                        android:clickable="true"
+                        android:drawableEnd="@android:drawable/ic_menu_recent_history"
+                        android:paddingStart="16dp"
+                        android:paddingEnd="16dp" />
+                </LinearLayout>
 
             </LinearLayout>
 
