@@ -1,18 +1,21 @@
 package com.example.eventhub.API;
 
 import com.example.eventhub.Model.ForgotPasswordRequest;
+import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.ResetPasswordRequest;
-import com.example.eventhub.Model.SuKien;
-import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.TaiKhoanDN;
+import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.Model.VerifyOtpRequest;
+import com.example.eventhub.Repository.ProfileResponse;
 
-import java.util.List;
-
+import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
@@ -40,14 +43,24 @@ public interface IAPI {
     Call<ApiMessageResponse> resetPassword(@Body ResetPasswordRequest request);
 
     @GET("profile/{userId}/sapthamgia")
-    Call<List<SuKien>> getSuKienSapThamGia(@Path("userId") int userId);
+    Call<ApiResponse> getSuKienSapThamGia(@Path("userId") int userId);
 
     @GET("profile/{userId}/dathamgia")
-    Call<List<SuKien>> getSuKienDaThamGia(@Path("userId") int userId);
-    @GET("profile/profile/{userId}")
-    Call<TaiKhoan> getUserProfile(@Path("userId") int userId);
+    Call<ApiResponse> getSuKienDaThamGia(@Path("userId") int userId);
 
-    // 4. Update avatar (Nếu sau này bạn mở lại tính năng này)
-    // @PUT("profile/update-avatar")
-    // Call<TaiKhoan> updateAvatar(@Body UpdateAvatarRequest request);
+    @GET("profile/profile/{userId}")
+    Call<ProfileResponse> getUserProfile(@Path("userId") int userId);
+
+    @POST("sukien/")
+    Call<Void> DkSuKien(@Body ThamGiaSuKien thamGiaSuKien);
+
+    @Multipart
+    @PUT("profile/update-avatar/{userId}")
+    Call<ApiResponse> updateAvatar(@Path("userId") int userId, @Part MultipartBody.Part avatar);
+
+    @POST("sukien/timsukien")
+    Call<ApiResponse> timSuKien(@Body ThamGiaSuKien suKien);
+
+    @PUT("sukien/uploadminhchung/{id}")
+    Call<Void> uploadMinhChung(@Path("id") int id, @Body MinhChung minhChung);
 }

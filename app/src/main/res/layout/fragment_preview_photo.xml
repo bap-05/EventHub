@@ -36,6 +36,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="12dp"
         android:text="Lưu ảnh"
+        android:background="@drawable/bg_button_blue"
+        app:backgroundTint="@null"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

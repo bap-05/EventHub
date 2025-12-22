@@ -5,7 +5,9 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.NavOptions;
 import androidx.navigation.Navigation;
+import androidx.navigation.fragment.NavHostFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,6 +16,7 @@ import android.widget.Button;
 
 import com.example.eventhub.R;
 import com.example.eventhub.View.MainActivity;
+import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 
 
 public class SettingFragment extends Fragment {
@@ -28,11 +31,14 @@ public class SettingFragment extends Fragment {
         btn_dangxuat.setOnClickListener(view ->{
             SharedPreferences preferences = requireActivity().getSharedPreferences("eventhub_prefs",view.getContext().MODE_PRIVATE);
             SharedPreferences.Editor editor = preferences.edit();
-            editor.remove("remember");
-            editor.remove("email");
-            editor.remove("password");
+            editor.clear();
             editor.apply();
-            Navigation.findNavController(v).navigate(R.id.loginFragment);
+            TaiKhoanViewModel.setTaikhoan(null);
+            NavOptions navOptions = new NavOptions.Builder()
+                    .setPopUpTo(R.id.nav_graph, true) // Xóa sạch Stack
+                    .build();
+            Navigation.findNavController(view).navigate(R.id.wellComeFragment,null,navOptions);
+
         });
         return v;
     }
