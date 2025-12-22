@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.ToggleButton;
 
@@ -36,20 +37,6 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
         Button btnConfirm = view.findViewById(R.id.oke);
         Button btnReset = view.findViewById(R.id.reset);
 
-        // Gán sự kiện click
-        btnConfirm.setOnClickListener(v -> {
-            // TODO: Lấy dữ liệu lọc và xử lý...
-
-            // Đóng bottom sheet
-            dismiss();
-        });
-
-        btnReset.setOnClickListener(v -> {
-            // TODO: Xử lý reset...
-
-            // Đóng bottom sheet
-            dismiss();
-        });
 
         // 1. Nhóm Thể thao
         ToggleButton sportToggle = view.findViewById(R.id.sport);
@@ -108,6 +95,55 @@ public class FilterBottomSheetFragment extends BottomSheetDialogFragment {
             }
         });
 
+        btnConfirm.setOnClickListener(v -> {
+            RadioGroup timeGroup = view.findViewById(R.id.radio_group_time);
+            StringBuilder tags = new StringBuilder();
+            if (sportToggle.isChecked()) {
+                tags.append(sportText.getText().toString());
+            }
+            if (musicToggle.isChecked()) {
+                if (tags.length() > 0) {
+                    tags.append(",");
+                }
+                tags.append(musicText.getText().toString());
+            }
+            if (cnxToggle.isChecked()) {
+                if (tags.length() > 0) {
+                    tags.append(",");
+                }
+                tags.append(cnxText.getText().toString());
+            }
+
+            String timeValue = "";
+            int checkedId = timeGroup.getCheckedRadioButtonId();
+            if (checkedId == R.id.today) {
+                timeValue = "today";
+            } else if (checkedId == R.id.tmr) {
+                timeValue = "tomorrow";
+            } else if (checkedId == R.id.week) {
+                timeValue = "week";
+            }
+
+            Bundle result = new Bundle();
+            result.putString("tags", tags.toString());
+            result.putString("time", timeValue);
+            getParentFragmentManager().setFragmentResult("search_filter", result);
+            dismiss();
+        });
+
+        btnReset.setOnClickListener(v -> {
+            RadioGroup timeGroup = view.findViewById(R.id.radio_group_time);
+            sportToggle.setChecked(false);
+            musicToggle.setChecked(false);
+            cnxToggle.setChecked(false);
+            timeGroup.clearCheck();
+
+            Bundle result = new Bundle();
+            result.putString("tags", "");
+            result.putString("time", "");
+            getParentFragmentManager().setFragmentResult("search_filter", result);
+            dismiss();
+        });
 
     }
 }

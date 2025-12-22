@@ -29,7 +29,7 @@ public class SuKienRepository {
                 if(response.body() != null) {
                     liveData.postValue(response.body().getSuKienList());
                 } else {
-                    err.postValue("Dữ liệu trả về null");
+                    err.postValue("D??_ li???u tr??? v??? null");
                 }
             }
             @Override
@@ -65,13 +65,13 @@ public class SuKienRepository {
                 if(response.isSuccessful() && response.body() != null){
                     liveData.postValue(response.body().getSuKienList());
                 } else {
-                    err.postValue("Lỗi tải dữ liệu: " + response.code());
+                    err.postValue("L??-i t???i d??_ li???u: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("API", "Lỗi getSuKienSapThamGia: " + t.getMessage(), t);
+                Log.e("API", "L??-i getSuKienSapThamGia: " + t.getMessage(), t);
                 err.postValue(t.getMessage());
             }
         });
@@ -85,17 +85,38 @@ public class SuKienRepository {
                 if (response.isSuccessful() && response.body() != null){
                     liveData.postValue(response.body().getSuKienList());
                 } else {
-                    err.postValue("Lỗi tải dữ liệu: " + response.code());
+                    err.postValue("L??-i t???i d??_ li???u: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<ApiResponse> call, Throwable t) {
-                Log.e("API", "Lỗi getSuKienDaThamGia: " + t.getMessage(), t);
+                Log.e("API", "L??-i getSuKienDaThamGia: " + t.getMessage(), t);
                 err.postValue(t.getMessage());
             }
         });
     }
+
+    public void searchSuKien(String keyword, String tags, String time, MutableLiveData<List<SuKien>> liveData, MutableLiveData<String> err){
+        Call<ApiResponse> call = iapi.searchSuKien(keyword, tags, time);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    liveData.postValue(response.body().getSuKienList());
+                } else {
+                    err.postValue("Khong lay duoc du lieu. Ma loi: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("API", "Loi searchSuKien: " + t.getMessage(), t);
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+
     public void dangKySuKien(MutableLiveData<String>err, ThamGiaSuKien thamGiaSuKien){
         Call<Void> call = iapi.DkSuKien(thamGiaSuKien);
         call.enqueue(new Callback<Void>() {
@@ -103,12 +124,12 @@ public class SuKienRepository {
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
                 {
-                    Log.d("DKSuKien", "Đăng ký thành công");
-                    err.postValue("Đăng ký thành công");
+                    Log.d("DKSuKien", "????ng kA? thA?nh cA'ng");
+                    err.postValue("????ng kA? thA?nh cA'ng");
                 }
                 else{
-                    Log.d("DKSuKien", "Đăng ký tất bại");
-                    err.postValue("Đăng ký tất bại");
+                    Log.d("DKSuKien", "????ng kA? t???t b???i");
+                    err.postValue("????ng kA? t???t b???i");
                 }
             }
 
@@ -130,7 +151,7 @@ public class SuKienRepository {
                     err.postValue(null);
                 }
                 else{
-                    err.postValue("Bạn chưa đăng ký tham gia sự kiện này!");
+                    err.postValue("B???n ch??a ?`??ng kA? tham gia s??? ki???n nA?y!");
                 }
             }
 
@@ -147,9 +168,9 @@ public class SuKienRepository {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
                 if(response.isSuccessful())
-                    tb.postValue("Đã gửi thành công");
+                    tb.postValue("??A? g??-i thA?nh cA'ng");
                 else
-                    tb.postValue("Đã xảy ra lỗi");
+                    tb.postValue("??A? x???y ra l??-i");
             }
 
             @Override
