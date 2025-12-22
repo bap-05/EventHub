@@ -84,15 +84,16 @@
                 <LinearLayout
                     android:id="@+id/layout_upload_image"
                     android:layout_width="match_parent"
-                    android:layout_height="120dp"
+                    android:layout_height="150dp"
                     android:layout_marginTop="8dp"
                     android:background="@drawable/bg_dashed_border"
                     android:gravity="center"
                     android:orientation="vertical">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
+                        android:id="@+id/img_poster_preview"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:src="@android:drawable/ic_menu_upload"
                         app:tint="#4FB4F8" />
                 </LinearLayout>
@@ -170,9 +171,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Số lượng sinh viên"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
+
                     android:drawableStart="@drawable/ic_so_luong"
                     android:drawablePadding="10dp"
                     android:paddingStart="16dp"
@@ -192,9 +191,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Điểm cộng"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
+
                     android:drawableStart="@drawable/ic_diem_cong"
                     android:drawablePadding="10dp"
                     android:paddingStart="16dp"
@@ -236,9 +233,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Địa điểm"
-                    android:focusable="false"
-                    android:clickable="true"
-                    android:drawableEnd="@android:drawable/arrow_down_float"
+
                     android:drawableStart="@drawable/ic_diem_cong"
                     android:drawablePadding="10dp"
                     android:paddingStart="16dp"
@@ -287,7 +282,7 @@
                         android:focusable="false"
                         android:clickable="true"
                         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                        android:drawableStart="@drawable/ic_diem_cong"
+
                         android:drawablePadding="10dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp" />
@@ -331,7 +326,7 @@
                         android:focusable="false"
                         android:clickable="true"
                         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                        android:drawableStart="@drawable/ic_diem_cong"
+
                         android:drawablePadding="10dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp" />
