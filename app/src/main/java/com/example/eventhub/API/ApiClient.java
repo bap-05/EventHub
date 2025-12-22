@@ -9,7 +9,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class ApiClient {
     private static final String url = "http://172.21.64.1:3000/";
-    //private static final String url = "http://10.0.2.2:3000/";
+//    private static final String url = "http://10.0.2.2:3000/";
     private static Retrofit retrofit = null;
 
     public static Retrofit getClient() {
