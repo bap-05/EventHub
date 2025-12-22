@@ -171,6 +171,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Số lượng sinh viên"
+                    android:inputType="number"
 
                     android:drawableStart="@drawable/ic_so_luong"
                     android:drawablePadding="10dp"
@@ -191,6 +192,7 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Điểm cộng"
+                    android:inputType="number"
 
                     android:drawableStart="@drawable/ic_diem_cong"
                     android:drawablePadding="10dp"
@@ -278,9 +280,7 @@
                         android:layout_weight="1.3"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Ngày bắt đầu"
-                        android:focusable="false"
-                        android:clickable="true"
+                        android:hint="dd/mm/yyyy"
                         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
 
                         android:drawablePadding="10dp"
@@ -322,9 +322,7 @@
                         android:layout_weight="1.3"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_input_field"
-                        android:hint="Ngày kết thúc"
-                        android:focusable="false"
-                        android:clickable="true"
+                        android:hint="dd/mm/yyyy"
                         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
 
                         android:drawablePadding="10dp"
