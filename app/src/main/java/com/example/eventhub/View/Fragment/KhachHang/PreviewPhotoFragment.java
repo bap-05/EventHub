@@ -128,6 +128,7 @@ public class PreviewPhotoFragment extends Fragment {
                 // Key "anh" này phải khớp với key bên Fragment nhận (UploadFragment)
                 // Bên kia bạn phải dùng bundle.getParcelable("anh")
                 bundle.putParcelable("anh", resultUri);
+                bundle.putString("diachi",chuoiDiaChi);
                 // Điều hướng
                 Navigation.findNavController(requireView())
                         .navigate(R.id.upLoadMinhChungFragment, bundle);

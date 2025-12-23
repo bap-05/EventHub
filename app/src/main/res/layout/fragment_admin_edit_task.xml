@@ -30,7 +30,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginTop="40dp"
             tools:ignore="ContentDescription" />
 
         <TextView
@@ -102,7 +101,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_title"
                     android:layout_width="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Tiêu đề sự kiện" />
@@ -112,8 +110,6 @@
                     android:inputType="textCapSentences"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Nhập tên sự kiện"
@@ -126,7 +122,6 @@
                     android:id="@+id/tv_lbl_desc"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_marginTop="16dp"
                     android:text="Mô tả sự kiện" />
 
@@ -135,8 +130,6 @@
                     android:layout_width="match_parent"
                     android:layout_height="100dp"
                     android:layout_marginTop="4dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:background="@drawable/bg_input_field"
                     android:gravity="top|start"
                     android:hint="Mô tả"
@@ -146,7 +139,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_type"
                     android:layout_width="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Loại sự kiện" />
@@ -158,8 +150,6 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Loại sự kiện"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:focusable="false"
                     android:clickable="true"
                     android:drawableEnd="@android:drawable/arrow_down_float"
@@ -179,8 +169,6 @@
                     android:id="@+id/edt_so_luong"
                     android:layout_width="match_parent"
                     android:layout_height="50dp"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Số lượng sinh viên"
@@ -194,7 +182,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_points"
                     android:layout_width="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Điểm cộng" />
@@ -207,8 +194,7 @@
                     android:background="@drawable/bg_input_field"
                     android:hint="Điểm cộng"
                     android:inputType="number"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
+
                     android:drawableStart="@drawable/ic_diem_cong"
                     android:drawablePadding="10dp"
                     android:paddingStart="16dp"
@@ -216,7 +202,6 @@
 
                 <TextView
                     android:id="@+id/tv_lbl_campus"
-                    android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
@@ -230,8 +215,6 @@
                     android:background="@drawable/bg_input_field"
                     android:hint="Cơ sở"
                     android:focusable="false"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:clickable="true"
                     android:drawableEnd="@android:drawable/arrow_down_float"
                     android:drawableStart="@drawable/ic_diem_cong"
@@ -243,7 +226,6 @@
                     android:id="@+id/txt_dia_diem"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_marginTop="16dp"
                     android:text="Địa điểm" />
 
@@ -255,8 +237,29 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Địa điểm"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
+
+                    android:drawableStart="@drawable/ic_diem_cong"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+
+                <TextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Trạng thái" />
+
+                <EditText
+                    android:id="@+id/edt_trang_thai"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="Trạng thái"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@android:drawable/arrow_down_float"
                     android:drawableStart="@drawable/ic_diem_cong"
                     android:drawablePadding="10dp"
                     android:paddingStart="16dp"
@@ -267,7 +270,6 @@
                     android:id="@+id/tv_lbl_location"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_marginTop="16dp"
                     android:text="Địa chỉ" />
 
@@ -278,8 +280,6 @@
                     android:layout_marginTop="4dp"
                     android:background="@drawable/bg_input_field"
                     android:hint="Địa chỉ"
-                    android:textColor="@color/black"
-                    android:textColorHint="#A4A4A4"
                     android:gravity="top|start"
                     android:padding="12dp"
                     android:inputType="textMultiLine|textCapSentences" />
@@ -288,7 +288,6 @@
                     android:id="@+id/txt_lbl_start_time"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_marginTop="16dp"
                     android:text="Thời gian bắt đầu" />
 
@@ -302,8 +301,6 @@
                         android:id="@+id/tv_ngay_bat_dau"
                         android:layout_width="0dp"
                         android:layout_height="50dp"
-                        android:textColor="@color/black"
-                        android:textColorHint="#A4A4A4"
                         android:layout_weight="1.3"
                         android:layout_marginEnd="8dp"
                         android:background="@drawable/bg_input_field"
@@ -321,8 +318,6 @@
                         android:layout_weight="0.8"
                         android:background="@drawable/bg_input_field"
                         android:hint="Giờ"
-                        android:textColor="@color/black"
-                        android:textColorHint="#A4A4A4"
                         android:focusable="false"
                         android:clickable="true"
                         android:drawableEnd="@android:drawable/ic_menu_recent_history"
@@ -334,7 +329,6 @@
                 <TextView
                     android:id="@+id/tv_lbl_end_time"
                     android:layout_width="wrap_content"
-                    android:textColor="@color/black"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="16dp"
                     android:text="Thời gian kết thúc" />
@@ -354,8 +348,7 @@
                         android:background="@drawable/bg_input_field"
                         android:hint="dd/mm/yyyy"
                         android:drawableEnd="@android:drawable/ic_menu_my_calendar"
-                        android:textColor="@color/black"
-                        android:textColorHint="#A4A4A4"
+
                         android:drawablePadding="10dp"
                         android:paddingStart="16dp"
                         android:paddingEnd="16dp" />
@@ -367,8 +360,6 @@
                         android:layout_weight="0.8"
                         android:background="@drawable/bg_input_field"
                         android:hint="Giờ"
-                        android:textColor="@color/black"
-                        android:textColorHint="#A4A4A4"
                         android:focusable="false"
                         android:clickable="true"
                         android:drawableEnd="@android:drawable/ic_menu_recent_history"
@@ -402,7 +393,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/bg_button_blue"
-            android:text="Thêm sự kiện"
+            android:text="Cập nhật sự kiện"
             android:textColor="#FFFFFF"
             android:textAllCaps="false"
             android:textSize="16sp"

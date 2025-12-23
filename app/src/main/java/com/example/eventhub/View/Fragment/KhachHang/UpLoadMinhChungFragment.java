@@ -35,6 +35,7 @@ public class UpLoadMinhChungFragment extends Fragment {
     private Button btn_ql, btn_xacnhan;
     private Uri imageUri;
     private String anhSauUpLoad;
+    private String diachi;
     private boolean isCloudinaryInit = false;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,6 +54,7 @@ public class UpLoadMinhChungFragment extends Fragment {
                 // Code cho Android cũ hơn
                 imageUri = args.getParcelable("anh");
             }
+            diachi = args.getString("diachi","");
         }
         if (imageUri!=null)
             upLoadAnh(imageUri);
@@ -78,7 +80,7 @@ public class UpLoadMinhChungFragment extends Fragment {
         btn_xacnhan.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MinhChung minhChung = new MinhChung(suKienViewModel.getSukiencantim().getValue().getMaSK(),anhSauUpLoad);
+                MinhChung minhChung = new MinhChung(suKienViewModel.getSukiencantim().getValue().getMaSK(),anhSauUpLoad,diachi);
                 suKienViewModel.uploadMinhChung(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk(),minhChung);
             }
         });

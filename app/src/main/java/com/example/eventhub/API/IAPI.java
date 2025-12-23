@@ -9,8 +9,11 @@ import com.example.eventhub.Model.VerifyOtpRequest;
 import com.example.eventhub.Repository.ProfileResponse;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -62,5 +65,51 @@ public interface IAPI {
     Call<ApiResponse> timSuKien(@Body ThamGiaSuKien suKien);
 
     @PUT("sukien/uploadminhchung/{id}")
-    Call<Void> uploadMinhChung(@Path("id") int id, @Body MinhChung minhChung);
+    Call<Void> uploadMinhChung(@Path("id")int id, @Body MinhChung minhChung);
+    @GET("sukien/admin")
+    Call<AdminEventResponse> getAdminEvents();
+    @GET("sukien/all")
+    Call<ApiResponse> getAllEvents();
+    @GET("sukien/thamgia/{maSK}")
+    Call<AdminParticipantResponse> getParticipants(@Path("maSK") int maSK);
+    @PUT("sukien/thamgia/{maSK}/{maTK}")
+    Call<Void> updateParticipantStatus(@Path("maSK") int maSK, @Path("maTK") int maTK, @Body ApproveRequest req);
+    @DELETE("sukien/thamgia/{maSK}/{maTK}")
+    Call<Void> cancelRegistration(@Path("maSK") int maSK, @Path("maTK") int maTK);
+    @Multipart
+    @POST("sukien/create")
+    Call<ResponseBody> createSuKien(
+            @Part MultipartBody.Part poster,
+            @Part("TenSK") RequestBody tenSK,
+            @Part("MoTa") RequestBody moTa,
+            @Part("LoaiSuKien") RequestBody loaiSK,
+            @Part("SoLuongGioiHan") RequestBody soLuong,
+            @Part("DiemCong") RequestBody diem,
+            @Part("CoSo") RequestBody coSo,
+            @Part("DiaDiem") RequestBody diaDiem,
+            @Part("ThoiGianBatDau") RequestBody batDau,
+            @Part("ThoiGianKetThuc") RequestBody ketThuc,
+            @Part("NguoiDang") RequestBody nguoiDang
+    );
+
+    @Multipart
+    @PUT("sukien/update/{id}")
+    Call<ResponseBody> updateSuKien(
+            @Path("id") int id,
+            @Part MultipartBody.Part poster,
+            @Part("TenSK") RequestBody tenSK,
+            @Part("MoTa") RequestBody moTa,
+            @Part("LoaiSuKien") RequestBody loaiSK,
+            @Part("SoLuongGioiHan") RequestBody soLuong,
+            @Part("DiemCong") RequestBody diem,
+            @Part("CoSo") RequestBody coSo,
+            @Part("DiaDiem") RequestBody diaDiem,
+            @Part("ThoiGianBatDau") RequestBody batDau,
+            @Part("ThoiGianKetThuc") RequestBody ketThuc,
+            @Part("TrangThai") RequestBody trangThai
+    );
+
+    // JSON update (không multipart) dùng cho thay đổi trạng thái/fields đơn giản
+    @PUT("sukien/update/{id}")
+    Call<ResponseBody> updateSuKienJson(@Path("id") int id, @Body java.util.Map<String, String> body);
 }

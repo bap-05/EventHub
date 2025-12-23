@@ -55,12 +55,20 @@ public class LoginFragment extends Fragment {
         loginButton = view.findViewById(R.id.loginBtn);
         rememberSwitch = view.findViewById(R.id.switchRemember);
         TextView forgotPassword = view.findViewById(R.id.forgotPass);
+        sessionManager = SessionManager.getInstance(requireContext());
 
         preferences = requireContext().getSharedPreferences(AUTH_PREFS, Context.MODE_PRIVATE);
 
         TaiKhoanViewModel taiKhoanViewModel = new ViewModelProvider(requireActivity()).get(TaiKhoanViewModel.class);
         taiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), taiKhoan -> {
             if (taiKhoan != null) {
+                sessionManager.saveUser(
+                        String.valueOf(taiKhoan.getMaTk()), // Lưu ID chính xác
+                        taiKhoan.getEmail(),
+                        taiKhoan.getHoTen(),
+                        taiKhoan.getAVT()
+                );
+                handleRememberState(taiKhoan);
                 // Lưu trạng thái đăng nhập (SharedPreferences...)
                 handleRememberState(taiKhoan);
                 if ("SinhVien".equalsIgnoreCase(taiKhoan.getVaiTro())) {

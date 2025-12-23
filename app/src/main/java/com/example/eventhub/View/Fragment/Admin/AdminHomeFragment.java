@@ -4,18 +4,24 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Button;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.eventhub.Adapter.AdminEventPagerAdapter;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.AdminEventViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AdminHomeFragment extends Fragment {
+
+    private AdminEventViewModel vm;
 
     @Nullable
     @Override
@@ -26,16 +32,43 @@ public class AdminHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
         TabLayout tabLayout = view.findViewById(R.id.tab_admin_events);
         ViewPager2 viewPager = view.findViewById(R.id.pager_admin_events);
+        TextView tvUpcoming = view.findViewById(R.id.tv_overview_upcoming);
+        TextView tvOngoing = view.findViewById(R.id.tv_overview_ongoing);
+        TextView tvDone = view.findViewById(R.id.tv_overview_done);
 
         AdminEventPagerAdapter adapter = new AdminEventPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0) tab.setText("Tất cả");
+            if (position == 0) tab.setText("Sắp diễn ra");
             else if (position == 1) tab.setText("Đang diễn ra");
             else tab.setText("Đã diễn ra");
         }).attach();
+
+        vm.getUpcoming().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvUpcoming.setText(String.valueOf(list.size()));
+        });
+        vm.getOngoing().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvOngoing.setText(String.valueOf(list.size()));
+        });
+        vm.getDone().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvDone.setText(String.valueOf(list.size()));
+        });
+        super.onViewCreated(view, savedInstanceState);
+        Button btnCreateTask = view.findViewById(R.id.btn_create_task);
+        btnCreateTask.setOnClickListener(v -> {
+            Navigation.findNavController(v).navigate(R.id.adminCreateTaskFragment);
+        });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.load();
+        }
     }
 }

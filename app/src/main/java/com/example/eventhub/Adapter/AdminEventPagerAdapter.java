@@ -15,12 +15,12 @@ public class AdminEventPagerAdapter extends FragmentStateAdapter {
     @NonNull
     @Override
     public Fragment createFragment(int position) {
-        if (position == 1) {
+        if (position == 0) {
+            return AdminEventListFragment.newInstance(AdminEventListFragment.Type.UPCOMING);
+        } else if (position == 1) {
             return AdminEventListFragment.newInstance(AdminEventListFragment.Type.ONGOING);
-        } else if (position == 2) {
-            return AdminEventListFragment.newInstance(AdminEventListFragment.Type.DONE);
         } else {
-            return AdminEventListFragment.newInstance(AdminEventListFragment.Type.ALL);
+            return AdminEventListFragment.newInstance(AdminEventListFragment.Type.DONE);
         }
     }
 
