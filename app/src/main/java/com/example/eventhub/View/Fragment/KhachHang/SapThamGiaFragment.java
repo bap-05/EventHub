@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -60,6 +61,16 @@ public class SapThamGiaFragment extends Fragment {
         observeViewModel();
 
         suKienViewModel.loadSuKienSapThamGia(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk());
+        adapter.setListener(new EventAdapter.OnClickItemListener() {
+            @Override
+            public void onClickItem(SuKien suKien) {
+                if (suKien!=null)
+                {
+                    suKienViewModel.setSk(suKien);
+                    Navigation.findNavController(recyclerView).navigate(R.id.chiTietSuKienFragment);
+                }
+            }
+        });
     }
 
     private void observeViewModel() {

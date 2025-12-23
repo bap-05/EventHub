@@ -39,8 +39,7 @@ public class HomeFragment extends Fragment {
     private SuKienSapToiAdapter suKienDanhchobnAdapter;
     private final Set<String> loaiSet = new LinkedHashSet<>();
     private SuKienViewModel suKienViewModel;
-    private android.widget.TextView tvSeeAllSapToi;
-    private android.widget.TextView tvSeeAllSapDienRa;
+
     private final java.util.Set<Integer> registeredIds = new java.util.HashSet<>();
     private int currentUserId = -1;
 
@@ -52,18 +51,7 @@ public class HomeFragment extends Fragment {
         img_search = v.findViewById(R.id.img_home_search);
         img_search.setOnClickListener(view -> Navigation.findNavController(v).navigate(R.id.searchFragment));
         suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
-        tvSeeAllSapToi = v.findViewById(R.id.txt_home_seeall);
-        tvSeeAllSapDienRa = v.findViewById(R.id.txt_home_seeall_sapdienra);
-        tvSeeAllSapToi.setOnClickListener(view -> {
-            Bundle args = new Bundle();
-            args.putString("ARG_TYPE", com.example.eventhub.View.Fragment.KhachHang.AllEventsFragment.Type.UPCOMING.name());
-            Navigation.findNavController(v).navigate(R.id.allEventsFragment, args);
-        });
-        tvSeeAllSapDienRa.setOnClickListener(view -> {
-            Bundle args = new Bundle();
-            args.putString("ARG_TYPE", com.example.eventhub.View.Fragment.KhachHang.AllEventsFragment.Type.SOON.name());
-            Navigation.findNavController(v).navigate(R.id.allEventsFragment, args);
-        });
+
         adddanhMuc(v);
         addSKsapDienRa(v);
         addSKSapToi(v);

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.squareup.picasso.Picasso;
@@ -111,7 +112,7 @@ public class SuKienSapToiAdapter extends RecyclerView.Adapter<SuKienSapToiAdapte
             txt_thoigian.setText(sk.getThoiGianBatDau());
             txt_coso.setText(sk.getCoSo());
             if (sk.getPoster() != null && !sk.getPoster().isEmpty()) {
-                Picasso.get().load(sk.getPoster()).into(img_poster);
+                Glide.with(itemView).load(sk.getPoster()).into(img_poster);
             } else {
                 img_poster.setImageResource(R.drawable.poster);
             }
