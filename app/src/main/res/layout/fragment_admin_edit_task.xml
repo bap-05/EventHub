@@ -243,6 +243,28 @@
                     android:paddingStart="16dp"
                     android:paddingEnd="16dp" />
 
+                <TextView
+                    android:id="@+id/tv_state"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Trạng thái" />
+
+                <EditText
+                    android:id="@+id/edt_trang_thai"
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="4dp"
+                    android:background="@drawable/bg_input_field"
+                    android:hint="Trạng thái"
+                    android:focusable="false"
+                    android:clickable="true"
+                    android:drawableEnd="@android:drawable/arrow_down_float"
+                    android:drawableStart="@drawable/ic_diem_cong"
+                    android:drawablePadding="10dp"
+                    android:paddingStart="16dp"
+                    android:paddingEnd="16dp" />
+
 
                 <TextView
                     android:id="@+id/tv_lbl_location"
@@ -371,7 +393,7 @@
             android:layout_width="match_parent"
             android:layout_height="55dp"
             android:background="@drawable/bg_button_blue"
-            android:text="Thêm sự kiện"
+            android:text="Cập nhật sự kiện"
             android:textColor="#FFFFFF"
             android:textAllCaps="false"
             android:textSize="16sp"

@@ -10,6 +10,8 @@ import com.example.eventhub.Model.ThamGiaSuKien;
 import java.util.List;
 
 import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -56,4 +58,36 @@ public interface IAPI {
     Call<Void> updateParticipantStatus(@Path("maSK") int maSK, @Path("maTK") int maTK, @Body ApproveRequest req);
     @DELETE("sukien/thamgia/{maSK}/{maTK}")
     Call<Void> cancelRegistration(@Path("maSK") int maSK, @Path("maTK") int maTK);
+    @Multipart
+    @POST("sukien/create")
+    Call<ResponseBody> createSuKien(
+            @Part MultipartBody.Part poster,
+            @Part("TenSK") RequestBody tenSK,
+            @Part("MoTa") RequestBody moTa,
+            @Part("LoaiSuKien") RequestBody loaiSK,
+            @Part("SoLuongGioiHan") RequestBody soLuong,
+            @Part("DiemCong") RequestBody diem,
+            @Part("CoSo") RequestBody coSo,
+            @Part("DiaDiem") RequestBody diaDiem,
+            @Part("ThoiGianBatDau") RequestBody batDau,
+            @Part("ThoiGianKetThuc") RequestBody ketThuc,
+            @Part("NguoiDang") RequestBody nguoiDang
+    );
+
+    @Multipart
+    @PUT("sukien/update/{id}")
+    Call<ResponseBody> updateSuKien(
+            @Path("id") int id,
+            @Part MultipartBody.Part poster,
+            @Part("TenSK") RequestBody tenSK,
+            @Part("MoTa") RequestBody moTa,
+            @Part("LoaiSuKien") RequestBody loaiSK,
+            @Part("SoLuongGioiHan") RequestBody soLuong,
+            @Part("DiemCong") RequestBody diem,
+            @Part("CoSo") RequestBody coSo,
+            @Part("DiaDiem") RequestBody diaDiem,
+            @Part("ThoiGianBatDau") RequestBody batDau,
+            @Part("ThoiGianKetThuc") RequestBody ketThuc,
+            @Part("TrangThai") RequestBody trangThai
+    );
 }
