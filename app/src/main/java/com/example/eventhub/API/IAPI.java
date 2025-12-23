@@ -47,6 +47,12 @@ public interface IAPI {
     Call<ApiResponse> timSuKien(@Body ThamGiaSuKien suKien);
     @PUT("sukien/uploadminhchung/{id}")
     Call<Void> uploadMinhChung(@Path("id")int id, @Body MinhChung minhChung);
+    @GET("sukien/admin")
+    Call<AdminEventResponse> getAdminEvents();
+    @GET("sukien/thamgia/{maSK}")
+    Call<AdminParticipantResponse> getParticipants(@Path("maSK") int maSK);
+    @PUT("sukien/thamgia/{maSK}/{maTK}")
+    Call<Void> updateParticipantStatus(@Path("maSK") int maSK, @Path("maTK") int maTK, @Body ApproveRequest req);
     @Multipart
     @POST("sukien/create")
     Call<ResponseBody> createSuKien(
@@ -62,5 +68,4 @@ public interface IAPI {
             @Part("ThoiGianKetThuc") RequestBody ketThuc,
             @Part("NguoiDang") RequestBody nguoiDang
     );
-
 }

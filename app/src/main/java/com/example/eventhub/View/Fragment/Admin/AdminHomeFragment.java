@@ -14,10 +14,13 @@ import androidx.viewpager2.widget.ViewPager2;
 
 import com.example.eventhub.Adapter.AdminEventPagerAdapter;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.AdminEventViewModel;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class AdminHomeFragment extends Fragment {
+
+    private AdminEventViewModel vm;
 
     @Nullable
     @Override
@@ -28,6 +31,7 @@ public class AdminHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
         TabLayout tabLayout = view.findViewById(R.id.tab_admin_events);
         ViewPager2 viewPager = view.findViewById(R.id.pager_admin_events);
 
@@ -45,5 +49,13 @@ public class AdminHomeFragment extends Fragment {
         btnCreateTask.setOnClickListener(v -> {
             Navigation.findNavController(v).navigate(R.id.adminCreateTaskFragment);
         });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.load();
+        }
     }
 }

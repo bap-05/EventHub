@@ -4,5 +4,3 @@
         <domain includeSubdomains="true">172.21.64.1</domain>
     </domain-config>
 </network-security-config>
-
-
