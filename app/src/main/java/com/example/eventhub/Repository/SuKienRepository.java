@@ -19,7 +19,6 @@ import retrofit2.Response;
 
 public class SuKienRepository {
     private final IAPI iapi;
-
     public SuKienRepository() {
         this.iapi = ApiClient.getClient().create(IAPI.class);
     }
