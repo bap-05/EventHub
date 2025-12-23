@@ -71,7 +71,7 @@ public class AdminEventViewModel extends ViewModel {
 
     public void markDone(int eventId) {
         HashMap<String, String> body = new HashMap<>();
-        body.put("TrangThai", "?? di?n ra");
+        body.put("TrangThai", "\u0110\u00e3 di\u1ec5n ra");
         iapi.updateSuKienJson(eventId, body).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

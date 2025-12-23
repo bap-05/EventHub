@@ -31,6 +31,7 @@ public class AdminEventListFragment extends Fragment {
     }
 
     private Type type = Type.UPCOMING;
+    private AdminEventViewModel vm;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,7 +53,7 @@ public class AdminEventListFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         RecyclerView recyclerView = view.findViewById(R.id.rv_admin_events);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-        AdminEventViewModel vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
+        vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
         AdminEventListAdapter adapter = new AdminEventListAdapter(new java.util.ArrayList<>(), new AdminEventListAdapter.OnEventClick() {
             @Override
             public void onItemClick(com.example.eventhub.Model.AdminEventItem item) {
@@ -116,6 +117,19 @@ public class AdminEventListFragment extends Fragment {
             vm.getOngoing().observe(getViewLifecycleOwner(), observer);
         } else {
             vm.getDone().observe(getViewLifecycleOwner(), observer);
+        }
+
+        getParentFragmentManager().setFragmentResultListener("admin_event_updated", getViewLifecycleOwner(),
+                (requestKey, bundle) -> {
+                    if (vm != null) vm.load();
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (vm != null) {
+            vm.load();
         }
     }
 }

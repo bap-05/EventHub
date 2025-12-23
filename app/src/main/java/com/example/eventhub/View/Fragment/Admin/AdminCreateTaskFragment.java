@@ -86,10 +86,10 @@ public class AdminCreateTaskFragment extends Fragment {
         edtLoaiSK = view.findViewById(R.id.edt_loai_sk);
 
         edtSoLuong = view.findViewById(R.id.edt_so_luong);
-        edtSoLuong.setInputType(InputType.TYPE_CLASS_NUMBER); // Tối ưu chỉ nhập số
+        edtSoLuong.setInputType(InputType.TYPE_CLASS_NUMBER); // T???i ??u ch??? nh???p s???
 
         edtDiemCong = view.findViewById(R.id.edt_diem_cong);
-        edtDiemCong.setInputType(InputType.TYPE_CLASS_NUMBER); // Tối ưu chỉ nhập số
+        edtDiemCong.setInputType(InputType.TYPE_CLASS_NUMBER); // T???i ??u ch??? nh???p s???
 
         edtCoSo = view.findViewById(R.id.edt_co_so);
         edtDiaDiem = view.findViewById(R.id.edt_dia_diem);
@@ -106,17 +106,17 @@ public class AdminCreateTaskFragment extends Fragment {
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        String[] optionsLoai = {"Văn nghệ", "Hội thảo", "Chủ nhật xanh"};
-        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chọn loại sự kiện", optionsLoai, edtLoaiSK));
+        String[] optionsLoai = {"V??n ngh???", "H???i th???o", "Ch??? nh???t xanh"};
+        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Ch???n lo???i s??? ki???n", optionsLoai, edtLoaiSK));
 
-        String[] optionsCoSo = {"Cơ sở 1", "Cơ sở 2"};
-        edtCoSo.setOnClickListener(v -> showOptionsDialog("Chọn cơ sở", optionsCoSo, edtCoSo));
+        String[] optionsCoSo = {"C?? s??? 1", "C?? s??? 2"};
+        edtCoSo.setOnClickListener(v -> showOptionsDialog("Ch???n c?? s???", optionsCoSo, edtCoSo));
 
-        // Áp dụng mặt nạ dd/mm/yyyy cho nhập tay
+        // ??p d???ng m???t n??? dd/mm/yyyy cho nh???p tay
         applyDateMask(edtNgayBatDau);
         applyDateMask(edtNgayKetThuc);
 
-        // Bắt sự kiện click vào icon lịch (bên phải EditText) để hiện Picker
+        // B???t s??? ki???n click v??o icon l???ch (b??n ph???i EditText) ????? hi???n Picker
         setupCalendarIconTouch(edtNgayBatDau);
         setupCalendarIconTouch(edtNgayKetThuc);
 
@@ -185,20 +185,20 @@ public class AdminCreateTaskFragment extends Fragment {
 
     private void validateAndCreateEvent() {
         if (selectedImageUri == null) {
-            Toast.makeText(getContext(), "Vui lòng chọn hình ảnh sự kiện", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Vui l??ng ch???n h??nh ???nh s??? ki???n", Toast.LENGTH_SHORT).show();
             return;
         }
 
-        if (isFieldEmpty(edtTenSK, "Tên sự kiện")) return;
-        if (isFieldEmpty(edtMoTa, "Mô tả sự kiện")) return;
-        if (isFieldEmpty(edtLoaiSK, "Loại sự kiện")) return;
-        if (isFieldEmpty(edtSoLuong, "Số lượng")) return;
-        if (isFieldEmpty(edtDiemCong, "Điểm cộng")) return;
-        if (isFieldEmpty(edtCoSo, "Cơ sở")) return;
-        if (isFieldEmpty(edtNgayBatDau, "Ngày bắt đầu")) return;
-        if (isFieldEmpty(edtGioBatDau, "Giờ bắt đầu")) return;
-        if (isFieldEmpty(edtNgayKetThuc, "Ngày kết thúc")) return;
-        if (isFieldEmpty(edtGioKetThuc, "Giờ kết thúc")) return;
+        if (isFieldEmpty(edtTenSK, "T??n s??? ki???n")) return;
+        if (isFieldEmpty(edtMoTa, "M?? t??? s??? ki???n")) return;
+        if (isFieldEmpty(edtLoaiSK, "Lo???i s??? ki???n")) return;
+        if (isFieldEmpty(edtSoLuong, "S??? l?????ng")) return;
+        if (isFieldEmpty(edtDiemCong, "??i???m c???ng")) return;
+        if (isFieldEmpty(edtCoSo, "C?? s???")) return;
+        if (isFieldEmpty(edtNgayBatDau, "Ng??y b???t ?????u")) return;
+        if (isFieldEmpty(edtGioBatDau, "Gi??? b???t ?????u")) return;
+        if (isFieldEmpty(edtNgayKetThuc, "Ng??y k???t th??c")) return;
+        if (isFieldEmpty(edtGioKetThuc, "Gi??? k???t th??c")) return;
 
         callApiCreateEvent();
     }
@@ -255,8 +255,9 @@ public class AdminCreateTaskFragment extends Fragment {
         });
         viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
             if (Boolean.TRUE.equals(created)) {
-                Toast.makeText(getContext(), "T §­o s ¯ñ ki ¯Øn thAÿnh cA'ng!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "T??????o s?????? ki??????n thA??nh cA'ng!", Toast.LENGTH_SHORT).show();
                 viewModel.clearCreated();
+                getParentFragmentManager().setFragmentResult("admin_event_updated", new Bundle());
                 requireActivity().onBackPressed();
             }
         });
@@ -282,7 +283,7 @@ public class AdminCreateTaskFragment extends Fragment {
 
     private boolean isFieldEmpty(EditText editText, String fieldName) {
         if (editText.getText().toString().trim().isEmpty()) {
-            editText.setError("Vui lòng nhập/chọn " + fieldName);
+            editText.setError("Vui l??ng nh???p/ch???n " + fieldName);
             editText.requestFocus();
             return true;
         }
@@ -310,4 +311,5 @@ public class AdminCreateTaskFragment extends Fragment {
         }
     }
 }
+
 

@@ -1,5 +1,6 @@
 package com.example.eventhub.Adapter;
 
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
@@ -10,11 +11,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.AdminEventItem;
 import com.example.eventhub.R;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.List;
 
@@ -67,16 +70,27 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
         loadAvatar(holder.avatar2, item.getAvt2());
         loadAvatar(holder.avatar3, item.getAvt3());
 
-        holder.qrIcon.setVisibility(View.VISIBLE);
         holder.tvEventId.setVisibility(View.GONE);
         boolean isDone = item.isShowDone();
-        holder.qrIcon.setImageResource(isDone ? item.getDoneIconRes() : R.drawable.ic_edit);
-        if (isDone) {
-            holder.qrIcon.setOnClickListener(null);
+        boolean isOngoing = item.getStatus() == AdminEventItem.Status.ONGOING;
+
+        holder.qrIcon.setVisibility(isOngoing ? View.VISIBLE : View.GONE);
+        holder.editIcon.setVisibility(isDone ? View.GONE : View.VISIBLE);
+
+        if (isOngoing) {
+            holder.qrIcon.setImageResource(R.drawable.qr);
+            holder.qrIcon.setOnClickListener(v -> showQrDialog(v, item.getEventId()));
         } else {
-            holder.qrIcon.setOnClickListener(v -> {
+            holder.qrIcon.setOnClickListener(null);
+        }
+
+        if (isDone) {
+            holder.editIcon.setOnClickListener(null);
+        } else {
+            holder.editIcon.setImageResource(R.drawable.ic_edit);
+            holder.editIcon.setOnClickListener(v -> {
                 if (listener == null) return;
-                if (item.getStatus() == AdminEventItem.Status.ONGOING) {
+                if (isOngoing) {
                     listener.onMarkDone(item);
                 } else {
                     listener.onEditClick(item);
@@ -114,7 +128,7 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
         TextView tvTitle, tvStatus, tvPriority, tvStart, tvEnd, tvEventId, tvCount;
-        ImageView statusIcon, priorityIcon, startIcon, endIcon, avatar1, avatar2, avatar3, qrIcon;
+        ImageView statusIcon, priorityIcon, startIcon, endIcon, avatar1, avatar2, avatar3, qrIcon, editIcon;
         View progressBar;
         View avatarContainer;
 
@@ -132,11 +146,31 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             startIcon = itemView.findViewById(R.id.icon_start);
             endIcon = itemView.findViewById(R.id.icon_end);
             qrIcon = itemView.findViewById(R.id.icon_qr);
+            editIcon = itemView.findViewById(R.id.icon_edit);
             avatar1 = itemView.findViewById(R.id.avatar1);
             avatar2 = itemView.findViewById(R.id.avatar2);
             avatar3 = itemView.findViewById(R.id.avatar3);
             progressBar = itemView.findViewById(R.id.progress_line);
             avatarContainer = itemView.findViewById(R.id.avatar_container);
+        }
+    }
+
+    private void showQrDialog(View view, int eventId) {
+        try {
+            BarcodeEncoder encoder = new BarcodeEncoder();
+            Bitmap bitmap = encoder.encodeBitmap(String.valueOf(eventId),
+                    com.google.zxing.BarcodeFormat.QR_CODE, 500, 500);
+            ImageView qrView = new ImageView(view.getContext());
+            qrView.setImageBitmap(bitmap);
+            int padding = (int) (16 * view.getResources().getDisplayMetrics().density);
+            qrView.setPadding(padding, padding, padding, padding);
+            new AlertDialog.Builder(view.getContext())
+                    .setTitle("Ma QR su kien")
+                    .setView(qrView)
+                    .setPositiveButton("Dong", null)
+                    .show();
+        } catch (Exception ignored) {
+            // ignore
         }
     }
 }

@@ -124,15 +124,12 @@ public class AdminEditTaskFragment extends Fragment {
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
         layoutUploadImage.setOnClickListener(v -> mGetContent.launch("image/*"));
-
-        String[] optionsLoai = {"Âm nhạc",  "Hội thảo", "Chủ nhật xanh"};
-        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chọn loại sự kiện", optionsLoai, edtLoaiSK));
-
-        String[] optionsCoSo = {"Cơ sở 1", "Cơ sở 2"};
-        edtCoSo.setOnClickListener(v -> showOptionsDialog("Chọn cơ sở", optionsCoSo, edtCoSo));
-
-        String[] optionsStatus = {"Sắp diễn ra", "Đang diễn ra", "Đã diễn ra"};
-        edtTrangThai.setOnClickListener(v -> showOptionsDialog("Chọn trạng thái", optionsStatus, edtTrangThai));
+        String[] optionsLoai = {"\u00c2m nh\u1ea1c", "H\u1ed9i th\u1ea3o", "Ch\u1ee7 nh\u1eadt xanh"};
+        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chon loai su kien", optionsLoai, edtLoaiSK));
+        String[] optionsCoSo = {"C\u01a1 s\u1edf 1", "C\u01a1 s\u1edf 2"};
+        edtCoSo.setOnClickListener(v -> showOptionsDialog("Chon co so", optionsCoSo, edtCoSo));
+        String[] optionsStatus = {"S\u1eafp di\u1ec5n ra", "\u0110ang di\u1ec5n ra", "\u0110\u00e3 di\u1ec5n ra"};
+        edtTrangThai.setOnClickListener(v -> showOptionsDialog("Chon trang thai", optionsStatus, edtTrangThai));
 
         applyDateMask(edtNgayBatDau);
         applyDateMask(edtNgayKetThuc);
@@ -228,6 +225,7 @@ public class AdminEditTaskFragment extends Fragment {
             if (Boolean.TRUE.equals(updated)) {
                 Toast.makeText(getContext(), "Cap nhat su kien thanh cong", Toast.LENGTH_SHORT).show();
                 viewModel.clearUpdated();
+                getParentFragmentManager().setFragmentResult("admin_event_updated", new Bundle());
                 requireActivity().onBackPressed();
             }
         });
@@ -342,9 +340,9 @@ public class AdminEditTaskFragment extends Fragment {
     private String normalizeStatusLabel(String raw) {
         if (raw == null) return "";
         String lower = raw.toLowerCase(Locale.getDefault());
-        if (lower.contains("sap")) return "Sap dien ra";
-        if (lower.contains("dang")) return "Dang dien ra";
-        if (lower.contains("da")) return "Da dien ra";
+        if (lower.contains("sap")) return "S\u1eafp di\u1ec5n ra";
+        if (lower.contains("dang")) return "\u0110ang di\u1ec5n ra";
+        if (lower.contains("da")) return "\u0110\u00e3 di\u1ec5n ra";
         return raw;
     }
 
@@ -385,3 +383,4 @@ public class AdminEditTaskFragment extends Fragment {
         }
     }
 }
+
