@@ -73,6 +73,17 @@ public class AdminEventListFragment extends Fragment {
                 androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_student_list, args);
             }
+
+            @Override
+            public void onEditClick(com.example.eventhub.Model.AdminEventItem item) {
+                Bundle args = new Bundle();
+                if (item.getSource() != null) {
+                    args.putSerializable("event", item.getSource());
+                }
+                args.putString("status_text", item.getStatusText());
+                androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
+                navController.navigate(R.id.nav_admin_edit_task, args);
+            }
         });
         recyclerView.setAdapter(adapter);
 

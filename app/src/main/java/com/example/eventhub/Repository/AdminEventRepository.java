@@ -4,13 +4,17 @@ import android.util.Log;
 
 import androidx.lifecycle.MutableLiveData;
 
-import com.example.eventhub.API.AdminEventResponse;
 import com.example.eventhub.API.ApiClient;
 import com.example.eventhub.API.IAPI;
-import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.AdminCreateEventRequest;
+import com.example.eventhub.Model.AdminUpdateEventRequest;
 
-import java.util.List;
+import java.io.File;
 
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,27 +26,100 @@ public class AdminEventRepository {
         this.iapi = ApiClient.getClient().create(IAPI.class);
     }
 
-    public void fetchAdminEvents(MutableLiveData<List<SuKien>> upcoming,
-                                 MutableLiveData<List<SuKien>> ongoing,
-                                 MutableLiveData<List<SuKien>> done,
-                                 MutableLiveData<String> err) {
-        iapi.getAdminEvents().enqueue(new Callback<AdminEventResponse>() {
-            @Override
-            public void onResponse(Call<AdminEventResponse> call, Response<AdminEventResponse> response) {
-                if (response.isSuccessful() && response.body() != null) {
-                    upcoming.postValue(response.body().getUpcoming());
-                    ongoing.postValue(response.body().getOngoing());
-                    done.postValue(response.body().getDone());
-                } else {
-                    err.postValue("Lỗi server: " + response.code());
-                }
-            }
+    public void createEvent(AdminCreateEventRequest request,
+                            MutableLiveData<Boolean> created,
+                            MutableLiveData<String> err) {
+        if (request == null) {
+            err.postValue("Loi du lieu");
+            return;
+        }
+        File poster = request.getPosterFile();
+        if (poster == null || !poster.exists()) {
+            err.postValue("Loi file poster");
+            return;
+        }
 
-            @Override
-            public void onFailure(Call<AdminEventResponse> call, Throwable t) {
-                Log.e("API", "fetchAdminEvents error", t);
-                err.postValue(t.getMessage());
-            }
-        });
+        RequestBody requestFile = RequestBody.create(poster, MediaType.parse("image/*"));
+        MultipartBody.Part posterPart =
+                MultipartBody.Part.createFormData("poster", poster.getName(), requestFile);
+
+        RequestBody rbTen = toText(request.getTenSK());
+        RequestBody rbMoTa = toText(request.getMoTa());
+        RequestBody rbLoai = toText(request.getLoaiSuKien());
+        RequestBody rbSoLuong = toText(request.getSoLuongGioiHan());
+        RequestBody rbDiem = toText(request.getDiemCong());
+        RequestBody rbCoSo = toText(request.getCoSo());
+        RequestBody rbDiaDiem = toText(request.getDiaDiem());
+        RequestBody rbBD = toText(request.getThoiGianBatDau());
+        RequestBody rbKT = toText(request.getThoiGianKetThuc());
+        RequestBody rbNguoiDang = toText(request.getNguoiDang());
+
+        iapi.createSuKien(posterPart, rbTen, rbMoTa, rbLoai, rbSoLuong, rbDiem, rbCoSo, rbDiaDiem, rbBD, rbKT, rbNguoiDang)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            created.postValue(true);
+                        } else {
+                            err.postValue("Loi server: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("API", "createEvent error", t);
+                        err.postValue(t.getMessage());
+                    }
+                });
+    }
+
+    private RequestBody toText(String value) {
+        return RequestBody.create(value == null ? "" : value, MediaType.parse("text/plain"));
+    }
+
+    public void updateEvent(AdminUpdateEventRequest request,
+                            MutableLiveData<Boolean> updated,
+                            MutableLiveData<String> err) {
+        if (request == null) {
+            err.postValue("Loi du lieu");
+            return;
+        }
+
+        MultipartBody.Part posterPart = null;
+        File poster = request.getPosterFile();
+        if (poster != null && poster.exists()) {
+            RequestBody requestFile = RequestBody.create(poster, MediaType.parse("image/*"));
+            posterPart = MultipartBody.Part.createFormData("poster", poster.getName(), requestFile);
+        }
+
+        RequestBody rbTen = toText(request.getTenSK());
+        RequestBody rbMoTa = toText(request.getMoTa());
+        RequestBody rbLoai = toText(request.getLoaiSuKien());
+        RequestBody rbSoLuong = toText(request.getSoLuongGioiHan());
+        RequestBody rbDiem = toText(request.getDiemCong());
+        RequestBody rbCoSo = toText(request.getCoSo());
+        RequestBody rbDiaDiem = toText(request.getDiaDiem());
+        RequestBody rbBD = toText(request.getThoiGianBatDau());
+        RequestBody rbKT = toText(request.getThoiGianKetThuc());
+        RequestBody rbTrangThai = toText(request.getTrangThai());
+
+        iapi.updateSuKien(request.getEventId(), posterPart, rbTen, rbMoTa, rbLoai, rbSoLuong,
+                        rbDiem, rbCoSo, rbDiaDiem, rbBD, rbKT, rbTrangThai)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            updated.postValue(true);
+                        } else {
+                            err.postValue("Loi server: " + response.code());
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("API", "updateEvent error", t);
+                        err.postValue(t.getMessage());
+                    }
+                });
     }
 }

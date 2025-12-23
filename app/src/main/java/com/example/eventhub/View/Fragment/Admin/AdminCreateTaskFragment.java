@@ -23,21 +23,17 @@ import android.widget.Toast;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
 
-import com.example.eventhub.API.ApiClient;
-import com.example.eventhub.API.IAPI;
+import com.example.eventhub.Model.AdminCreateEventRequest;
 import com.example.eventhub.Model.SessionManager;
 import com.example.eventhub.R;
+import com.example.eventhub.ViewModel.AdminCreateTaskViewModel;
 
 import java.io.File;
 import java.util.Calendar;
 import java.util.Locale;
 
-import okhttp3.MediaType;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
-import retrofit2.Call;
 
 public class AdminCreateTaskFragment extends Fragment {
 
@@ -48,6 +44,7 @@ public class AdminCreateTaskFragment extends Fragment {
     private ImageView btnBack, imgPosterPreview;
     private Button btnCreateTask;
     private SessionManager sessionManager;
+    private AdminCreateTaskViewModel viewModel;
 
     private Uri selectedImageUri;
 
@@ -71,6 +68,8 @@ public class AdminCreateTaskFragment extends Fragment {
 
         sessionManager = SessionManager.getInstance(requireContext());
         initViews(view);
+        viewModel = new ViewModelProvider(this).get(AdminCreateTaskViewModel.class);
+        observeViewModel();
         setupClickListeners();
         setupUI(view);
 
@@ -205,59 +204,31 @@ public class AdminCreateTaskFragment extends Fragment {
     }
 
     private void callApiCreateEvent() {
-        IAPI apiService = ApiClient.getClient().create(IAPI.class);
-
         File file = getFileFromUri(selectedImageUri);
         if (file == null) return;
 
-        RequestBody requestFile = RequestBody.create(file, MediaType.parse("image/*"));
-        MultipartBody.Part bodyPoster = MultipartBody.Part.createFormData("poster", file.getName(), requestFile);
-
-        // Lấy ID người đăng thực tế từ SessionManager
         String userId = sessionManager.getUserId();
-
-        // Kiểm tra xem ID có tồn tại không để tránh lỗi 500 ở Server
         if (userId == null || userId.isEmpty()) {
-            Toast.makeText(getContext(), "Lỗi: Không tìm thấy ID người đăng. Vui lòng đăng nhập lại!", Toast.LENGTH_LONG).show();
+            Toast.makeText(getContext(), "Loi: Khong tim thay ID nguoi dang. Vui long dang nhap lai!", Toast.LENGTH_LONG).show();
             return;
         }
-        RequestBody rbTen = RequestBody.create(edtTenSK.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbMoTa = RequestBody.create(edtMoTa.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbLoai = RequestBody.create(edtLoaiSK.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbSoLuong = RequestBody.create(edtSoLuong.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbDiem = RequestBody.create(edtDiemCong.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbCoSo = RequestBody.create(edtCoSo.getText().toString(), MediaType.parse("text/plain"));
-        RequestBody rbDiaDiem = RequestBody.create(edtDiaDiem.getText().toString(), MediaType.parse("text/plain"));
 
-        String thoiGianBD = formatDateTime(edtNgayBatDau.getText().toString(), edtGioBatDau.getText().toString());
-        String thoiGianKT = formatDateTime(edtNgayKetThuc.getText().toString(), edtGioKetThuc.getText().toString());
-
-        RequestBody rbBD = RequestBody.create(thoiGianBD, MediaType.parse("text/plain"));
-        RequestBody rbKT = RequestBody.create(thoiGianKT, MediaType.parse("text/plain"));
-        RequestBody rbNguoiDang = RequestBody.create(userId, MediaType.parse("text/plain"));
-
-        apiService.createSuKien(bodyPoster, rbTen, rbMoTa, rbLoai, rbSoLuong, rbDiem, rbCoSo, rbDiaDiem, rbBD, rbKT, rbNguoiDang)
-                .enqueue(new retrofit2.Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, retrofit2.Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            Toast.makeText(getContext(), "Tạo sự kiện thành công!", Toast.LENGTH_SHORT).show();
-                            requireActivity().onBackPressed();
-                        } else {
-                            Toast.makeText(getContext(), "Lỗi Server: " + response.code(), Toast.LENGTH_SHORT).show();
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Toast.makeText(getContext(), "Lỗi kết nối: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                    }
-                });
-    }
-
-    private String formatDateTime(String date, String time) {
-        String[] parts = date.split("/"); // dd/MM/yyyy
-        return parts[2] + "-" + parts[1] + "-" + parts[0] + " " + time + ":00";
+        AdminCreateEventRequest request = AdminCreateEventRequest.fromForm(
+                file,
+                edtTenSK.getText().toString(),
+                edtMoTa.getText().toString(),
+                edtLoaiSK.getText().toString(),
+                edtSoLuong.getText().toString(),
+                edtDiemCong.getText().toString(),
+                edtCoSo.getText().toString(),
+                edtDiaDiem.getText().toString(),
+                edtNgayBatDau.getText().toString(),
+                edtGioBatDau.getText().toString(),
+                edtNgayKetThuc.getText().toString(),
+                edtGioKetThuc.getText().toString(),
+                userId
+        );
+        viewModel.createEvent(request);
     }
 
     private File getFileFromUri(Uri uri) {
@@ -274,6 +245,21 @@ public class AdminCreateTaskFragment extends Fragment {
             e.printStackTrace();
             return null;
         }
+    }
+
+    private void observeViewModel() {
+        viewModel.getErr().observe(getViewLifecycleOwner(), err -> {
+            if (err != null && !err.isEmpty()) {
+                Toast.makeText(getContext(), err, Toast.LENGTH_SHORT).show();
+            }
+        });
+        viewModel.getCreated().observe(getViewLifecycleOwner(), created -> {
+            if (Boolean.TRUE.equals(created)) {
+                Toast.makeText(getContext(), "T §­o s ¯ñ ki ¯Øn thAÿnh cA'ng!", Toast.LENGTH_SHORT).show();
+                viewModel.clearCreated();
+                requireActivity().onBackPressed();
+            }
+        });
     }
 
     private void showOptionsDialog(String title, String[] items, EditText target) {
@@ -324,3 +310,4 @@ public class AdminCreateTaskFragment extends Fragment {
         }
     }
 }
+

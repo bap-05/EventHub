@@ -95,6 +95,11 @@
         android:name="com.example.eventhub.View.Fragment.Admin.AdminCreateTaskFragment"
         android:label="AdminCreateTaskFragment"
         tools:layout="@layout/fragment_admin_create_task" />
+    <fragment
+        android:id="@+id/nav_admin_edit_task"
+        android:name="com.example.eventhub.View.Fragment.Admin.AdminEditTaskFragment"
+        android:label="AdminEditTaskFragment"
+        tools:layout="@layout/fragment_admin_edit_task" />
     <fragment android:id="@+id/nav_profile_admin" android:name="com.example.eventhub.View.Fragment.KhachHang.ProfileFragment" android:label="ProfileAdmin" tools:layout="@layout/fragment_profile" />
     <fragment
         android:id="@+id/previewPhotoFragment"

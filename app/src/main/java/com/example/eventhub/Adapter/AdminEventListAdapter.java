@@ -25,6 +25,7 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
     public interface OnEventClick {
         void onItemClick(AdminEventItem item);
         void onAvatarClick(AdminEventItem item);
+        void onEditClick(AdminEventItem item);
     }
     private final OnEventClick listener;
 
@@ -71,6 +72,7 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
 
         if (item.isShowQr()) {
             holder.qrIcon.setVisibility(View.VISIBLE);
+            holder.qrIcon.setImageResource(R.drawable.qr);
             holder.bindQrClick(holder.itemView.getContext());
             holder.tvEventId.setVisibility(View.VISIBLE);
             holder.tvEventId.setText("Mã sự kiện: " + item.getEventId());
@@ -80,8 +82,11 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             holder.qrIcon.setOnClickListener(null);
             holder.tvEventId.setVisibility(View.GONE);
         } else {
-            holder.qrIcon.setVisibility(View.GONE);
-            holder.qrIcon.setOnClickListener(null);
+            holder.qrIcon.setVisibility(View.VISIBLE);
+            holder.qrIcon.setImageResource(R.drawable.ic_edit);
+            holder.qrIcon.setOnClickListener(v -> {
+                if (listener != null) listener.onEditClick(item);
+            });
             holder.tvEventId.setVisibility(View.GONE);
         }
 

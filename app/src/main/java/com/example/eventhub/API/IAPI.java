@@ -68,4 +68,21 @@ public interface IAPI {
             @Part("ThoiGianKetThuc") RequestBody ketThuc,
             @Part("NguoiDang") RequestBody nguoiDang
     );
+
+    @Multipart
+    @PUT("sukien/update/{id}")
+    Call<ResponseBody> updateSuKien(
+            @Path("id") int id,
+            @Part MultipartBody.Part poster,
+            @Part("TenSK") RequestBody tenSK,
+            @Part("MoTa") RequestBody moTa,
+            @Part("LoaiSuKien") RequestBody loaiSK,
+            @Part("SoLuongGioiHan") RequestBody soLuong,
+            @Part("DiemCong") RequestBody diem,
+            @Part("CoSo") RequestBody coSo,
+            @Part("DiaDiem") RequestBody diaDiem,
+            @Part("ThoiGianBatDau") RequestBody batDau,
+            @Part("ThoiGianKetThuc") RequestBody ketThuc,
+            @Part("TrangThai") RequestBody trangThai
+    );
 }
