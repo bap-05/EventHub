@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -32,15 +33,28 @@ public class AdminHomeFragment extends Fragment {
         vm = new androidx.lifecycle.ViewModelProvider(requireActivity()).get(AdminEventViewModel.class);
         TabLayout tabLayout = view.findViewById(R.id.tab_admin_events);
         ViewPager2 viewPager = view.findViewById(R.id.pager_admin_events);
+        TextView tvUpcoming = view.findViewById(R.id.tv_overview_upcoming);
+        TextView tvOngoing = view.findViewById(R.id.tv_overview_ongoing);
+        TextView tvDone = view.findViewById(R.id.tv_overview_done);
 
         AdminEventPagerAdapter adapter = new AdminEventPagerAdapter(this);
         viewPager.setAdapter(adapter);
 
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
-            if (position == 0) tab.setText("Tất cả");
+            if (position == 0) tab.setText("Sắp diễn ra");
             else if (position == 1) tab.setText("Đang diễn ra");
             else tab.setText("Đã diễn ra");
         }).attach();
+
+        vm.getUpcoming().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvUpcoming.setText(String.valueOf(list.size()));
+        });
+        vm.getOngoing().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvOngoing.setText(String.valueOf(list.size()));
+        });
+        vm.getDone().observe(getViewLifecycleOwner(), list -> {
+            if (list != null) tvDone.setText(String.valueOf(list.size()));
+        });
     }
 
     @Override

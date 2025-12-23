@@ -59,9 +59,9 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
         holder.startIcon.setImageResource(item.getCalendarIconRes());
         holder.endIcon.setImageResource(item.getCalendarIconRes());
 
-        holder.avatar1.setImageResource(item.getAvatarRes());
-        holder.avatar2.setImageResource(item.getAvatarRes());
-        holder.avatar3.setImageResource(item.getAvatarRes());
+        clearOrSetPlaceholder(holder.avatar1);
+        clearOrSetPlaceholder(holder.avatar2);
+        clearOrSetPlaceholder(holder.avatar3);
         holder.tvCount.setText(item.getSoLuongDaDangKy() + "/" + item.getSoLuongGioiHan());
 
         // Load avatar URL nếu có
@@ -97,12 +97,19 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
     }
 
     private void loadAvatar(ImageView view, String url) {
-        if (url == null || url.isEmpty()) return;
+        if (url == null || url.isEmpty()) {
+            clearOrSetPlaceholder(view);
+            return;
+        }
         com.bumptech.glide.Glide.with(view.getContext())
                 .load(url)
-                .placeholder(R.drawable.avatar)
-                .error(R.drawable.avatar)
+                .placeholder(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+                .error(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
                 .into(view);
+    }
+
+    private void clearOrSetPlaceholder(ImageView view) {
+        view.setImageDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
     @Override

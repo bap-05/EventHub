@@ -1,191 +1,224 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@color/white"
     tools:context=".View.Fragment.KhachHang.ChiTietSuKienFragment">
+
     <ImageButton
         android:id="@+id/btn_ct_ql"
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="40dp"
-        android:src="@drawable/back"
         android:layout_marginLeft="10dp"
         android:layout_marginBottom="10dp"
+        android:background="@android:color/transparent"
         android:scaleType="fitCenter"
-        android:background="@android:color/transparent"/>
+        android:src="@drawable/back" />
+
     <ImageView
         android:id="@+id/img_ct_poster"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="200dp"
-        android:src="@drawable/postersukien"/>
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:src="@drawable/postersukien" />
+
     <TextView
         android:id="@+id/txt_ct_noidung"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Chào đón tân sinh viên"
-        android:textColor="@color/black"
-        android:textSize="22dp"
-        android:textStyle="bold"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="10dp"
         android:layout_marginTop="10dp"
-       />
+        android:layout_marginBottom="10dp"
+        android:text="Ten su kien"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-       >
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/calendar"/>
-        <TextView
+            android:src="@drawable/calendar" />
 
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Thời gian:"
+            android:layout_marginLeft="5dp"
+            android:text="Thoi gian:"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/txt_ct_thoigian"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="6:00 14/10/2025"
+            android:layout_marginLeft="5dp"
+            android:text="2025-01-01 08:00:00"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        >
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/map"/>
+            android:src="@drawable/map" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Địa điểm:"
+            android:layout_marginLeft="7dp"
+            android:text="Dia diem:"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="7dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/txt_ct_diadiem"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sảnh A trường SPKT"
+            android:layout_marginLeft="5dp"
+            android:text="Co so 1"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        >
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/status"/>
+            android:src="@drawable/status" />
+
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Trạng thái:"
+            android:layout_marginLeft="5dp"
+            android:text="Trang thai:"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
+
         <TextView
             android:id="@+id/txt_ct_trangthai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Sắp diễn ra"
+            android:layout_marginLeft="5dp"
+            android:text="Sap dien ra"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
     </LinearLayout>
+
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginTop="5dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        >
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
         <ImageView
             android:layout_width="25dp"
             android:layout_height="25dp"
-            android:src="@drawable/star"/>
+            android:src="@drawable/star" />
+
         <TextView
             android:id="@+id/txt_ct_diemhd"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="5 điểm hoạt động"
+            android:layout_marginLeft="5dp"
+            android:text="5 diem hoat dong"
             android:textColor="#474747"
-            android:textSize="18dp"
-            android:layout_marginLeft="5dp"/>
+            android:textSize="18sp" />
     </LinearLayout>
+
     <TextView
         android:id="@+id/txt_ct_soluongthamgia"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:text="So luong tham gia: 0/0"
         android:textColor="#474747"
-        android:textSize="18dp"
-        android:text="Số lượng tham gia: 20/60"/>
+        android:textSize="18sp" />
+
     <TextView
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="5dp"
+        android:text="Mo ta:"
         android:textColor="#474747"
-        android:textSize="18dp"
-        android:text="Mô tả:"/>
+        android:textSize="18sp" />
+
     <TextView
         android:id="@+id/txt_ct_mota"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textColor="#474747"
-        android:textSize="18dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="5dp"
         android:maxLines="5"
         android:ellipsize="end"
-        android:text="Ngày hội Tân Sinh Viên 2025 là sự kiện thường niên được tổ chức nhằm chào đón các bạn tân sinh viên khóa 2025 bước vào hành trình học tập và trải nghiệm mới tại trường"/>
+        android:text="Mo ta su kien"
+        android:textColor="#474747"
+        android:textSize="18sp" />
+
     <View
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
-    <Button
-        android:layout_marginBottom="100dp"
-        android:id="@+id/btn_ct_dk"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_gravity="end"
+        android:layout_weight="1" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="end"
         android:layout_marginRight="20dp"
-        android:text="Đăng ký"
-        android:background="@drawable/custom_btn_danhmuc"
-        app:backgroundTint="@null"
-        android:textColor="@color/white"
-        android:textSize="20dp"/>
+        android:layout_marginBottom="100dp">
+
+        <Button
+            android:id="@+id/btn_ct_dk"
+            android:layout_width="150dp"
+            android:layout_height="50dp"
+            android:text="Dang ky"
+            android:background="@drawable/custom_btn_danhmuc"
+            app:backgroundTint="@null"
+            android:textColor="@color/white"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/btn_ct_huy"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:text="Huy dang ky"
+            android:backgroundTint="@android:color/holo_red_dark"
+            android:textColor="@color/white"
+            android:visibility="gone" />
+    </LinearLayout>
 
 </LinearLayout>

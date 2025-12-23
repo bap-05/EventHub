@@ -1,13 +1,6 @@
 package com.example.eventhub.View.Fragment.KhachHang;
 
-import android.graphics.Color;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.navigation.Navigation;
-
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,75 +10,113 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
+
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
-
 import com.example.eventhub.ViewModel.SuKienViewModel;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.squareup.picasso.Picasso;
-
 
 public class ChiTietSuKienFragment extends Fragment implements View.OnClickListener {
     private TextView txt_noidung, txt_thoigian, txt_trangthai, txt_diem, txt_mota, txt_diadiem, txt_soluong;
     private ImageView img_poster;
     private ImageButton btn_ql;
+    private Button btn_dk, btn_huy;
     private int maSK;
-    private Button btn_dk;
+    private int currentUserId = -1;
+    private SuKien currentSk;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_chi_tiet_su_kien, container, false);
         addView(v);
-        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
-        SuKienViewModel.getSk().observe(getViewLifecycleOwner(), suKienSapToi -> {
-            txt_thoigian.setText(suKienSapToi.getThoiGianBatDau());
-            txt_diadiem.setText(suKienSapToi.getDiaDiem());
-            txt_noidung.setText(suKienSapToi.getTenSK());
-            txt_mota.setText(suKienSapToi.getMoTa());
-            txt_diem.setText(suKienSapToi.getDiemCong()+" điểm hoạt động");
-            txt_soluong.setText("Số lương tham gia: "+suKienSapToi.getSoLuongDaDangKy()+"/"+suKienSapToi.getSoLuongGioiHan());
-            txt_trangthai.setText(suKienSapToi.getTrangThai());
-            maSK = suKienSapToi.getMaSK();
-            Picasso.get().load(suKienSapToi.getPoster()).into(img_poster);
-        });
-        btn_dk.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                TaiKhoan taiKhoan = TaiKhoanViewModel.getTaikhoan().getValue();
-                if(taiKhoan!=null)
-                {
-                    Log.d("DKSuKien",""+taiKhoan.getMaTk());
-                    ThamGiaSuKien thamGiaSuKien = new ThamGiaSuKien(taiKhoan.getMaTk(),maSK);
-                    SuKienViewModel.getDkSuKien().observe(getViewLifecycleOwner(),dksukien->{
-                        if (dksukien!=null)
-                        {
-                            Toast.makeText(v.getContext(),dksukien,Toast.LENGTH_LONG).show();
-                            Navigation.findNavController(v).navigate(R.id.nav_home);
-                        }
-                    });
-                    suKienViewModel.dangKySuKien(thamGiaSuKien);
-                }
-            }
-        });
-        suKienViewModel.getListSKSapThamGia().observe(getViewLifecycleOwner(),suKiens -> {
-            for(SuKien sk : suKiens)
-            {
-                if(sk.getMaSK() == SuKienViewModel.getSk().getValue().getMaSK())
-                {
-                    btn_dk.setText("Đã đăng ký");
-                    btn_dk.setBackgroundResource(R.drawable.custom_btn_dksk);
-                    btn_dk.setEnabled(false);
-                }
 
+        SuKienViewModel suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
+        TaiKhoanViewModel.getTaikhoan().observe(getViewLifecycleOwner(), tk -> {
+            currentUserId = tk != null ? tk.getMaTk() : -1;
+        });
+
+        SuKienViewModel.getSk().observe(getViewLifecycleOwner(), sk -> {
+            currentSk = sk;
+            if (sk == null) return;
+            maSK = sk.getMaSK();
+            txt_thoigian.setText(sk.getThoiGianBatDau());
+            txt_diadiem.setText(sk.getDiaDiem());
+            txt_noidung.setText(sk.getTenSK());
+            txt_mota.setText(sk.getMoTa());
+            txt_diem.setText(sk.getDiemCong() + " Diem hoat dong");
+            txt_soluong.setText("So luong tham gia: " + sk.getSoLuongDaDangKy() + "/" + sk.getSoLuongGioiHan());
+            txt_trangthai.setText(sk.getTrangThai());
+            if (sk.getPoster() != null && !sk.getPoster().isEmpty()) {
+                Picasso.get().load(sk.getPoster()).into(img_poster);
+            } else {
+                img_poster.setImageResource(R.drawable.postersukien);
             }
+            updateButtonsState(suKienViewModel);
+        });
+
+        btn_dk.setOnClickListener(v1 -> {
+            TaiKhoan tk = TaiKhoanViewModel.getTaikhoan().getValue();
+            if (tk != null && currentSk != null) {
+                ThamGiaSuKien thamGiaSuKien = new ThamGiaSuKien(tk.getMaTk(), maSK);
+                SuKienViewModel.getDkSuKien().observe(getViewLifecycleOwner(), msg -> {
+                    if (msg != null) {
+                        Toast.makeText(v1.getContext(), msg, Toast.LENGTH_LONG).show();
+                        Navigation.findNavController(v1).navigate(R.id.nav_home);
+                    }
+                });
+                suKienViewModel.dangKySuKien(thamGiaSuKien);
+            }
+        });
+
+        btn_huy.setOnClickListener(v12 -> cancelRegistration(suKienViewModel));
+
+        suKienViewModel.getListSKSapThamGia().observe(getViewLifecycleOwner(), list -> {
+            updateButtonsState(suKienViewModel);
         });
 
         btn_ql.setOnClickListener(this);
         return v;
+    }
+
+    private void cancelRegistration(SuKienViewModel vm) {
+        if (currentSk == null) return;
+        if (currentUserId <= 0) {
+            Toast.makeText(getContext(), "Vui long dang nhap de huy", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        vm.huySuKien(currentSk.getMaSK(), currentUserId);
+        vm.loadSuKienSapThamGia(currentUserId);
+    }
+
+    private void updateButtonsState(SuKienViewModel vm) {
+        boolean isRegistered = false;
+        if (vm.getListSKSapThamGia().getValue() != null && currentSk != null) {
+            for (SuKien sk : vm.getListSKSapThamGia().getValue()) {
+                if (sk.getMaSK() == currentSk.getMaSK()) {
+                    isRegistered = true;
+                    break;
+                }
+            }
+        }
+        if (isRegistered) {
+            btn_dk.setText("Da dang ky");
+            btn_dk.setBackgroundResource(R.drawable.custom_btn_dksk);
+            btn_dk.setEnabled(false);
+            boolean allowCancel = currentSk != null && "Sắp diễn ra".equalsIgnoreCase(currentSk.getTrangThai());
+            btn_huy.setVisibility(allowCancel ? View.VISIBLE : View.GONE);
+        } else {
+            btn_dk.setText("Dang ky");
+            btn_dk.setBackgroundResource(R.drawable.custom_btn_danhmuc);
+            btn_dk.setEnabled(true);
+            btn_huy.setVisibility(View.GONE);
+        }
     }
 
     private void addView(View v) {
@@ -99,13 +130,12 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
         btn_ql = v.findViewById(R.id.btn_ct_ql);
         txt_soluong = v.findViewById(R.id.txt_ct_soluongthamgia);
         btn_dk = v.findViewById(R.id.btn_ct_dk);
+        btn_huy = v.findViewById(R.id.btn_ct_huy);
     }
 
     @Override
     public void onClick(View v) {
-        if(v.getId()==R.id.btn_ct_ql)
-        {
-//            ((MainActivity)requireActivity()).addFragment(new HomeFragment(),false,1);
+        if (v.getId() == R.id.btn_ct_ql) {
             requireActivity().getSupportFragmentManager().popBackStack();
         }
     }

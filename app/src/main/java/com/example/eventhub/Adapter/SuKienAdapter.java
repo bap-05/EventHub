@@ -15,11 +15,15 @@ import com.example.eventhub.R;
 import com.google.android.material.imageview.ShapeableImageView;
 import com.squareup.picasso.Picasso;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienViewHolder> {
     private List<SuKien> lSuKien;
     private OnclickItemListener listener;
+    private final Set<Integer> registeredIds = new HashSet<>();
+
     public interface OnclickItemListener{
         void onClickItem(SuKien sk);
     }
@@ -35,7 +39,6 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
     @NonNull
     @Override
     public SuKienAdapter.SuKienViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sapdienra,parent,false);
         return new SuKienViewHolder(v);
     }
@@ -52,6 +55,7 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
         Picasso.get().load(sk.getAVT2()).into(holder.img_avt2);
         Picasso.get().load(sk.getAVT3()).into(holder.img_avt3);
         Picasso.get().load(sk.getAVT4()).into(holder.img_avt4);
+        applyRegisterState(holder.btn_thamgia, sk.getMaSK());
     }
 
     @Override
@@ -59,6 +63,26 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
         if(lSuKien !=null)
             return lSuKien.size();
         return 0;
+    }
+
+    public void setRegisteredIds(Set<Integer> ids) {
+        registeredIds.clear();
+        if (ids != null) registeredIds.addAll(ids);
+        notifyDataSetChanged();
+    }
+
+    private void applyRegisterState(Button btn, int maSK) {
+        if (btn == null) return;
+        if (registeredIds.contains(maSK)) {
+            btn.setText("Đã đăng ký");
+            btn.setBackgroundTintList(android.content.res.ColorStateList.valueOf(android.graphics.Color.parseColor("#32B768")));
+            btn.setTextColor(android.graphics.Color.WHITE);
+        } else {
+            btn.setText("Tham gia");
+            btn.setBackgroundTintList(null);
+            btn.setBackgroundResource(R.drawable.custom_btn_danhmuc);
+            btn.setTextColor(android.graphics.Color.WHITE);
+        }
     }
 
     public class SuKienViewHolder extends RecyclerView.ViewHolder {
@@ -71,6 +95,7 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
             img_poster = itemView.findViewById(R.id.img_sapdienra_poster);
             txt_noidung = itemView.findViewById(R.id.txt_sapdienra_noidung);
             txt_thoigian = itemView.findViewById(R.id.txt_sapdienra_thoigian);
+            btn_thamgia = itemView.findViewById(R.id.btn_sapdienra_thamgia);
             img_avt1 = itemView.findViewById(R.id.img_home_avt1);
             img_avt2 = itemView.findViewById(R.id.img_home_avt2);
             img_avt3 = itemView.findViewById(R.id.img_home_avt3);

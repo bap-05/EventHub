@@ -51,6 +51,8 @@ public class SuKien implements Serializable {
     @SerializedName("AVT2") private String AVT2;
     @SerializedName("AVT3") private String AVT3;
     @SerializedName("AVT4") private String AVT4;
+    @SerializedName("LoaiSuKien")
+    private String LoaiSuKien;
 
     public SuKien() {
     }
@@ -110,4 +112,7 @@ public class SuKien implements Serializable {
 
     public String getAVT4() { return AVT4; }
     public void setAVT4(String AVT4) { this.AVT4 = AVT4; }
+
+    public String getLoaiSuKien() { return LoaiSuKien; }
+    public void setLoaiSuKien(String loaiSuKien) { LoaiSuKien = loaiSuKien; }
 }

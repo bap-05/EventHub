@@ -17,7 +17,7 @@ import com.example.eventhub.R;
 
 public class AdminEventListFragment extends Fragment {
 
-    public enum Type { ALL, ONGOING, DONE }
+    public enum Type { UPCOMING, ONGOING, DONE }
 
     private static final String ARG_TYPE = "ARG_TYPE";
 
@@ -29,13 +29,13 @@ public class AdminEventListFragment extends Fragment {
         return fragment;
     }
 
-    private Type type = Type.ALL;
+    private Type type = Type.UPCOMING;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            String t = getArguments().getString(ARG_TYPE, Type.ALL.name());
+            String t = getArguments().getString(ARG_TYPE, Type.UPCOMING.name());
             type = Type.valueOf(t);
         }
     }
@@ -88,8 +88,8 @@ public class AdminEventListFragment extends Fragment {
             }
         };
 
-        if (type == Type.ALL) {
-            vm.getAll().observe(getViewLifecycleOwner(), observer);
+        if (type == Type.UPCOMING) {
+            vm.getUpcoming().observe(getViewLifecycleOwner(), observer);
         } else if (type == Type.ONGOING) {
             vm.getOngoing().observe(getViewLifecycleOwner(), observer);
         } else {

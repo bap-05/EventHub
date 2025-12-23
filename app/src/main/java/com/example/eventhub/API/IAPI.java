@@ -12,6 +12,7 @@ import java.util.List;
 import okhttp3.MultipartBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
 import retrofit2.http.GET;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
@@ -47,8 +48,12 @@ public interface IAPI {
     Call<Void> uploadMinhChung(@Path("id")int id, @Body MinhChung minhChung);
     @GET("sukien/admin")
     Call<AdminEventResponse> getAdminEvents();
+    @GET("sukien/all")
+    Call<ApiResponse> getAllEvents();
     @GET("sukien/thamgia/{maSK}")
     Call<AdminParticipantResponse> getParticipants(@Path("maSK") int maSK);
     @PUT("sukien/thamgia/{maSK}/{maTK}")
     Call<Void> updateParticipantStatus(@Path("maSK") int maSK, @Path("maTK") int maTK, @Body ApproveRequest req);
+    @DELETE("sukien/thamgia/{maSK}/{maTK}")
+    Call<Void> cancelRegistration(@Path("maSK") int maSK, @Path("maTK") int maTK);
 }
