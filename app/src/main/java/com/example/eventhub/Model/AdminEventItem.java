@@ -54,7 +54,8 @@ public class AdminEventItem {
     public String getAvt2() { return avt2; }
     public String getAvt3() { return avt3; }
     public SuKien getSource() { return source; }
-    public boolean isShowQr() { return status == Status.ONGOING; }
+    public Status getStatus() { return status; }
+    public boolean isShowQr() { return false; } // không dùng QR cho ongoing nữa
     public boolean isShowDone() { return status == Status.DONE; }
     public int getAvatarRes() { return R.drawable.avatar; }
     public int getStatusIconRes() {

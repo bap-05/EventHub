@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -83,6 +84,16 @@ public class AdminEventListFragment extends Fragment {
                 args.putString("status_text", item.getStatusText());
                 androidx.navigation.NavController navController = androidx.navigation.Navigation.findNavController(requireActivity(), R.id.nav_host_fragment);
                 navController.navigate(R.id.nav_admin_edit_task, args);
+            }
+
+            @Override
+            public void onMarkDone(com.example.eventhub.Model.AdminEventItem item) {
+                new AlertDialog.Builder(requireContext())
+                        .setTitle("Chuyển trạng thái")
+                        .setMessage("Đánh dấu sự kiện này đã diễn ra?")
+                        .setPositiveButton("Xác nhận", (d, which) -> vm.markDone(item.getEventId()))
+                        .setNegativeButton("Hủy", null)
+                        .show();
             }
         });
         recyclerView.setAdapter(adapter);

@@ -116,3 +116,4 @@ public class SuKien implements Serializable {
     public String getLoaiSuKien() { return LoaiSuKien; }
     public void setLoaiSuKien(String loaiSuKien) { LoaiSuKien = loaiSuKien; }
 }
+    

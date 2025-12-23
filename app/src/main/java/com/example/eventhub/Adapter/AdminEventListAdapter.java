@@ -1,7 +1,7 @@
 package com.example.eventhub.Adapter;
 
-import android.content.Context;
-import android.graphics.Bitmap;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,23 +10,24 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.AdminEventItem;
 import com.example.eventhub.R;
-import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.util.List;
 
 public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAdapter.EventViewHolder> {
 
-    private List<AdminEventItem> data;
     public interface OnEventClick {
         void onItemClick(AdminEventItem item);
         void onAvatarClick(AdminEventItem item);
         void onEditClick(AdminEventItem item);
+        void onMarkDone(AdminEventItem item);
     }
+
+    private List<AdminEventItem> data;
     private final OnEventClick listener;
 
     public AdminEventListAdapter(List<AdminEventItem> data, OnEventClick listener) {
@@ -54,40 +55,33 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
         holder.tvPriority.setText(item.getPriorityText());
         holder.tvStart.setText(item.getStartDate());
         holder.tvEnd.setText(item.getEndDate());
-        holder.progressBar.setLayoutParams(new LinearLayout.LayoutParams(0, (int) (4 * holder.itemView.getResources().getDisplayMetrics().density), 1f));
+        holder.progressBar.setLayoutParams(
+                new LinearLayout.LayoutParams(0, (int) (4 * holder.itemView.getResources().getDisplayMetrics().density), 1f));
         holder.statusIcon.setImageResource(item.getStatusIconRes());
         holder.priorityIcon.setImageResource(item.getPriorityIconRes());
         holder.startIcon.setImageResource(item.getCalendarIconRes());
         holder.endIcon.setImageResource(item.getCalendarIconRes());
 
-        clearOrSetPlaceholder(holder.avatar1);
-        clearOrSetPlaceholder(holder.avatar2);
-        clearOrSetPlaceholder(holder.avatar3);
         holder.tvCount.setText(item.getSoLuongDaDangKy() + "/" + item.getSoLuongGioiHan());
-
-        // Load avatar URL nếu có
         loadAvatar(holder.avatar1, item.getAvt1());
         loadAvatar(holder.avatar2, item.getAvt2());
         loadAvatar(holder.avatar3, item.getAvt3());
 
-        if (item.isShowQr()) {
-            holder.qrIcon.setVisibility(View.VISIBLE);
-            holder.qrIcon.setImageResource(R.drawable.qr);
-            holder.bindQrClick(holder.itemView.getContext());
-            holder.tvEventId.setVisibility(View.VISIBLE);
-            holder.tvEventId.setText("Mã sự kiện: " + item.getEventId());
-        } else if (item.isShowDone()) {
-            holder.qrIcon.setVisibility(View.VISIBLE);
-            holder.qrIcon.setImageResource(item.getDoneIconRes());
+        holder.qrIcon.setVisibility(View.VISIBLE);
+        holder.tvEventId.setVisibility(View.GONE);
+        boolean isDone = item.isShowDone();
+        holder.qrIcon.setImageResource(isDone ? item.getDoneIconRes() : R.drawable.ic_edit);
+        if (isDone) {
             holder.qrIcon.setOnClickListener(null);
-            holder.tvEventId.setVisibility(View.GONE);
         } else {
-            holder.qrIcon.setVisibility(View.VISIBLE);
-            holder.qrIcon.setImageResource(R.drawable.ic_edit);
             holder.qrIcon.setOnClickListener(v -> {
-                if (listener != null) listener.onEditClick(item);
+                if (listener == null) return;
+                if (item.getStatus() == AdminEventItem.Status.ONGOING) {
+                    listener.onMarkDone(item);
+                } else {
+                    listener.onEditClick(item);
+                }
             });
-            holder.tvEventId.setVisibility(View.GONE);
         }
 
         holder.itemView.setOnClickListener(v -> {
@@ -103,23 +97,19 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
 
     private void loadAvatar(ImageView view, String url) {
         if (url == null || url.isEmpty()) {
-            clearOrSetPlaceholder(view);
+            view.setImageDrawable(new ColorDrawable(Color.TRANSPARENT));
             return;
         }
-        com.bumptech.glide.Glide.with(view.getContext())
+        Glide.with(view.getContext())
                 .load(url)
-                .placeholder(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
-                .error(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT))
+                .placeholder(new ColorDrawable(Color.TRANSPARENT))
+                .error(new ColorDrawable(Color.TRANSPARENT))
                 .into(view);
-    }
-
-    private void clearOrSetPlaceholder(ImageView view) {
-        view.setImageDrawable(new android.graphics.drawable.ColorDrawable(android.graphics.Color.TRANSPARENT));
     }
 
     @Override
     public int getItemCount() {
-        return data.size();
+        return data == null ? 0 : data.size();
     }
 
     static class EventViewHolder extends RecyclerView.ViewHolder {
@@ -148,25 +138,6 @@ public class AdminEventListAdapter extends RecyclerView.Adapter<AdminEventListAd
             progressBar = itemView.findViewById(R.id.progress_line);
             avatarContainer = itemView.findViewById(R.id.avatar_container);
         }
-
-        void bindQrClick(Context context) {
-            qrIcon.setOnClickListener(v -> {
-                try {
-                    BarcodeEncoder encoder = new BarcodeEncoder();
-                    Bitmap bitmap = encoder.encodeBitmap("1", com.google.zxing.BarcodeFormat.QR_CODE, 500, 500);
-                    ImageView qrView = new ImageView(context);
-                    qrView.setImageBitmap(bitmap);
-                    int padding = (int) (16 * context.getResources().getDisplayMetrics().density);
-                    qrView.setPadding(padding, padding, padding, padding);
-                    new AlertDialog.Builder(context)
-                            .setTitle("QR sự kiện")
-                            .setView(qrView)
-                            .setPositiveButton("Đóng", null)
-                            .show();
-                } catch (Exception e) {
-                    // ignore silently for test
-                }
-            });
-        }
     }
 }
+

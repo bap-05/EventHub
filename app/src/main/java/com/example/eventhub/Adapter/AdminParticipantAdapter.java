@@ -24,6 +24,7 @@ public class AdminParticipantAdapter extends RecyclerView.Adapter<RecyclerView.V
         void onSelect(AdminParticipant p);
         void onApprove(AdminParticipant p);
         void onReject(AdminParticipant p);
+        void onReopen(AdminParticipant p);
     }
 
     private static final int TYPE_VIEW = 0;
@@ -141,11 +142,7 @@ public class AdminParticipantAdapter extends RecyclerView.Adapter<RecyclerView.V
                 tvStatus.setVisibility(View.VISIBLE);
                 tvStatus.setBackgroundResource(st == 2 ? R.drawable.bg_status_green : R.drawable.bg_status_red);
                 tvStatus.setText(st == 2 ? "Da duyet" : "Tu choi");
-                tvStatus.setOnClickListener(v -> {
-                    btnApprove.setVisibility(View.VISIBLE);
-                    btnReject.setVisibility(View.VISIBLE);
-                    tvStatus.setVisibility(View.GONE);
-                });
+                tvStatus.setOnClickListener(v -> showEditConfirm(p));
             } else {
                 tvStatus.setVisibility(View.VISIBLE);
                 btnApprove.setVisibility(View.VISIBLE);
@@ -172,6 +169,17 @@ public class AdminParticipantAdapter extends RecyclerView.Adapter<RecyclerView.V
             if (proof == null || proof.trim().isEmpty()) return false;
             if (expected == null || expected.trim().isEmpty()) return false;
             return proof.trim().equalsIgnoreCase(expected.trim());
+        }
+
+        private void showEditConfirm(AdminParticipant p) {
+            new android.app.AlertDialog.Builder(itemView.getContext())
+                    .setTitle("Chinh sua phe duyet?")
+                    .setMessage("Ban muon mo lai phe duyet cho MSSV " + p.getMaSV() + "?")
+                    .setPositiveButton("Mo lai", (dialog, which) -> {
+                        if (listener != null) listener.onReopen(p);
+                    })
+                    .setNegativeButton("Huy", null)
+                    .show();
         }
     }
 

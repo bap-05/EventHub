@@ -98,6 +98,11 @@ public class AdminStudentListFragment extends Fragment {
             public void onReject(AdminParticipant p) {
                 openVerification(p, false);
             }
+
+            @Override
+            public void onReopen(AdminParticipant p) {
+                vm.updateStatus(maSK, p.getMaTK(), 1, null);
+            }
         });
         rv.setAdapter(adapter);
 

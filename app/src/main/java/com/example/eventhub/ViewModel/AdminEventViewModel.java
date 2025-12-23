@@ -13,9 +13,11 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -55,13 +57,33 @@ public class AdminEventViewModel extends ViewModel {
                     combined.addAll(dn);
                     all.postValue(combined);
                 } else {
-                    err.postValue("Lỗi server: " + response.code());
+                    err.postValue("Loi server: " + response.code());
                 }
             }
 
             @Override
             public void onFailure(Call<AdminEventResponse> call, Throwable t) {
                 loading = false;
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+
+    public void markDone(int eventId) {
+        HashMap<String, String> body = new HashMap<>();
+        body.put("TrangThai", "?? di?n ra");
+        iapi.updateSuKienJson(eventId, body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    load();
+                } else {
+                    err.postValue("Cap nhat that bai: " + response.code());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
                 err.postValue(t.getMessage());
             }
         });
@@ -103,3 +125,4 @@ public class AdminEventViewModel extends ViewModel {
         }
     }
 }
+
