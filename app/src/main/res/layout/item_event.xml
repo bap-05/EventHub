@@ -72,9 +72,10 @@
         <Button
             android:id="@+id/btnDetails"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:background="@drawable/custom_btn_bg_chitiet"
             android:text="Chi tiết"
+            android:textColor="@color/white"
             android:visibility="gone"
             app:backgroundTint="@null"
             app:layout_constraintBottom_toBottomOf="parent"

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.google.android.material.imageview.ShapeableImageView;
@@ -50,11 +51,11 @@ public class SuKienAdapter extends RecyclerView.Adapter<SuKienAdapter.SuKienView
             return;
         holder.txt_noidung.setText(sk.getTenSK());
         holder.txt_thoigian.setText(sk.getThoiGianBatDau());
-        Picasso.get().load(sk.getPoster()).into(holder.img_poster);
-        Picasso.get().load(sk.getAVT1()).into(holder.img_avt1);
-        Picasso.get().load(sk.getAVT2()).into(holder.img_avt2);
-        Picasso.get().load(sk.getAVT3()).into(holder.img_avt3);
-        Picasso.get().load(sk.getAVT4()).into(holder.img_avt4);
+        Glide.with(holder.itemView).load(sk.getAVT1()).into(holder.img_avt1);
+        Glide.with(holder.itemView).load(sk.getAVT2()).into(holder.img_avt2);
+        Glide.with(holder.itemView).load(sk.getAVT3()).into(holder.img_avt3);
+        Glide.with(holder.itemView).load(sk.getAVT4()).into(holder.img_avt4);
+        Glide.with(holder.itemView).load(sk.getPoster()).into(holder.img_poster);
         applyRegisterState(holder.btn_thamgia, sk.getMaSK());
     }
 

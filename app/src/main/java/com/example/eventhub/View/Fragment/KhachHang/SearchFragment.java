@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Adapter.SuKienSapToiAdapter;
+import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 
@@ -43,10 +44,19 @@ public class SearchFragment extends Fragment {
         suKienViewModel.getListSKSearch().observe(getViewLifecycleOwner(), suKiens -> {
             SuKienSapToiAdapter adapter = new SuKienSapToiAdapter(suKiens);
             rcvSearch.setAdapter(adapter);
-            adapter.setListener(sk -> {
-                suKienViewModel.setSk(sk);
-                Navigation.findNavController(view).navigate(R.id.chiTietSuKienFragment);
+            adapter.setListener(new SuKienSapToiAdapter.OnItemClickListener() {
+                @Override
+                public void onItemClick(SuKien sk) {
+                    suKienViewModel.setSk(sk);
+                    Navigation.findNavController(view).navigate(R.id.chiTietSuKienFragment);
+                }
+
+                @Override
+                public void onCancel(SuKien sk) {
+
+                }
             });
+
         });
 
         getParentFragmentManager().setFragmentResultListener("search_filter", this, (requestKey, bundle) -> {

@@ -22,6 +22,15 @@ import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHolder> {
     private List<SuKien> eventList;
+    private OnClickItemListener listener;
+    public interface OnClickItemListener{
+        void onClickItem(SuKien suKien);
+    }
+
+    public void setListener(OnClickItemListener listener) {
+        this.listener = listener;
+    }
+
     public EventAdapter(List<SuKien>eventList){
         this.eventList=eventList;
     }
@@ -79,7 +88,16 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
             layoutAttended=itemView.findViewById(R.id.layoutAttended);
             txtStatus=itemView.findViewById(R.id.txtStatus);
             txtPointsValue=itemView.findViewById(R.id.txtPointsValue);
-
+            itemView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (listener!=null){
+                        int vitri = getBindingAdapterPosition();
+                        if(vitri!=RecyclerView.NO_POSITION)
+                            listener.onClickItem(eventList.get(vitri));
+                    }
+                }
+            });
         }
     }
 }

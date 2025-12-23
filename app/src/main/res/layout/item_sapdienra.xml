@@ -2,8 +2,9 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:layout_width="350dp"
+    android:layout_width="match_parent"
     android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
     android:background="@drawable/custom_layersk"
     android:layout_height="250dp">
 
@@ -81,7 +82,7 @@
             android:background="@drawable/custom_btn_danhmuc"
             app:backgroundTint="@null"
             android:layout_marginRight="20sp"
-            android:text="Tham gia"
+            android:text="Chi tiết"
             android:textSize="12dp"
             android:textColor="@color/white"
             app:layout_constraintTop_toTopOf="parent"

@@ -14,6 +14,7 @@ import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.navigation.Navigation;
 
+import com.bumptech.glide.Glide;
 import com.example.eventhub.Model.SuKien;
 import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.Model.ThamGiaSuKien;
@@ -54,7 +55,7 @@ public class ChiTietSuKienFragment extends Fragment implements View.OnClickListe
             txt_soluong.setText("So luong tham gia: " + sk.getSoLuongDaDangKy() + "/" + sk.getSoLuongGioiHan());
             txt_trangthai.setText(sk.getTrangThai());
             if (sk.getPoster() != null && !sk.getPoster().isEmpty()) {
-                Picasso.get().load(sk.getPoster()).into(img_poster);
+                Glide.with(v).load(sk.getPoster()).into(img_poster);
             } else {
                 img_poster.setImageResource(R.drawable.postersukien);
             }
