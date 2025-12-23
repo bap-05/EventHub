@@ -106,7 +106,7 @@ public class AdminCreateTaskFragment extends Fragment {
     private void setupClickListeners() {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
 
-        String[] optionsLoai = {"Học thuật", "Thể thao", "Văn nghệ", "Hội thảo", "Tình nguyện"};
+        String[] optionsLoai = {"Văn nghệ", "Hội thảo", "Chủ nhật xanh"};
         edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chọn loại sự kiện", optionsLoai, edtLoaiSK));
 
         String[] optionsCoSo = {"Cơ sở 1", "Cơ sở 2"};

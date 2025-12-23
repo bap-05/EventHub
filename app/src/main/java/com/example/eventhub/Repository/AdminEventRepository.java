@@ -77,6 +77,12 @@ public class AdminEventRepository {
         return RequestBody.create(value == null ? "" : value, MediaType.parse("text/plain"));
     }
 
+    private void putIfNotEmpty(java.util.Map<String, String> map, String key, String value) {
+        if (value != null && !value.isEmpty()) {
+            map.put(key, value);
+        }
+    }
+
     public void updateEvent(AdminUpdateEventRequest request,
                             MutableLiveData<Boolean> updated,
                             MutableLiveData<String> err) {
@@ -85,41 +91,34 @@ public class AdminEventRepository {
             return;
         }
 
-        MultipartBody.Part posterPart = null;
-        File poster = request.getPosterFile();
-        if (poster != null && poster.exists()) {
-            RequestBody requestFile = RequestBody.create(poster, MediaType.parse("image/*"));
-            posterPart = MultipartBody.Part.createFormData("poster", poster.getName(), requestFile);
-        }
+        // Gửi JSON, không cần multipart (backend chưa parse multipart)
+        java.util.Map<String, String> body = new java.util.HashMap<>();
+        putIfNotEmpty(body, "TenSK", request.getTenSK());
+        putIfNotEmpty(body, "MoTa", request.getMoTa());
+        putIfNotEmpty(body, "LoaiSuKien", request.getLoaiSuKien());
+        putIfNotEmpty(body, "SoLuongGioiHan", request.getSoLuongGioiHan());
+        putIfNotEmpty(body, "DiemCong", request.getDiemCong());
+        putIfNotEmpty(body, "CoSo", request.getCoSo());
+        putIfNotEmpty(body, "DiaDiem", request.getDiaDiem());
+        putIfNotEmpty(body, "ThoiGianBatDau", request.getThoiGianBatDau());
+        putIfNotEmpty(body, "ThoiGianKetThuc", request.getThoiGianKetThuc());
+        putIfNotEmpty(body, "TrangThai", request.getTrangThai());
 
-        RequestBody rbTen = toText(request.getTenSK());
-        RequestBody rbMoTa = toText(request.getMoTa());
-        RequestBody rbLoai = toText(request.getLoaiSuKien());
-        RequestBody rbSoLuong = toText(request.getSoLuongGioiHan());
-        RequestBody rbDiem = toText(request.getDiemCong());
-        RequestBody rbCoSo = toText(request.getCoSo());
-        RequestBody rbDiaDiem = toText(request.getDiaDiem());
-        RequestBody rbBD = toText(request.getThoiGianBatDau());
-        RequestBody rbKT = toText(request.getThoiGianKetThuc());
-        RequestBody rbTrangThai = toText(request.getTrangThai());
+        iapi.updateSuKienJson(request.getEventId(), body).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    updated.postValue(true);
+                } else {
+                    err.postValue("Loi server: " + response.code());
+                }
+            }
 
-        iapi.updateSuKien(request.getEventId(), posterPart, rbTen, rbMoTa, rbLoai, rbSoLuong,
-                        rbDiem, rbCoSo, rbDiaDiem, rbBD, rbKT, rbTrangThai)
-                .enqueue(new Callback<ResponseBody>() {
-                    @Override
-                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.isSuccessful()) {
-                            updated.postValue(true);
-                        } else {
-                            err.postValue("Loi server: " + response.code());
-                        }
-                    }
-
-                    @Override
-                    public void onFailure(Call<ResponseBody> call, Throwable t) {
-                        Log.e("API", "updateEvent error", t);
-                        err.postValue(t.getMessage());
-                    }
-                });
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Log.e("API", "updateEvent error", t);
+                err.postValue(t.getMessage());
+            }
+        });
     }
 }

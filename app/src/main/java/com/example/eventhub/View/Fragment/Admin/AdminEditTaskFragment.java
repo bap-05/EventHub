@@ -125,14 +125,14 @@ public class AdminEditTaskFragment extends Fragment {
         btnBack.setOnClickListener(v -> requireActivity().onBackPressed());
         layoutUploadImage.setOnClickListener(v -> mGetContent.launch("image/*"));
 
-        String[] optionsLoai = {"Hoc thuat", "The thao", "Van nghe", "Hoi thao", "Tinh nguyen"};
-        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chon loai su kien", optionsLoai, edtLoaiSK));
+        String[] optionsLoai = {"Âm nhạc",  "Hội thảo", "Chủ nhật xanh"};
+        edtLoaiSK.setOnClickListener(v -> showOptionsDialog("Chọn loại sự kiện", optionsLoai, edtLoaiSK));
 
-        String[] optionsCoSo = {"Co so 1", "Co so 2"};
-        edtCoSo.setOnClickListener(v -> showOptionsDialog("Chon co so", optionsCoSo, edtCoSo));
+        String[] optionsCoSo = {"Cơ sở 1", "Cơ sở 2"};
+        edtCoSo.setOnClickListener(v -> showOptionsDialog("Chọn cơ sở", optionsCoSo, edtCoSo));
 
-        String[] optionsStatus = {"Sap dien ra", "Dang dien ra", "Da dien ra"};
-        edtTrangThai.setOnClickListener(v -> showOptionsDialog("Chon trang thai", optionsStatus, edtTrangThai));
+        String[] optionsStatus = {"Sắp diễn ra", "Đang diễn ra", "Đã diễn ra"};
+        edtTrangThai.setOnClickListener(v -> showOptionsDialog("Chọn trạng thái", optionsStatus, edtTrangThai));
 
         applyDateMask(edtNgayBatDau);
         applyDateMask(edtNgayKetThuc);

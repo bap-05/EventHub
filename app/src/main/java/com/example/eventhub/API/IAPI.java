@@ -90,4 +90,8 @@ public interface IAPI {
             @Part("ThoiGianKetThuc") RequestBody ketThuc,
             @Part("TrangThai") RequestBody trangThai
     );
+
+    // JSON update (không multipart) dùng cho thay đổi trạng thái/fields đơn giản
+    @PUT("sukien/update/{id}")
+    Call<ResponseBody> updateSuKienJson(@Path("id") int id, @Body java.util.Map<String, String> body);
 }
