@@ -9,6 +9,7 @@ import com.example.eventhub.API.ApiResponse;
 import com.example.eventhub.API.IAPI;
 import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.SuKienDaThamGia;
 import com.example.eventhub.Model.ThamGiaSuKien;
 
 import java.util.ArrayList;
@@ -233,6 +234,28 @@ public class SuKienRepository {
 
             @Override
             public void onFailure(Call<com.example.eventhub.API.AdminEventResponse> call, Throwable t) {
+                err.postValue(t.getMessage());
+            }
+        });
+    }
+    public void sukiendathamgia(MutableLiveData<SuKienDaThamGia>liveData,MutableLiveData<String>err,ThamGiaSuKien thamGiaSuKien){
+        Call<ApiResponse>call = iapi.sukiendathamgia(thamGiaSuKien);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if(response.isSuccessful())
+                {
+                    liveData.postValue(response.body().getSuKienDaThamGia());
+
+                    err.postValue(null);
+                }
+                else
+                    err.postValue("Lỗi khi lấy sự kiện");
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                Log.e("API",t.getMessage(),t);
                 err.postValue(t.getMessage());
             }
         });

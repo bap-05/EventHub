@@ -1,5 +1,6 @@
 package com.example.eventhub.View;
 
+import androidx.annotation.NonNull;
 import androidx.core.view.WindowCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -10,6 +11,7 @@ import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Window;
 
@@ -23,6 +25,7 @@ import com.example.eventhub.Model.TaiKhoan;
 import com.example.eventhub.R;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.navigation.NavigationBarView;
 import com.google.gson.Gson;
 
 public class
@@ -103,6 +106,16 @@ MainActivity extends AppCompatActivity {
                 bottomNav.setVisibility(View.GONE);
             } else {
                 bottomNav.setVisibility(View.VISIBLE);
+            }
+        });
+        bottomNav.setOnItemReselectedListener(new NavigationBarView.OnItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                // Lấy ID của item vừa bấm (ví dụ: nav_home)
+                int id = item.getItemId();
+                // Lệnh này sẽ xóa hết các fragment đang đè lên Home (như TrangThaiMinhChung)
+                // và quay về đúng màn hình gốc của tab đó.
+                navController.popBackStack(id, false);
             }
         });
     }

@@ -112,4 +112,8 @@ public interface IAPI {
     // JSON update (không multipart) dùng cho thay đổi trạng thái/fields đơn giản
     @PUT("sukien/update/{id}")
     Call<ResponseBody> updateSuKienJson(@Path("id") int id, @Body java.util.Map<String, String> body);
+    @POST("sukien/sukiendathamgia")
+    Call<ApiResponse> sukiendathamgia(@Body ThamGiaSuKien thamGiaSuKien);
+    @GET("taikhoan/diemtichluy/{id}")
+    Call<ApiResponse> diemtichluy (@Path("id")int id);
 }

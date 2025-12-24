@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel;
 
 import com.example.eventhub.Model.MinhChung;
 import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.SuKienDaThamGia;
 import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.Repository.SuKienRepository;
@@ -51,7 +52,7 @@ public class SuKienViewModel extends ViewModel {
     public MutableLiveData<SuKien> getSukiencantim() {
         return sukiencantim;
     }
-
+    public MutableLiveData<SuKienDaThamGia> suKienDaThamGia = new MutableLiveData<>();
     public MutableLiveData<List<SuKien>> getListSKSapToi() {
         return listSKSapToi;
     }
@@ -59,13 +60,25 @@ public class SuKienViewModel extends ViewModel {
     public MutableLiveData<List<SuKien>> getListTatCa() {
         return listTatCa;
     }
-
+    public MutableLiveData<String> thongBaoSKDaThamGia = new MutableLiveData<>();
     public MutableLiveData<List<SuKien>> getListSK() {
         return listSK;
     }
 
     public MutableLiveData<String> getErr() {
         return err;
+    }
+
+    public MutableLiveData<SuKienDaThamGia> getSuKienDaThamGia() {
+        return suKienDaThamGia;
+    }
+
+    public void setSuKienDaThamGia(SuKienDaThamGia suKien) {
+        this.suKienDaThamGia.postValue(suKien);
+    }
+
+    public MutableLiveData<String> getThongBaoSKDaThamGia() {
+        return thongBaoSKDaThamGia;
     }
 
     public static MutableLiveData<SuKien> getSk() {
@@ -132,5 +145,9 @@ public class SuKienViewModel extends ViewModel {
     public void uploadMinhChung(int id, MinhChung minhChung)
     {
         suKienRepository.uploadMinhChung(thongBaoUpload,id,minhChung);
+    }
+    public void suKienDaThamGia(ThamGiaSuKien thamGiaSuKien)
+    {
+        suKienRepository.sukiendathamgia(suKienDaThamGia,thongBaoSKDaThamGia,thamGiaSuKien);
     }
 }
