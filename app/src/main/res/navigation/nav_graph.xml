@@ -131,5 +131,10 @@
         android:label="Thêm Sự Kiện"
         tools:layout="@layout/fragment_admin_create_task" />
     <fragment android:id="@+id/nav_student_list" android:name="com.example.eventhub.View.Fragment.Admin.AdminStudentListFragment" android:label="AdminStudentList" tools:layout="@layout/fragment_admin_student_list" />
+    <fragment
+        android:id="@+id/trangThaiMinhChungFragment"
+        android:name="com.example.eventhub.View.Fragment.KhachHang.TrangThaiMinhChungFragment"
+        android:label="TrangThaiMinhChungFragment"
+        tools:layout="@layout/fragment_trang_thai_minh_chung"/>
 
 </navigation>

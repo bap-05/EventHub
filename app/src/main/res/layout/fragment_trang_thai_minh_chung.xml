@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:paddingBottom="24dp"
+    android:orientation="vertical">
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <ImageView
+                android:id="@+id/img_TrangThai_poster"
+                android:layout_width="match_parent"
+                android:layout_height="200dp"
+                android:contentDescription="Ảnh nền"
+                android:scaleType="centerCrop"
+                android:src="@drawable/postersukien"
+                />
+
+            <TextView
+                android:id="@+id/txt_TrangThai_tensk"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Hội thao sinh viên 2025"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#111827"
+                android:textSize="22sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txt_TrangThai_thoigian"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Thời gian: 2311505312213"
+                android:layout_marginLeft="10dp"
+                android:textColor="#111827"
+                android:textSize="15sp" />
+            <TextView
+                android:id="@+id/txt_TrangThai_tinhtrang"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Tình trạng: Bị từ chối"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#111827"
+                android:textSize="15sp"
+                 />
+            <TextView
+                android:id="@+id/txt_TrangThai_diem"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Diểm: +10"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#111827"
+                android:textSize="15sp"
+                />
+            <TextView
+                android:id="@+id/txt_TrangThai_lydotieude"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Lý do:"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"
+                android:textColor="#111827"
+                android:textSize="15sp"
+                />
+            <EditText
+                android:id="@+id/txt_TrangThai_lydo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/btn_filter_time"
+                android:layout_margin="10dp"
+                android:enabled="false"
+                android:text="heheeh"
+                android:textColor="@color/black"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:text="Minh chứng"
+                android:textColor="#111827"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <com.google.android.material.card.MaterialCardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                app:cardBackgroundColor="#F5F5F5"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="2dp"
+                app:cardUseCompatPadding="true">
+
+                <ImageView
+                    android:id="@+id/img_TrangThai_minhchung"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:contentDescription="Ảnh minh chứng"
+                    android:minHeight="300dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/upload" />
+            </com.google.android.material.card.MaterialCardView>
+                <Button
+                    android:id="@+id/btn_TrangThai_ql"
+                    android:layout_width="200dp"
+                    android:layout_height="48dp"
+                    android:layout_marginEnd="8dp"
+                    android:layout_weight="1"
+                    android:background="@drawable/bg_outline_red"
+                    app:backgroundTint="@null"
+                    android:text="Quay lại"
+                    android:textAllCaps="false"
+                    android:textColor="#EA5455"
+                    android:layout_gravity="end"
+                    android:layout_marginRight="20dp"
+                    android:textStyle="bold" />
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</LinearLayout>

@@ -60,7 +60,7 @@ public class ProfileFragment extends Fragment {
 
     private enum PendingAction { NONE, SCAN, CAMERA }
     private CircleImageView avatarProfile;
-    private TextView txtTenTK,txtMaSV,txtKhoa;
+    private TextView txtTenTK,txtMaSV,txtKhoa,txtdiem;
     private ProgressBar pgbDiem;
     private TaiKhoanViewModel taiKhoanViewModel;
     private SessionManager sessionManager;
@@ -172,6 +172,16 @@ public class ProfileFragment extends Fragment {
                 Toast.makeText(getContext(),thongbao,Toast.LENGTH_LONG).show();
             }
         });
+
+        TaiKhoanViewModel.getDiem().observe(getViewLifecycleOwner(),diem ->{
+            if(diem!=null)
+            {
+                pgbDiem.setProgress(diem);
+                txtdiem.setText(""+diem);
+            }
+
+        });
+        taiKhoanViewModel.diemtichluy(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk());
 //        sessionManager = SessionManager.getInstance(requireContext());
 //        if (!sessionManager.isLoggedIn()) {
 //            Toast.makeText(getContext(), "Vui lòng đăng nhập!", Toast.LENGTH_SHORT).show();
@@ -216,6 +226,7 @@ public class ProfileFragment extends Fragment {
         txtMaSV = view.findViewById(R.id.txtMaSV);
         txtKhoa = view.findViewById(R.id.txtKhoa);
         pgbDiem = view.findViewById(R.id.pgb_Diem);
+        txtdiem = view.findViewById(R.id.txt_profile_diem);
     }
 
     private void setupQrButton() {
@@ -348,7 +359,7 @@ public class ProfileFragment extends Fragment {
 
                 txtMaSV.setText(taiKhoan.getMaSV());
                 txtKhoa.setText(taiKhoan.getKhoa());
-                pgbDiem.setProgress(taiKhoan.getDiemTichLuy());
+
                 if(getContext() != null){
                     Glide.with(getContext())
                             .load(taiKhoan.getAVT())

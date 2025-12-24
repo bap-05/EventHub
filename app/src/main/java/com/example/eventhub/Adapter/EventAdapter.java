@@ -53,17 +53,6 @@ public class EventAdapter extends RecyclerView.Adapter<EventAdapter.EventViewHol
                 .placeholder(R.drawable.avatar)
                 .error(R.drawable.avatar)
                 .into(holder.imgEvent);
-        if("Đã tích lũy".equalsIgnoreCase(event.getTrangThai())){
-            holder.btnDetails.setVisibility(View.GONE);
-            holder.layoutAttended.setVisibility(View.VISIBLE);
-            holder.txtStatus.setText(event.getTrangThai());
-            holder.txtPointsValue.setText("+" + event.getDiemCong());
-        }
-        else {
-            holder.layoutAttended.setVisibility(View.GONE);
-            holder.btnDetails.setVisibility(View.VISIBLE);
-        }
-
     }
 
     @Override

@@ -13,7 +13,8 @@ public class TaiKhoanViewModel extends ViewModel {
     private TaiKhoanRespository taiKhoanRespository = new TaiKhoanRespository();
     private static MutableLiveData<TaiKhoan> taikhoan = new MutableLiveData<>();
     private MutableLiveData<String> err = new MutableLiveData<>();
-
+    private static MutableLiveData<Integer> diem = new MutableLiveData<>();
+    private static MutableLiveData<String> tbdiem = new MutableLiveData<>();
     public static void setTaikhoan(TaiKhoan tk) {
         taikhoan.postValue(tk);
     }
@@ -21,6 +22,16 @@ public class TaiKhoanViewModel extends ViewModel {
     public static MutableLiveData<TaiKhoan> getTaikhoan() {
         return taikhoan;
     }
+
+    public static MutableLiveData<String> getTbdiem() {
+        return tbdiem;
+    }
+
+
+    public static MutableLiveData<Integer> getDiem() {
+        return diem;
+    }
+
 
     public MutableLiveData<String> getErr() {
         return err;
@@ -31,5 +42,8 @@ public class TaiKhoanViewModel extends ViewModel {
     public void uploadAvatar(int userId, MultipartBody.Part body) {
         taiKhoanRespository.updateAvatar(userId, body, taikhoan, err);
     }
-
+    public void diemtichluy(int ma)
+    {
+        taiKhoanRespository.diemtichluy(diem,tbdiem,ma);
+    }
 }

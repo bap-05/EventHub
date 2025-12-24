@@ -68,6 +68,26 @@ public class TaiKhoanRespository {
         });
 
     }
+    public void diemtichluy(MutableLiveData<Integer>liveData,MutableLiveData<String>err, int ma){
+        Call<ApiResponse>call = iapi.diemtichluy(ma);
+        call.enqueue(new Callback<ApiResponse>() {
+            @Override
+            public void onResponse(Call<ApiResponse> call, Response<ApiResponse> response) {
+                if (response.isSuccessful())
+                {
+
+                    liveData.postValue(response.body().getDiem());
+                    err.postValue(null);
+                }
+
+            }
+
+            @Override
+            public void onFailure(Call<ApiResponse> call, Throwable t) {
+                err.postValue(t.getMessage());
+            }
+        });
+    }
 //    public void getUserProfile(int userId, MutableLiveData<TaiKhoan> liveData, MutableLiveData<String> err) {
 //        // Đổi Call<TaiKhoan> thành Call<ProfileResponse>
 //        Call<ProfileResponse> call = iapi.getUserProfile(userId);

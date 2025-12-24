@@ -10,11 +10,13 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.navigation.Navigation;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.eventhub.Adapter.EventAdapter;
 import com.example.eventhub.Model.SuKien;
+import com.example.eventhub.Model.ThamGiaSuKien;
 import com.example.eventhub.R;
 import com.example.eventhub.ViewModel.SuKienViewModel;
 import com.example.eventhub.ViewModel.TaiKhoanViewModel;
@@ -39,7 +41,7 @@ public class DaThamGiaFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        suKienViewModel = new ViewModelProvider(this).get(SuKienViewModel.class);
+        suKienViewModel = new ViewModelProvider(requireActivity()).get(SuKienViewModel.class);
     }
 
     @Nullable
@@ -58,6 +60,21 @@ public class DaThamGiaFragment extends Fragment {
         observeViewModel();
 
         suKienViewModel.loadSuKienDaThamGia(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk());
+        adapter.setListener(new EventAdapter.OnClickItemListener() {
+            @Override
+            public void onClickItem(SuKien suKien) {
+                if(suKien!=null)
+                {
+                    ThamGiaSuKien thamGiaSuKien = new ThamGiaSuKien(TaiKhoanViewModel.getTaikhoan().getValue().getMaTk(),suKien.getMaSK());
+                    suKienViewModel.suKienDaThamGia(thamGiaSuKien);
+
+                    Navigation.findNavController(requireView()).navigate(R.id.trangThaiMinhChungFragment);
+
+
+                }
+            }
+        });
+
     }
 
     private void observeViewModel() {
